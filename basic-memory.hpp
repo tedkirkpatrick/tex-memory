@@ -6,7 +6,7 @@
   See the corresponding .cpp file for details.
 
   This header has three purposes:
-  1. Initialize a few Pascal constants from Section 11.
+  1. Initialize a few global Pascal constants from Section 11.
   2. Implement the WEB constants and macros in corresponding C++ idioms. By declaring
      these constexpr and incorporating the routines in this header they are declared inline.
   3. Give the constants and routines from the .cpp file global scope.
@@ -16,7 +16,6 @@
 
 // Section 11
 constexpr int mem_max = 30'000;
-//constexpr int mem_max = 5; // For testing memory exhaustion
 constexpr int mem_min = 0;
 constexpr int buf_size = 500;
 constexpr int stack_size = 200;
@@ -127,7 +126,7 @@ constexpr bool is_empty(pointer p) {
   return link(p) == empty_flag;
 }
 
-// Repeats info (Knuth just does direct macro equivalence)
+// Repeats body of link(). Knuth just does direct macro equivalence but C++ doesn't support that.
 constexpr halfword& node_size(pointer p) {
   return mem[p].hh.lh;
 }
