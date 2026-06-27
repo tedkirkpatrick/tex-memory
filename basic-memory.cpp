@@ -9,11 +9,14 @@
   we declare them extern in the header.
 
   We do not define any static entries as this is just testing the dynamic memory.
+
+  We do not include any TeX init, debug, or stats code.
 */
 
 #include "basic-memory.hpp"
 
 #include <iostream>
+#include <print>
 #include <stdexcept>
 #include <string_view>
 
@@ -42,7 +45,7 @@ void overflow(std::string_view s, int n) {
 
 // Section 120
 
-pointer get_avail() {
+[[nodiscard]] pointer get_avail() {
   pointer p;
   p = avail;
   if (p != null)
@@ -82,6 +85,106 @@ void flush_list(pointer& p) {
 // Section 124
 
 pointer rover;
+
+// Section 125
+
+// Kunuth breaks this complex routine into multiple separate WEB sections.
+// This implementation inserts those paragraphs directly into the routine.
+[[nodiscard]] pointer get_node(int s) {
+  pointer p;
+  pointer q;
+  int r;
+  int t;
+
+ restart:
+  p = rover;
+  do {
+    std::print("Top loop p = {}, rover = {}\n", p, rover);
+    // Begin Section 127
+    q = p + node_size(p);
+    while (is_empty(q)) {
+      std::print("is_empty loop p = {}, q = {}\n", p, q);
+      t = rlink(q);
+      if (q == rover)
+        rover = t;
+      llink(t) = llink(q);
+      rlink(llink(q)) = t;
+      q = q + node_size(q);
+    }
+    r = q - s;
+    if (r > p + 1) {
+      // Begin Section 128
+      node_size(p) = r - p;
+      rover = p;
+      goto found;
+      // End Section 128
+    }
+    if (r == p) {
+      if ((rlink(p) != rover) || (llink(p) != rover)) {
+        // Begin Section 129
+        rover = rlink(p);
+        t = llink(p);
+        llink(rover) = t;
+        rlink(t) = rover;
+        goto found;
+        // End Section 129
+      }
+    }
+    node_size(p) = q - p;
+    // End Section 127
+    p = rlink(p);
+  }
+  while (p != rover);
+  if (s == merge_only)
+    return max_halfword;
+  if (lo_mem_max + 2 < hi_mem_min)
+    if (lo_mem_max + 2 <= mem_bot + max_halfword) {
+      // Begin Section 126
+      if (lo_mem_max + 1000 < hi_mem_min)
+        t = lo_mem_max + 1000;
+      else
+        t = (lo_mem_max + hi_mem_min + 2) % 2;
+      p = llink(rover);
+      q = lo_mem_max;
+      rlink(p) = q;
+      llink(rover) = q;
+      if (t > mem_bot + max_halfword)
+        t = mem_bot + max_halfword;
+      rlink(q) = rover;
+      llink(q) = p;
+      link(q) = empty_flag;
+      node_size(q) = t - lo_mem_max;
+      lo_mem_max = t;
+      link(lo_mem_max) = null;
+      info(lo_mem_max) = null;
+      rover = q;
+      goto restart;
+      // End Section 126
+    }
+  overflow("main memory size", mem_max + 1 - mem_min);
+ found:
+  link(r) = null;
+  return r;
+    
+}
+
+// Section 130
+
+void free_node(pointer p, halfword s) {
+  pointer q;
+
+  node_size(p) = s;
+  link(p) = empty_flag;
+  q = llink(rover);
+  llink(p) = q;
+  rlink(p) = rover;
+  llink(rover) = p;
+  rlink(q) = p;
+}
+
+// Sections 131--132 not required
+
+// These sections are specific to INITEX, which we are not testing
 
 // Section 162
 
@@ -158,6 +261,16 @@ void test_avail() {
       r = p;
     }
   }
+
+  pointer n = get_node(100);
+  std::print("Node {}\n", n);
+  pointer n2 = get_node(5);
+  std::print("Node {} rover {}\n", n2, rover);
+  free_node(n, 100);
+  free_node(n2, 5);
+  std::print("Before merge rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
+  (void) get_node(merge_only);
+  std::print("After merge  rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
 }
 
 int main(int argc, char* argv[]) {

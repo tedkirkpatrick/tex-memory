@@ -140,3 +140,9 @@ constexpr pointer& rlink(pointer p) {
 }
 
 extern pointer rover;
+
+// Section 125
+
+// Knuth does not define this constant but I find it makes the code more readable
+
+constexpr int merge_only = 0x40000000; // Size argument to get_node() requesting only merge frees
