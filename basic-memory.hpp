@@ -1,4 +1,16 @@
 // Basic definitions for Knuth-style memory
+/*
+  Basic memory routines in the style of TeX.
+  Parts 8--9 of TeX: The Program
+
+  See the corresponding .cpp file for details.
+
+  This header has three purposes:
+  1. Initialize a few Pascal constants from Section 11.
+  2. Implement the WEB constants and macros in corresponding C++ idioms. By declaring
+     these constexpr and incorporating the routines in this header they are declared inline.
+  3. Give the constants and routines from the .cpp file global scope.
+*/
 
 #include <cstddef>
 

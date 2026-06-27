@@ -1,10 +1,21 @@
-// Basic memory layout for Knuth-style
+/*
+  Basic memory routines in the style of TeX.
+  Parts 8--9 of TeX: The Program
+
+  Initialization of static variables is done via routines from Section 164, rather
+  than using C++-style static initializers.
+
+  In the original Pascal, most of these variables and routines have global scope, so
+  we declare them extern in the header.
+
+  We do not define any static entries as this is just testing the dynamic memory.
+*/
+
+#include "basic-memory.hpp"
 
 #include <iostream>
 #include <stdexcept>
 #include <string_view>
-
-#include "basic-memory.hpp"
 
 
 // Section 115
@@ -13,7 +24,7 @@ pointer temp_ptr;
 
 // Section 116
 
-memory_word mem [mem_max+1];
+memory_word mem [mem_max+1]; // Pascal uses inclusive upper bound but C/C++ use exclusive upper bound
 pointer lo_mem_max;
 pointer hi_mem_min;
 
@@ -114,6 +125,7 @@ void init_table_entries() {
 
 // Section 790
 
+// None of these exist in our basic memory system, so this routine is empty
 void initialize_the_special_list_heads_and_constant_nodes_790() {
   return;
 }
