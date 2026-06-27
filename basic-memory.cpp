@@ -8,9 +8,13 @@
   In the original Pascal, most of these variables and routines have global scope, so
   we declare them extern in the header.
 
-  We do not define any static entries as this is just testing the dynamic memory.
+  We do not define any static nodes or single-word values as this is just testing the dynamic memory.
 
   We do not include any TeX init, debug, or stats code.
+
+  Although TeX places all the variables used in these routines in global-variables-13 scope,
+  we instead make variables for the internal state of dynamic memory local to this file via 'static'
+  and only declare variables 'extern' if they are used by macros in the .hpp file.
 */
 
 #include "basic-memory.hpp"
@@ -23,18 +27,18 @@
 
 // Section 115
 
-pointer temp_ptr;
+static pointer temp_ptr;
 
 // Section 116
 
 memory_word mem [mem_max+1]; // Pascal uses inclusive upper bound but C/C++ use exclusive upper bound
-pointer lo_mem_max;
-pointer hi_mem_min;
+static pointer lo_mem_max;
+static pointer hi_mem_min;
 
 // Section 118
 
 pointer avail;
-pointer mem_end;
+static pointer mem_end;
 
 void overflow(std::string_view s, int n) {
   std::cout << "TeX capacity exceeded, Sorry [" << s;
@@ -84,7 +88,7 @@ void flush_list(pointer& p) {
 
 // Section 124
 
-pointer rover;
+static pointer rover; // Declared global-13 in TeX but just local to dynamic memory routines
 
 // Section 125
 
@@ -189,15 +193,15 @@ void free_node(pointer p, halfword s) {
 // Section 162
 
 // For now, no statically-allocated values
-pointer low_mem_stat_max = -1;
-pointer hi_mem_stat_min = mem_top;
+static pointer low_mem_stat_max = -1;
+static pointer hi_mem_stat_min = mem_top;
 
 
 // Section 164
 
-void initialize_the_special_list_heads_and_constant_nodes_790();
+static void initialize_the_special_list_heads_and_constant_nodes_790();
 
-void init_table_entries() {
+static void init_table_entries() {
   pointer k;
   #if 0
   for (k = mem_bot + 1; k <= low_mem_stat_max; k++)
@@ -229,7 +233,7 @@ void init_table_entries() {
 // Section 790
 
 // None of these exist in our basic memory system, so this routine is empty
-void initialize_the_special_list_heads_and_constant_nodes_790() {
+static void initialize_the_special_list_heads_and_constant_nodes_790() {
   return;
 }
 

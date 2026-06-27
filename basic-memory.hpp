@@ -9,7 +9,7 @@
   1. Initialize a few global Pascal constants from Section 11.
   2. Implement the WEB constants and macros in corresponding C++ idioms. By declaring
      these constexpr and incorporating the routines in this header they are declared inline.
-  3. Give the constants and routines from the .cpp file global scope.
+  3. Set global scope for the constants and routines exported from the .cpp file.
 */
 
 #include <cstddef>
@@ -98,7 +98,7 @@ constexpr halfword& info(pointer p) {
 
 // Section 120
 
-pointer get_avail();
+[[nodiscard]] extern pointer get_avail();
 
 // Section 121
 
@@ -118,6 +118,10 @@ constexpr void fast_get_avail(pointer& p) {
     link(p) = null;
   }
 }
+
+// Section 123
+
+extern void flush_list(pointer& p);
 
 // Section 124
 
@@ -139,10 +143,13 @@ constexpr pointer& rlink(pointer p) {
   return link(p + 1);
 }
 
-extern pointer rover;
-
 // Section 125
 
 // Knuth does not define this constant but I find it makes the code more readable
-
 constexpr int merge_only = 0x40000000; // Size argument to get_node() requesting only merge frees
+
+[[nodiscard]] extern pointer get_node(int s);
+
+// Section 130
+
+extern void free_node(pointer p, halfword s);
