@@ -10,7 +10,8 @@
 
   We do not define any static nodes or single-word values as this is just testing the dynamic memory.
 
-  We do not include any TeX init, debug, or stats code.
+  We do not include any TeX init, debug, or stats code. We DO add some routines not defined in TeX
+  that assist in testing and debugging.
 
   Although TeX places all the variables used in these routines in global-variables-13 scope,
   we instead make variables for the internal state of dynamic memory local to this file via 'static'
@@ -201,7 +202,8 @@ static pointer hi_mem_stat_min = mem_top;
 
 static void initialize_the_special_list_heads_and_constant_nodes_790();
 
-static void init_table_entries() {
+// Not a separate routine in TeX but makes sense to make it one for this implementation
+void init_table_entries() {
   pointer k;
   #if 0
   for (k = mem_bot + 1; k <= low_mem_stat_max; k++)
@@ -237,49 +239,13 @@ static void initialize_the_special_list_heads_and_constant_nodes_790() {
   return;
 }
 
-// -------
+// Not part of original TeX
 
-void test_avail() {
-  pointer p;
-  fast_get_avail(p);
-  std::cout << p << ' ' << link(p) << ' ' << mem_end << '\n';
-  pointer p2;
-  fast_get_avail(p2);
-  link(p) = p2;
-  std::cout << p2 << ' ' << link(p2) << ' ' << avail << ' ' << mem_end << '\n';
-  
-  flush_list(p);
-  std::cout << p << ' ' << avail << '\n';
-
-  fast_get_avail(p);
-  std::cout << "After pull from avail " << p << " avail " << avail << '\n';
-  free_avail(p);
-  std::cout << "After free avail " << p << " avail " << avail << '\n';
-
-  if (mem_max < 50) {
-    std::cout << "Testing to exhaustion\n";
-    pointer r = null;
-    for (int i = 0; i <= mem_max; i++) {
-      fast_get_avail(p);
-      link(p) = r;
-      r = p;
-    }
-  }
-
-  pointer n = get_node(100);
-  std::print("Node {}\n", n);
-  pointer n2 = get_node(5);
-  std::print("Node {} rover {}\n", n2, rover);
-  free_node(n, 100);
-  free_node(n2, 5);
-  std::print("Before merge rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
-  (void) get_node(merge_only);
-  std::print("After merge  rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
-}
-
-int main(int argc, char* argv[]) {
-  std::cout << sizeof(memory_word) << '\n';
-
-  init_table_entries();
-  test_avail();
+// A more modern approach would return a std::tuple but updating the parameters is closer
+// to the old-school approach of the original TeX code.
+void expose_variables(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& rover_parm) {
+  mem_parm = mem;
+  avail_parm = avail;
+  mem_end_parm = mem_end;
+  rover_parm = rover;
 }

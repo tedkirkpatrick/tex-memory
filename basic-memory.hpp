@@ -12,6 +12,9 @@
   3. Set global scope for the constants and routines exported from the .cpp file.
 */
 
+#ifndef basic_memory_hpp
+#define basic_memory_hpp
+
 #include <cstddef>
 
 // Section 11
@@ -153,3 +156,14 @@ constexpr int merge_only = 0x40000000; // Size argument to get_node() requesting
 // Section 130
 
 extern void free_node(pointer p, halfword s);
+
+// Section 164
+
+extern void init_table_entries();
+
+// Non-TeX debugging
+
+// Expose the key variables for debugging
+extern void expose_variables(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& rover_parm);
+
+#endif
