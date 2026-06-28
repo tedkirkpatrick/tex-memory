@@ -2,10 +2,7 @@
 #include <iostream>
 
 #include "basic-memory.hpp"
-
-#define CATCH_CONFIG_MAIN
 #include "catch2.hpp"
-
 
 void test_avail() {
   memory_word *mem;
