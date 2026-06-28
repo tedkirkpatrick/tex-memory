@@ -55,3 +55,20 @@ void test_avail() {
 TEST_CASE("Memory word is 4", "[packed memory]") {
   REQUIRE(sizeof(memory_word) == 4);
 }
+
+TEST_CASE("Free list works", "[free list]") {
+  memory_word *mem;
+  pointer avail;
+  pointer mem_end;
+  pointer rover;
+
+  init_table_entries();
+  pointer p;
+  fast_get_avail(p);
+  expose_variables(mem, avail, mem_end, rover);
+  REQUIRE(p == 29'999);
+  REQUIRE(link(p) == 0);
+  REQUIRE(mem_end == 30'000);
+  
+  //SECTION("Allocating 
+}
