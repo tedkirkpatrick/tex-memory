@@ -20,10 +20,11 @@
 
 #include "basic-memory.hpp"
 
-#include <iostream>
 #include <print>
 #include <stdexcept>
 #include <string_view>
+
+using std::print, std::println;
 
 
 // Section 115
@@ -42,9 +43,7 @@ pointer avail;
 static pointer mem_end;
 
 void overflow(std::string_view s, int n) {
-  std::cout << "TeX capacity exceeded, Sorry [" << s;
-  std::cout << '=' << n << "]\n";
-  std::cout << std::flush;
+  println("TeX capacity exceeded, Sorry [{}={}]", s, n);
   throw std::runtime_error("Exiting");
 }
 

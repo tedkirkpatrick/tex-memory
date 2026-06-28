@@ -1,8 +1,12 @@
 #include <print>
-#include <iostream>
+//#include <iostream>
 
 #include "basic-memory.hpp"
 #include "catch2.hpp"
+
+using std::print, std::println;
+
+#if 0
 
 void test_avail() {
   memory_word *mem;
@@ -52,11 +56,13 @@ void test_avail() {
   std::print("After merge  rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
 }
 
+#endif
+
 TEST_CASE("Memory word is 4", "[packed memory]") {
   REQUIRE(sizeof(memory_word) == 4);
 }
 
-TEST_CASE("Free list works", "[free list]") {
+TEST_CASE("Single-word allocation works", "[free list]") {
   memory_word *mem;
   pointer avail;
   pointer mem_end;
@@ -70,5 +76,21 @@ TEST_CASE("Free list works", "[free list]") {
   REQUIRE(link(p) == 0);
   REQUIRE(mem_end == 30'000);
   
-  //SECTION("Allocating 
+  SECTION("Allocating second word to list and freeing") {
+    pointer p2;
+    fast_get_avail(p2);
+    link(p) = p2;
+    expose_variables(mem, avail, mem_end, rover);
+    REQUIRE(p2 == 29'998);
+    REQUIRE(link(p2) == null);
+    REQUIRE(link(p) == p2);
+    REQUIRE(avail == null);
+    REQUIRE(mem_end == 30'000);
+
+    flush_list(p);
+    expose_variables(mem, avail, mem_end, rover);
+    REQUIRE(avail == 29'999);
+    REQUIRE(link(avail) == p2);
+    REQUIRE(link(p2) == null);
+  }
 }
