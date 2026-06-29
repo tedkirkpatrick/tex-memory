@@ -139,20 +139,44 @@ TEST_CASE("Allocating a single two-word node") {
   pointer rover;
   pointer lo_mem_max;
   pointer hi_mem_min;
-  int node_increment;
+  halfword node_increment;
 
   constexpr halfword node_sz = 2;
   init_table_entries();
 
+  // Allocate one node of size node_sz
   pointer p = get_node(node_sz);
   expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
-  println("p {} rover {}", p, rover);
   REQUIRE(rover == mem_min);
   REQUIRE(node_size(rover) == node_increment - node_sz);
   REQUIRE(link(rover) == empty_flag);
   REQUIRE(llink(rover) == rover);
   REQUIRE(rlink(rover) == rover);
+  REQUIRE(lo_mem_max == node_increment);
 
   REQUIRE(p == node_increment - node_sz);
   REQUIRE(link(p) == null);
+
+  // Free the node
+  free_node(p, node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) == node_increment - node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(link(p) == empty_flag);
+  REQUIRE(((llink(p) == rover && rlink(rover) == p) ||
+           (rlink(p) == rover && llink(rover) == p)));
+  REQUIRE(node_size(p) == node_sz);
+
+  // Merge the free list
+  (void) get_node(merge_only);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) == node_increment);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == null);
+  REQUIRE(rlink(rover) == null);
+  REQUIRE(lo_mem_max == node_increment);
 }

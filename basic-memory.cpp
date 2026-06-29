@@ -93,7 +93,7 @@ static pointer rover; // Declared global-13 in TeX but just local to dynamic mem
 // Section 125
 
 // The TeX source code just repeats this constant but we want to be able to export it for testing
-static const int node_increment = 1000;
+static const halfword node_increment = 1000;
 
 // Kunuth breaks this complex routine into multiple separate WEB sections.
 // This implementation inserts those paragraphs directly into the routine.
@@ -106,11 +106,9 @@ static const int node_increment = 1000;
  restart:
   p = rover;
   do {
-    std::print("Top loop p = {}, rover = {}\n", p, rover);
     // Begin Section 127
     q = p + node_size(p);
     while (is_empty(q)) {
-      std::print("is_empty loop p = {}, q = {}\n", p, q);
       t = rlink(q);
       if (q == rover)
         rover = t;
@@ -255,7 +253,7 @@ void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem
   hi_mem_min_parm = hi_mem_min;
 }
 
-void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, int& node_increment_parm) {
+void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm) {
   rover_parm = rover;
   lo_mem_max_parm = lo_mem_max;
   hi_mem_min_parm = hi_mem_min;
