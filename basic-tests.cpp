@@ -1,5 +1,10 @@
 /*
-  Glass-box tests (test against implementation)
+  Unit tests for TeX-style dynamic memory.
+  These tests adopt a "glass-box" approach, where we check that allocations occur
+  in the exact places and sequence used internally in the original TeX algorithms and
+  access internal variable values via the functions in the dynmemdbg namespace. Such
+  an approach is appropriate for this code, which is intended to exactly match the behaviour
+  of the TeX Pascal code.
  */
 
 #include <print>
@@ -9,6 +14,7 @@
 #include "catch2.hpp"
 
 using std::print, std::println;
+using namespace dynmemdbg;
 
 #if 0
 

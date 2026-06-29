@@ -244,6 +244,8 @@ static void initialize_the_special_list_heads_and_constant_nodes_790() {
 
 // Not part of original TeX
 
+namespace dynmemdbg {
+
 // A more modern approach would return a std::tuple but updating the parameters is closer
 // to the old-school approach of the original TeX code.
 void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm) {
@@ -258,4 +260,6 @@ void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi
   lo_mem_max_parm = lo_mem_max;
   hi_mem_min_parm = hi_mem_min;
   node_increment_parm = node_increment;
+}
+
 }
