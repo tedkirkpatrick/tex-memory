@@ -92,6 +92,9 @@ static pointer rover; // Declared global-13 in TeX but just local to dynamic mem
 
 // Section 125
 
+// The TeX source code just repeats this constant but we want to be able to export it for testing
+static const int node_increment = 1000;
+
 // Kunuth breaks this complex routine into multiple separate WEB sections.
 // This implementation inserts those paragraphs directly into the routine.
 [[nodiscard]] pointer get_node(int s) {
@@ -144,8 +147,8 @@ static pointer rover; // Declared global-13 in TeX but just local to dynamic mem
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
       // Begin Section 126
-      if (lo_mem_max + 1000 < hi_mem_min)
-        t = lo_mem_max + 1000;
+      if (lo_mem_max + node_increment < hi_mem_min)
+        t = lo_mem_max + node_increment;
       else
         t = (lo_mem_max + hi_mem_min + 2) % 2;
       p = llink(rover);
@@ -218,9 +221,12 @@ void init_table_entries() {
   #endif
   rover = low_mem_stat_max + 1;
   link(rover) = empty_flag;
-  node_size(rover) = 1000;
+  node_size(rover) = node_increment;
   llink(rover) = rover;
   rlink(rover) = rover;
+  lo_mem_max = rover + node_increment;
+  link(lo_mem_max) = null;
+  info(lo_mem_max) = null;
   for (k = hi_mem_stat_min; k <= mem_top; k++) {
     mem[k] = mem[lo_mem_max];
   }
@@ -247,4 +253,11 @@ void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem
   avail_parm = avail;
   mem_end_parm = mem_end;
   hi_mem_min_parm = hi_mem_min;
+}
+
+void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, int& node_increment_parm) {
+  rover_parm = rover;
+  lo_mem_max_parm = lo_mem_max;
+  hi_mem_min_parm = hi_mem_min;
+  node_increment_parm = node_increment;
 }

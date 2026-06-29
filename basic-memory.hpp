@@ -165,5 +165,6 @@ extern void init_table_entries();
 
 // Expose the key variables for debugging
 extern void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm);
+extern void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, int& node_increment_parm);
 
 #endif
