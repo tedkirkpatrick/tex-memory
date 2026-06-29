@@ -1,3 +1,7 @@
+/*
+  Glass-box tests (test against implementation)
+ */
+
 #include <print>
 //#include <iostream>
 
@@ -58,9 +62,9 @@ TEST_CASE("Single-word allocation works", "[free list]") {
   pointer p;
   fast_get_avail(p);
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-  REQUIRE(p == 29'999);
+  REQUIRE(p == mem_max - 1);
   REQUIRE(link(p) == 0);
-  REQUIRE(mem_end == 30'000);
+  REQUIRE(mem_end == mem_max);
   REQUIRE(hi_mem_min == p);
 
   SECTION("Freeing single-word list") {
@@ -76,15 +80,15 @@ TEST_CASE("Single-word allocation works", "[free list]") {
     fast_get_avail(p2);
     link(p) = p2;
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-    REQUIRE(p2 == 29'998);
+    REQUIRE(p2 == mem_max - 2);
     REQUIRE(link(p2) == null);
     REQUIRE(link(p) == p2);
     REQUIRE(avail == null);
-    REQUIRE(mem_end == 30'000);
+    REQUIRE(mem_end == mem_max);
 
     flush_list(p);
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-    REQUIRE(avail == 29'999);
+    REQUIRE(avail == mem_max - 1);
     REQUIRE(link(avail) == p2);
     REQUIRE(link(p2) == null);
     REQUIRE(hi_mem_min == p2);
@@ -113,26 +117,26 @@ TEST_CASE("Allocating from available list works") {
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
   REQUIRE(p4 == p3);
   REQUIRE(avail == p2);
-  REQUIRE(hi_mem_min == 29'997);
+  REQUIRE(hi_mem_min == mem_max - 3);
   pointer p5;
   fast_get_avail(p5);
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
   REQUIRE(p5 == p2);
   REQUIRE(avail == p1);
-  REQUIRE(hi_mem_min == 29'997);
+  REQUIRE(hi_mem_min == mem_max - 3);
   pointer p6;
   fast_get_avail(p6);
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
   REQUIRE(p6 == p1);
   REQUIRE(avail == null);
-  REQUIRE(hi_mem_min == 29'997);
+  REQUIRE(hi_mem_min == mem_max - 3);
   // But the fourth word should expand the single-word memory range
   pointer p7;
   fast_get_avail(p7);
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-  REQUIRE(p7 == 29'996);
+  REQUIRE(p7 == mem_max - 4);
   REQUIRE(avail == null);
-  REQUIRE(hi_mem_min == 29'996);  
+  REQUIRE(hi_mem_min == mem_max - 4);
 }
 
 TEST_CASE("Allocating a single two-word node") {
@@ -179,4 +183,66 @@ TEST_CASE("Allocating a single two-word node") {
   REQUIRE(llink(rover) == null);
   REQUIRE(rlink(rover) == null);
   REQUIRE(lo_mem_max == node_increment);
+}
+
+TEST_CASE("Allocating multiple nodes") {
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  constexpr halfword node_sz = 5;
+  init_table_entries();
+
+  pointer p1 = get_node(node_sz);
+  pointer p2 = get_node(node_sz);
+  pointer p3 = get_node(node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) == node_increment - 3 * node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == rover);
+  REQUIRE(rlink(rover) == rover);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(p1 == node_increment - node_sz);
+  REQUIRE(link(p1) == null);
+  REQUIRE(p2 == node_increment - 2 * node_sz);
+  REQUIRE(link(p2) == null);
+  REQUIRE(p3 == node_increment - 3 * node_sz);
+  REQUIRE(link(p3) == null);
+
+  // Free the middle one
+  free_node(p2, node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) == node_increment - 3 * node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == p2);
+  REQUIRE(rlink(rover) == p2);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(rlink(p2) == rover);
+  REQUIRE(llink(p2) == rover);
+  REQUIRE(node_size(p2) == node_sz);
+  REQUIRE(link(p2) == empty_flag);
+
+  // Allocate another node--it will be taken from rover node
+  pointer p4 = get_node(node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) ==  node_increment - 4 * node_sz); // The only change from above
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == p2);
+  REQUIRE(rlink(rover) == p2);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(rlink(p2) == rover);
+  REQUIRE(llink(p2) == rover);
+  REQUIRE(node_size(p2) == node_sz);
+  REQUIRE(link(p2) == empty_flag);
+
+  REQUIRE(p4 == node_increment - 4 * node_sz);
+  REQUIRE(link(p4) == null);
 }
