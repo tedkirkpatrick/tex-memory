@@ -124,7 +124,7 @@ constexpr void fast_get_avail(pointer& p) {
 
 // Section 123
 
-extern void flush_list(pointer& p);
+extern void flush_list(pointer p);
 
 // Section 124
 
@@ -164,6 +164,6 @@ extern void init_table_entries();
 // Non-TeX debugging
 
 // Expose the key variables for debugging
-extern void expose_variables(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& rover_parm);
+extern void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm);
 
 #endif

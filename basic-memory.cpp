@@ -71,7 +71,7 @@ void overflow(std::string_view s, int n) {
 
 // Section 123
 
-void flush_list(pointer& p) {
+void flush_list(pointer p) {
   pointer q, r;
 
   if (p != null) {
@@ -242,9 +242,9 @@ static void initialize_the_special_list_heads_and_constant_nodes_790() {
 
 // A more modern approach would return a std::tuple but updating the parameters is closer
 // to the old-school approach of the original TeX code.
-void expose_variables(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& rover_parm) {
+void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm) {
   mem_parm = mem;
   avail_parm = avail;
   mem_end_parm = mem_end;
-  rover_parm = rover;
+  hi_mem_min_parm = hi_mem_min;
 }
