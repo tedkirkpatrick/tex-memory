@@ -14,34 +14,6 @@ void test_avail() {
   pointer mem_end;
   pointer rover;
 
-  pointer p;
-  fast_get_avail(p);
-  expose_avail_vars(mem, avail, mem_end, hi_mem_min);  
-  std::cout << p << ' ' << link(p) << ' ' << mem_end << '\n';
-  pointer p2;
-  fast_get_avail(p2);
-  link(p) = p2;
-  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-  std::cout << p2 << ' ' << link(p2) << ' ' << avail << ' ' << mem_end << '\n';
-  
-  flush_list(p);
-  std::cout << p << ' ' << avail << '\n';
-
-  fast_get_avail(p);
-  std::cout << "After pull from avail " << p << " avail " << avail << '\n';
-  free_avail(p);
-  std::cout << "After free avail " << p << " avail " << avail << '\n';
-
-  if (mem_max < 50) {
-    std::cout << "Testing to exhaustion\n";
-    pointer r = null;
-    for (int i = 0; i <= mem_max; i++) {
-      fast_get_avail(p);
-      link(p) = r;
-      r = p;
-    }
-  }
-
   pointer n = get_node(100);
   std::print("Node {}\n", n);
   pointer n2 = get_node(5);
@@ -82,7 +54,6 @@ TEST_CASE("Single-word allocation works", "[free list]") {
   pointer mem_end;
   pointer hi_mem_min;
 
-  println("Initializing tables");
   init_table_entries();
   pointer p;
   fast_get_avail(p);
@@ -90,13 +61,15 @@ TEST_CASE("Single-word allocation works", "[free list]") {
   REQUIRE(p == 29'999);
   REQUIRE(link(p) == 0);
   REQUIRE(mem_end == 30'000);
+  REQUIRE(hi_mem_min == p);
 
   SECTION("Freeing single-word list") {
     flush_list(p);
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
     REQUIRE(avail == p);
     REQUIRE(link(avail) == null);
-  }
+    REQUIRE(hi_mem_min == p);
+ }
   
   SECTION("Allocating second word to list and freeing") {
     pointer p2;
@@ -114,5 +87,50 @@ TEST_CASE("Single-word allocation works", "[free list]") {
     REQUIRE(avail == 29'999);
     REQUIRE(link(avail) == p2);
     REQUIRE(link(p2) == null);
+    REQUIRE(hi_mem_min == p2);
   }
+}
+
+TEST_CASE("Allocating from available list works") {
+  memory_word *mem;
+  pointer avail;
+  pointer mem_end;
+  pointer hi_mem_min;
+
+  init_table_entries();
+  pointer p1;
+  fast_get_avail(p1);
+  pointer p2;
+  fast_get_avail(p2);
+  link(p2) = p1;
+  pointer p3;
+  fast_get_avail(p3);
+  link(p3) = p2;
+  flush_list(p3);
+  // The next three words should pull from the available list
+  pointer p4;
+  fast_get_avail(p4);
+  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+  REQUIRE(p4 == p3);
+  REQUIRE(avail == p2);
+  REQUIRE(hi_mem_min == 29'997);
+  pointer p5;
+  fast_get_avail(p5);
+  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+  REQUIRE(p5 == p2);
+  REQUIRE(avail == p1);
+  REQUIRE(hi_mem_min == 29'997);
+  pointer p6;
+  fast_get_avail(p6);
+  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+  REQUIRE(p6 == p1);
+  REQUIRE(avail == null);
+  REQUIRE(hi_mem_min == 29'997);
+  // But the fourth word should expand the single-word memory range
+  pointer p7;
+  fast_get_avail(p7);
+  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+  REQUIRE(p7 == 29'996);
+  REQUIRE(avail == null);
+  REQUIRE(hi_mem_min == 29'996);  
 }
