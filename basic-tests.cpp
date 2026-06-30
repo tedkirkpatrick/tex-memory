@@ -275,3 +275,34 @@ TEST_CASE("Allocating a node larger than node_increment") {
   REQUIRE(p1 == mem_min + 2 * node_increment - node_sz);
   REQUIRE(link(p1) == null);
 }
+
+TEST_CASE("Allocate a node exactly equal to the rover's size") {
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  init_table_entries();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  const halfword p1_node_sz = 5;
+  pointer p1 = get_node(p1_node_sz);
+  const halfword p2_node_sz = 5;
+  pointer p2 = get_node(p2_node_sz);
+  free_node(p1, p1_node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  println("p1 {} p2 {} rover {}", p1, p2, rover);
+
+  // The free list now has two entries: the rover and the freed p1, separated by p2
+  const halfword both_nodes_sz = p1_node_sz + p2_node_sz;
+  pointer p3 = get_node(node_increment - both_nodes_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  println("p3 {} rover {} lo_mem_max {}", p3, rover, lo_mem_max);
+  REQUIRE(rover == mem_min + node_increment - p1_node_sz);
+  REQUIRE(node_size(rover) == p1_node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == rover);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(p3 == mem_min);
+  REQUIRE(link(p3) == null);
+}

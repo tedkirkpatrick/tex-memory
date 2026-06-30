@@ -106,8 +106,9 @@ static const halfword node_increment = 1000;
  restart:
   p = rover;
   do {
-    // Begin Section 127
+    // Begin Section 127 "Try to allocate within node p and its physical successors and go to found if allocation was possible"
     q = p + node_size(p);
+    println("Section 127 q {} p {}", q, p);
     while (is_empty(q)) {
       t = rlink(q);
       if (q == rover)
@@ -118,7 +119,7 @@ static const halfword node_increment = 1000;
     }
     r = q - s;
     if (r > p + 1) {
-      // Begin Section 128
+      // Begin Section 128 "Allocate from the top of node p and goto found"
       node_size(p) = r - p;
       rover = p;
       goto found;
@@ -126,7 +127,8 @@ static const halfword node_increment = 1000;
     }
     if (r == p) {
       if ((rlink(p) != rover) || (llink(p) != rover)) {
-        // Begin Section 129
+        // Begin Section 129 "Here we delete node p from the ring and let rover rove around"
+        println("Begin Section 129 r {} p {}", r, p);
         rover = rlink(p);
         t = llink(p);
         llink(rover) = t;
@@ -145,7 +147,7 @@ static const halfword node_increment = 1000;
   println("Done coalescing, lo_mem_max+2 {} hi_mem_min {} mem_bot {} max_halfword {}", lo_mem_max+2, hi_mem_min, mem_bot, max_halfword);
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
-      // Begin Section 126
+      // Begin Section 126 "Grow more variable-size memory and goto restart"
       println("Beginning Section 126");
       if (lo_mem_max + node_increment < hi_mem_min)
         t = lo_mem_max + node_increment;
@@ -165,7 +167,7 @@ static const halfword node_increment = 1000;
       link(lo_mem_max) = null;
       info(lo_mem_max) = null;
       rover = q;
-      println("Returning to restart");
+      println("Returning to restart rover {} lo_mem_max {}", rover, lo_mem_max);
       goto restart;
       // End Section 126
     }
