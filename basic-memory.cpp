@@ -98,6 +98,7 @@ static const halfword node_increment = 1000;
 // Kunuth breaks this complex routine into multiple separate WEB sections.
 // This implementation inserts those paragraphs directly into the routine.
 [[nodiscard]] pointer get_node(int s) {
+  println("\n\nEntering get_node({})", s);
   pointer p;
   pointer q;
   int r;
@@ -118,6 +119,7 @@ static const halfword node_increment = 1000;
       q = q + node_size(q);
     }
     r = q - s;
+    println("Start of free node p {}, size {}, possible start of allocation within it {}", p, node_size(p), r);
     if (r > p + 1) {
       // Begin Section 128 "Allocate from the top of node p and goto found"
       node_size(p) = r - p;
@@ -126,6 +128,7 @@ static const halfword node_increment = 1000;
       // End Section 128
     }
     if (r == p) {
+      println("r ({}) == p, rover {}, llink(p) {}, rlink(p) {}", r, rover, llink(p), rlink(p));
       if ((rlink(p) != rover) || (llink(p) != rover)) {
         // Begin Section 129 "Here we delete node p from the ring and let rover rove around"
         println("Begin Section 129 r {} p {}", r, p);
@@ -144,7 +147,7 @@ static const halfword node_increment = 1000;
   while (p != rover);
   if (s == merge_only)
     return max_halfword;
-  println("Done coalescing, lo_mem_max+2 {} hi_mem_min {} mem_bot {} max_halfword {}", lo_mem_max+2, hi_mem_min, mem_bot, max_halfword);
+  println("Could not find space in free, extend memory: lo_mem_max+2 {} hi_mem_min {} mem_bot {} max_halfword {}", lo_mem_max+2, hi_mem_min, mem_bot, max_halfword);
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
       // Begin Section 126 "Grow more variable-size memory and goto restart"
@@ -210,18 +213,7 @@ static void initialize_the_special_list_heads_and_constant_nodes_790();
 // Not a separate routine in TeX but makes sense to make it one for this implementation
 void init_table_entries() {
   pointer k;
-  #if 0
-  for (k = mem_bot + 1; k <= low_mem_stat_max; k++)
-    mem[k].sc = 0.0;
-  k = mem_bot;
-  while (k < lo_mem_stat_max) {
-    glue_ref_count(k) = null + 1;
-    stretch_order(k) = normal;
-    shrink_order(k) normal;
-    k = k + glue_spec_size;
-  }
-  // ... stretch stuff ignored for now ...
-  #endif
+  // ... Glue code not included ...
   rover = low_mem_stat_max + 1;
   link(rover) = empty_flag;
   node_size(rover) = node_increment;
@@ -251,20 +243,30 @@ static void initialize_the_special_list_heads_and_constant_nodes_790() {
 
 namespace dynmemdbg {
 
-// A more modern approach would return a std::tuple but updating the parameters is closer
-// to the old-school approach of the original TeX code.
-void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm) {
-  mem_parm = mem;
-  avail_parm = avail;
-  mem_end_parm = mem_end;
-  hi_mem_min_parm = hi_mem_min;
-}
+  // A more modern approach would return a std::tuple but updating the parameters is closer
+  // to the old-school approach of the original TeX code.
+  void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm) {
+    mem_parm = mem;
+    avail_parm = avail;
+    mem_end_parm = mem_end;
+    hi_mem_min_parm = hi_mem_min;
+  }
 
-void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm) {
-  rover_parm = rover;
-  lo_mem_max_parm = lo_mem_max;
-  hi_mem_min_parm = hi_mem_min;
-  node_increment_parm = node_increment;
-}
+  void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm) {
+    rover_parm = rover;
+    lo_mem_max_parm = lo_mem_max;
+    hi_mem_min_parm = hi_mem_min;
+    node_increment_parm = node_increment;
+  }
+
+  void dump_free_list() {
+    println("-- Free list --");
+    pointer p = rover;
+    do {
+      println("Free node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
+      p  = rlink(p);
+    }
+    while (p != rover);
+  }
 
 }

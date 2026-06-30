@@ -7,6 +7,7 @@
   of the TeX Pascal code.
  */
 
+#include <cassert>
 #include <print>
 //#include <iostream>
 
@@ -277,6 +278,7 @@ TEST_CASE("Allocating a node larger than node_increment") {
 }
 
 TEST_CASE("Allocate a node exactly equal to the rover's size") {
+  println("\n--------\nStarting allocate equal to rover\n");
   pointer rover;
   pointer lo_mem_max;
   pointer hi_mem_min;
@@ -305,4 +307,76 @@ TEST_CASE("Allocate a node exactly equal to the rover's size") {
 
   REQUIRE(p3 == mem_min);
   REQUIRE(link(p3) == null);
+}
+
+TEST_CASE("Force rover to move to rlink to complete an allocation") {
+  println("\n-------\nStarting force rover to move\n");
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  init_table_entries();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  const halfword p1_node_sz = node_increment / 10;
+  const halfword other_free_sz = 5;
+  const halfword p2_node_sz = node_increment - (p1_node_sz + other_free_sz);
+  const halfword min_node_sz = 2;
+  const halfword p3_node_sz = p1_node_sz - (other_free_sz - min_node_sz);
+  const halfword p4_node_sz = other_free_sz;
+  assert(p3_node_sz > other_free_sz); // We want to force rover to move to second free node
+  pointer p1 = get_node(p1_node_sz);
+  pointer p2 = get_node(p2_node_sz);
+  free_node(p1, p1_node_sz);
+
+  // Now the rover points to a free node of other_free_sz, followed by p2, followed by a free node of p1_node_size > p3_node_size.
+  // A node of size p3_node_sz must be allocated from rlink(rover).
+  pointer p3 = get_node(p3_node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  pointer other_free = llink(rover);
+  REQUIRE(rover == p1);
+  REQUIRE(node_size(rover) == p1_node_sz - p3_node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == other_free);
+  REQUIRE(rlink(rover) == other_free);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(other_free == mem_min);
+  REQUIRE(node_size(other_free) == other_free_sz);
+  REQUIRE(link(other_free) == empty_flag);
+  REQUIRE(llink(other_free) == rover);
+  REQUIRE(rlink(other_free) == rover);
+
+  REQUIRE(p3 == mem_min + node_increment - p3_node_sz);
+  REQUIRE(link(p3) == null);
+
+  // Now the rover points to a free node of other_free_sz - 1, linked to a free node of other_free_sz.
+  // Allocating a node of other_free_sz will cause memory to be expanded and the node allocated there.
+  // TeX's memory heuristics force memory expansion rather than filling the penultimate free node.
+  dump_free_list();
+  pointer previous_rover = rover;
+  pointer p4 = get_node(p4_node_sz);
+  dump_free_list();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == node_increment);
+  REQUIRE(node_size(rover) == node_increment - p4_node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == other_free);
+  REQUIRE(rlink(rover) == previous_rover);
+  REQUIRE(lo_mem_max == node_increment * 2);
+
+  REQUIRE(p4 == 2 * node_increment - p4_node_sz);
+  REQUIRE(link(p4) == null);
+}
+
+TEST_CASE("Allocate part of a non-rover free node") {
+  println("\n-------\nAllocate part of a non-rover free node\n");
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  init_table_entries();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  assert(0); // TO BE DONE  
 }

@@ -172,6 +172,6 @@ namespace dynmemdbg {
   // Expose the key variables of the dynamic memory routines for debugging
   extern void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm);
   extern void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm);
-
+  extern void dump_free_list();
 }
 #endif
