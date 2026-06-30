@@ -252,3 +252,26 @@ TEST_CASE("Allocating multiple nodes") {
   REQUIRE(p4 == node_increment - 4 * node_sz);
   REQUIRE(link(p4) == null);
 }
+
+TEST_CASE("Allocating a node larger than node_increment") {
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  init_table_entries();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  const halfword node_sz = node_increment + 5;
+
+  pointer p1 = get_node(node_sz);
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  REQUIRE(rover == mem_min);
+  REQUIRE(node_size(rover) == 2 * node_increment - node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == null);
+  REQUIRE(rlink(rover) == null);
+  REQUIRE(lo_mem_max == 2 * node_increment);
+
+  REQUIRE(p1 == mem_min + 2 * node_increment - node_sz);
+  REQUIRE(link(p1) == null);
+}

@@ -27,19 +27,12 @@ constexpr int stack_size = 200;
 constexpr int mem_bot = 0;
 constexpr int mem_top = mem_max; // For our purposes we make these equivalent
 
-// Section 16
-constexpr void incr(short int& v) { v++; }
-constexpr void decr(short int& v) { v--; }
-
 // Section 109
 using glue_ratio = float;
 
 // Section 110
 constexpr std::byte min_quarterword {0};
 constexpr std::byte max_quarterword {255};
-
-constexpr short int min_halfword = 0;
-constexpr short int max_halfword = 65'535;
 
 // Section 112
 consteval std::byte qi(std::byte v) { return v; } // Because min_quarterword == 0
@@ -51,7 +44,15 @@ consteval short int ho(short int v) { return v; } // Because min_halfword == 0
 // Section 113
 using sc = int;
 using quarterword = std::byte;
-using halfword = short int;
+using halfword = short unsigned int;
+
+// Next two defined in Section 16 in TeX but I want to use the type alias 'halfword'
+constexpr void incr(halfword& v) { v++; }
+constexpr void decr(halfword& v) { v--; }
+
+// Next two defined in Section 110 in TeX but I want to use the type alias 'halfword'
+constexpr halfword min_halfword = 0;
+constexpr halfword max_halfword = 65'535;
 
 struct two_halves {
   halfword rh;

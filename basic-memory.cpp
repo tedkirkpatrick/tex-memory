@@ -142,9 +142,11 @@ static const halfword node_increment = 1000;
   while (p != rover);
   if (s == merge_only)
     return max_halfword;
+  println("Done coalescing, lo_mem_max+2 {} hi_mem_min {} mem_bot {} max_halfword {}", lo_mem_max+2, hi_mem_min, mem_bot, max_halfword);
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
       // Begin Section 126
+      println("Beginning Section 126");
       if (lo_mem_max + node_increment < hi_mem_min)
         t = lo_mem_max + node_increment;
       else
@@ -163,6 +165,7 @@ static const halfword node_increment = 1000;
       link(lo_mem_max) = null;
       info(lo_mem_max) = null;
       rover = q;
+      println("Returning to restart");
       goto restart;
       // End Section 126
     }
