@@ -378,5 +378,37 @@ TEST_CASE("Allocate part of a non-rover free node") {
 
   init_table_entries();
   expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
-  assert(0); // TO BE DONE  
+  const halfword min_node_sz = 2;
+  const halfword free_sz = min_node_sz;
+  const halfword p1_node_sz = min_node_sz;
+  const halfword p2_node_sz = 3 * min_node_sz;
+  const halfword p3_node_sz = node_increment - (p1_node_sz + p2_node_sz + free_sz);
+  const halfword p4_node_sz = 2 * min_node_sz;
+
+  pointer p1 = get_node(p1_node_sz);
+  pointer p2 = get_node(p2_node_sz);
+  pointer p3 = get_node(p3_node_sz);
+  free_node(p2, p2_node_sz);
+  dump_free_list();
+
+  // rover points to a free node of size free_sz and rlink(rover) == p2 (which was freed).
+  // p4 will be allocated from the freed p2 node and rover will be moved to point to the residue.
+  pointer p4 = get_node(p4_node_sz);
+  dump_free_list();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  const pointer other_free_node  = mem_min;
+  REQUIRE(rover == mem_min + node_increment - (p1_node_sz + p2_node_sz));
+  REQUIRE(node_size(rover) == p2_node_sz - p4_node_sz);
+  REQUIRE(link(rover) == empty_flag);
+  REQUIRE(llink(rover) == other_free_node);
+  REQUIRE(rlink(rover) == other_free_node);
+  REQUIRE(lo_mem_max == node_increment);
+
+  REQUIRE(node_size(other_free_node) == free_sz);
+  REQUIRE(link(other_free_node) == empty_flag);
+  REQUIRE(llink(other_free_node) == rover);
+  REQUIRE(rlink(other_free_node) == rover);
+
+  REQUIRE(p4 == p2 + p2_node_sz - p4_node_sz);
+  REQUIRE(link(p4) == null);
 }

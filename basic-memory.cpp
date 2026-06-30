@@ -260,10 +260,13 @@ namespace dynmemdbg {
   }
 
   void dump_free_list() {
-    println("-- Free list --");
     pointer p = rover;
+    println("-- Free list --");
     do {
-      println("Free node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
+      if (p == rover)
+        println("Rover node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
+      else
+        println("Free node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
       p  = rlink(p);
     }
     while (p != rover);
