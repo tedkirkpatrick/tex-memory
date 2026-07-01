@@ -93,7 +93,6 @@ static const halfword node_increment = 1000;
 // Kunuth breaks this complex routine into multiple separate WEB sections.
 // This implementation inserts those paragraphs directly into the routine.
 [[nodiscard]] pointer get_node(int s) {
-  println("\n\nEntering get_node({})", s);
   pointer p;
   pointer q;
   int r;
@@ -104,7 +103,6 @@ static const halfword node_increment = 1000;
   do {
     // Begin Section 127 "Try to allocate within node p and its physical successors and go to found if allocation was possible"
     q = p + node_size(p);
-    println("Section 127 q {} p {}", q, p);
     while (is_empty(q)) {
       t = rlink(q);
       if (q == rover)
@@ -114,7 +112,6 @@ static const halfword node_increment = 1000;
       q = q + node_size(q);
     }
     r = q - s;
-    println("Start of free node p {}, size {}, possible start of allocation within it {}", p, node_size(p), r);
     if (r > p + 1) {
       // Begin Section 128 "Allocate from the top of node p and goto found"
       node_size(p) = r - p;
@@ -123,10 +120,8 @@ static const halfword node_increment = 1000;
       // End Section 128
     }
     if (r == p) {
-      println("r ({}) == p, rover {}, llink(p) {}, rlink(p) {}", r, rover, llink(p), rlink(p));
       if ((rlink(p) != rover) || (llink(p) != rover)) {
         // Begin Section 129 "Here we delete node p from the ring and let rover rove around"
-        println("Begin Section 129 r {} p {}", r, p);
         rover = rlink(p);
         t = llink(p);
         llink(rover) = t;
@@ -142,20 +137,15 @@ static const halfword node_increment = 1000;
   while (p != rover);
   if (s == merge_only)
     return max_halfword;
-  println("Could not find space in free, extend memory: lo_mem_max+2 {} hi_mem_min {} mem_bot {} max_halfword {}", lo_mem_max+2, hi_mem_min, mem_bot, max_halfword);
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
       // Begin Section 126 "Grow more variable-size memory and goto restart"
-      println("Beginning Section 126");
       if (lo_mem_max + node_increment < hi_mem_min) {
         t = lo_mem_max + node_increment;
-        println("lo_mem_max {} + node_increment {} < hi_mem_min {}, t == {}", lo_mem_max, node_increment, hi_mem_min, t);
       }
       else {
         t = (lo_mem_max + hi_mem_min + 2) / 2;
-        println("(lo_mem_max {} +  hi_mem_min {}) / 2 == {}", lo_mem_max, hi_mem_min, t);
       }
-      println("t {}", t);
       p = llink(rover);
       q = lo_mem_max;
       rlink(p) = q;
@@ -170,7 +160,6 @@ static const halfword node_increment = 1000;
       link(lo_mem_max) = null;
       info(lo_mem_max) = null;
       rover = q;
-      println("Returning to restart rover {} lo_mem_max {}", rover, lo_mem_max);
       goto restart;
       // End Section 126
     }
