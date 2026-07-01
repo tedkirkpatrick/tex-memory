@@ -401,7 +401,20 @@ TEST_CASE("Throw exception when get_avail() exceeds memory") {
   REQUIRE_THROWS_WITH(get_node(all_memory), Contains("main memory size"));
 }
 
-#if 0
 TEST_CASE("Throw exception when get_node() exceeds memory") {
+  pointer rover;
+  pointer lo_mem_max;
+  pointer hi_mem_min;
+  halfword node_increment;
+
+  init_table_entries();
+  expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+  halfword leave_sz = 5;
+  halfword p1_node_sz = mem_max - mem_min - leave_sz;
+  pointer p1 = get_node(p1_node_sz);
+  // The dynamic allocation for p1 will leave one word for the avail list
+  pointer p;
+  fast_get_avail(p); // This will succeed
+
+  REQUIRE_THROWS_WITH(fast_get_avail(p), Contains("main memory size"));
 }
-#endif
