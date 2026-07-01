@@ -15,37 +15,15 @@
 #include "catch2.hpp"
 
 using std::print, std::println;
+
 using namespace dynmemdbg;
-
-#if 0
-
-void test_avail() {
-  memory_word *mem;
-  pointer avail;
-  pointer mem_end;
-  pointer rover;
-
-  pointer n = get_node(100);
-  std::print("Node {}\n", n);
-  pointer n2 = get_node(5);
-  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-  std::print("Node {} rover {}\n", n2, hi_mem_min);
-  free_node(n, 100);
-  free_node(n2, 5);
-  expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-  std::print("Before merge rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
-  (void) get_node(merge_only);
-  expose_avail_vars(mem, avail, mem_end, rover);
-  std::print("After merge  rover {}, size {}, rlink {}, llink {}\n", rover, node_size(rover), llink(rover), rlink(rover));
-}
-
-#endif
+using Catch::Matchers::Contains;
 
 TEST_CASE("Memory word is 4", "[packed memory]") {
   REQUIRE(sizeof(memory_word) == 4);
 }
 
-TEST_CASE("flush_list(null) null is idempotent") {
+TEST_CASE("flush_list(null) is idempotent") {
   memory_word *mem;
   pointer avail;
   pointer mem_end;
@@ -412,3 +390,18 @@ TEST_CASE("Allocate part of a non-rover free node") {
   REQUIRE(p4 == p2 + p2_node_sz - p4_node_sz);
   REQUIRE(link(p4) == null);
 }
+
+TEST_CASE("Throw exception when get_avail() exceeds memory") {
+  init_table_entries();
+  pointer p;
+  fast_get_avail(p);
+  fast_get_avail(p);
+  fast_get_avail(p);
+  const halfword all_memory = mem_max - mem_min;
+  REQUIRE_THROWS_WITH(get_node(all_memory), Contains("main memory size"));
+}
+
+#if 0
+TEST_CASE("Throw exception when get_node() exceeds memory") {
+}
+#endif

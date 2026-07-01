@@ -21,8 +21,8 @@
 #include "basic-memory.hpp"
 
 #include <print>
-#include <stdexcept>
-#include <string_view>
+
+#include "overflow.hpp"
 
 using std::print, std::println;
 
@@ -41,11 +41,6 @@ static pointer hi_mem_min;
 
 pointer avail;
 static pointer mem_end;
-
-void overflow(std::string_view s, int n) {
-  println("TeX capacity exceeded, Sorry [{}={}]", s, n);
-  throw std::runtime_error("Exiting");
-}
 
 // Section 120
 
@@ -152,10 +147,15 @@ static const halfword node_increment = 1000;
     if (lo_mem_max + 2 <= mem_bot + max_halfword) {
       // Begin Section 126 "Grow more variable-size memory and goto restart"
       println("Beginning Section 126");
-      if (lo_mem_max + node_increment < hi_mem_min)
+      if (lo_mem_max + node_increment < hi_mem_min) {
         t = lo_mem_max + node_increment;
-      else
-        t = (lo_mem_max + hi_mem_min + 2) % 2;
+        println("lo_mem_max {} + node_increment {} < hi_mem_min {}, t == {}", lo_mem_max, node_increment, hi_mem_min, t);
+      }
+      else {
+        t = (lo_mem_max + hi_mem_min + 2) / 2;
+        println("(lo_mem_max {} +  hi_mem_min {}) / 2 == {}", lo_mem_max, hi_mem_min, t);
+      }
+      println("t {}", t);
       p = llink(rover);
       q = lo_mem_max;
       rlink(p) = q;
