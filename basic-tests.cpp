@@ -381,7 +381,7 @@ TEST_CASE("Allocate part of a non-rover free node") {
   REQUIRE(link(p4) == null);
 }
 
-TEST_CASE("Throw exception when get_avail() exceeds memory") {
+TEST_CASE("Throw exception when get_node() exceeds memory") {
   init_table_entries();
   pointer p;
   fast_get_avail(p);
@@ -391,7 +391,7 @@ TEST_CASE("Throw exception when get_avail() exceeds memory") {
   REQUIRE_THROWS_WITH(get_node(all_memory), Contains("main memory size"));
 }
 
-TEST_CASE("Throw exception when get_node() exceeds memory") {
+TEST_CASE("Throw exception when get_avail() exceeds memory") {
   pointer rover;
   pointer lo_mem_max;
   pointer hi_mem_min;
