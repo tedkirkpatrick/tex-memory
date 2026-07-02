@@ -54,14 +54,16 @@ constexpr void decr(halfword& v) { v--; }
 constexpr halfword min_halfword = 0;
 constexpr halfword max_halfword = 65'535;
 
+struct quarterwords {
+  quarterword b0;
+  quarterword b1;
+};
+
 struct two_halves {
   halfword rh;
   union {
     halfword lh;
-    struct {
-      quarterword b0;
-      quarterword b1;
-    };
+    struct quarterwords qw;
   };
 };
 

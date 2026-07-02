@@ -266,7 +266,7 @@ TEST_CASE("Allocate a node exactly equal to the rover's size") {
   const halfword p1_node_sz = 5;
   pointer p1 = get_node(p1_node_sz);
   const halfword p2_node_sz = 5;
-  pointer p2 = get_node(p2_node_sz);
+  (void) get_node(p2_node_sz);
   free_node(p1, p1_node_sz);
 
   // The free list now has two entries: the rover and the freed p1, separated by p2
@@ -299,7 +299,7 @@ TEST_CASE("Force rover to move to rlink to complete an allocation") {
   const halfword p4_node_sz = other_free_sz;
   assert(p3_node_sz > other_free_sz); // We want to force rover to move to second free node
   pointer p1 = get_node(p1_node_sz);
-  pointer p2 = get_node(p2_node_sz);
+  (void) get_node(p2_node_sz);
   free_node(p1, p1_node_sz);
 
   // Now the rover points to a free node of other_free_sz, followed by p2, followed by a free node of p1_node_size > p3_node_size.
@@ -355,9 +355,9 @@ TEST_CASE("Allocate part of a non-rover free node") {
   const halfword p3_node_sz = node_increment - (p1_node_sz + p2_node_sz + free_sz);
   const halfword p4_node_sz = 2 * min_node_sz;
 
-  pointer p1 = get_node(p1_node_sz);
+  (void) get_node(p1_node_sz);
   pointer p2 = get_node(p2_node_sz);
-  pointer p3 = get_node(p3_node_sz);
+  (void) get_node(p3_node_sz);
   free_node(p2, p2_node_sz);
 
   // rover points to a free node of size free_sz and rlink(rover) == p2 (which was freed).
@@ -401,7 +401,7 @@ TEST_CASE("Throw exception when get_node() exceeds memory") {
   expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
   halfword leave_sz = 5;
   halfword p1_node_sz = mem_max - mem_min - leave_sz;
-  pointer p1 = get_node(p1_node_sz);
+  (void) get_node(p1_node_sz);
   // The dynamic allocation for p1 will leave one word for the avail list
   pointer p;
   fast_get_avail(p); // This will succeed

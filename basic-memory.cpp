@@ -29,7 +29,8 @@ using std::print, std::println;
 
 // Section 115
 
-static pointer temp_ptr;
+// Not currently used, so commented out
+//static pointer temp_ptr;
 
 // Section 116
 
