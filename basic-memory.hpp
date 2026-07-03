@@ -28,7 +28,12 @@ constexpr int mem_bot = 0;
 constexpr int mem_top = mem_max; // For our purposes we make these equivalent
 
 // Section 109
-using glue_ratio = float;
+using glue_ratio = float; // Moved this first so we can use the type in the next expressions
+constexpr void set_glue_ratio_zero(glue_ratio& gr) { gr = glue_ratio(0.0f); }
+constexpr void set_glue_ratio_one(glue_ratio& gr) { gr = glue_ratio(1.0f); }
+// float() is part of the C++ type system so does not need to be defined
+constexpr glue_ratio& unfloat(float& r) { return r; }
+constexpr float float_constant(int v) { return float(v); }
 
 // Section 110
 constexpr std::byte min_quarterword {0};
