@@ -46,4 +46,48 @@ constexpr glue_ratio& glue_set(pointer p) { return mem[p + glue_offset].gr; }
 
 extern pointer new_null_box();
 
+// Section 137
+
+constexpr std::byte vlist_node {1};
+
+// Section 138
+
+constexpr std::byte rule_node {2};
+constexpr halfword rule_node_size = 4;
+constexpr int null_flag = - 0x40'00'00'00;
+
+// Section 139
+
+extern pointer new_rule();
+
+// Section 140
+
+constexpr std::byte ins_node {3};
+constexpr halfword ins_node_size = 5;
+constexpr int& float_cost(pointer p) { return mem[p + 1].intv; }
+constexpr pointer& ins_ptr(pointer p) { return info(p + 4); }
+constexpr pointer& split_top_ptr(pointer p) { return link(p + 4); }
+
+// Section 141
+
+constexpr std::byte mark_node {4};
+constexpr halfword small_node_size = 2;
+constexpr int& mark_ptr(pointer p) { return mem[p + 1].intv; }
+
+// Section 142
+
+constexpr std::byte adjust_node {5};
+// TeX uses WEB equivalence to mark_ptr but i C++ we have to repeat the body for following function
+constexpr int& adjust_ptr(pointer p) { return mem[p + 1].intv; }
+
+// Section 143
+
+constexpr std::byte ligature_node {6};
+constexpr pointer lig_char(pointer p) { return p + 1; }
+constexpr pointer& lig_ptr(pointer p) { return link(lig_char(p)); }
+
+// Section 144
+
+extern pointer new_ligature(quarterword f, quarterword c, pointer q);
+
 #endif
