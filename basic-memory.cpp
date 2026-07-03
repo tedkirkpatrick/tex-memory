@@ -36,7 +36,7 @@ using std::print, std::println;
 
 memory_word mem [mem_max+1]; // Pascal uses inclusive upper bound but C/C++ use exclusive upper bound
 static pointer lo_mem_max;
-static pointer hi_mem_min;
+pointer hi_mem_min;
 
 // Section 118
 

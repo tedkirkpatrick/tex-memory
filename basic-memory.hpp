@@ -75,7 +75,12 @@ struct four_quarters {
 };
 
 union memory_word {
-  int intv;
+  // TeX uses a WEB macro to make the string 'scv' equivalent to 'intv'. The equivalent
+  // in C++ without using the preprocessor is to define a union.
+  union {
+    int intv;
+    sc scv;
+  };
   glue_ratio gr;
   two_halves hh;
   four_quarters qqqq;
@@ -89,6 +94,7 @@ constexpr halfword null = min_halfword;
 // Section 116 (type only)
 
 extern memory_word mem[];
+extern pointer hi_mem_min;
 
 // Section 118
 
