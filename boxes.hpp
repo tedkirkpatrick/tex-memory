@@ -8,6 +8,8 @@
 #include <cstddef>
 
 #include "basic-memory.hpp"
+#include "eqtb.hpp"
+#include "scaled.hpp"
 
 // Section 133
 
@@ -77,8 +79,7 @@ constexpr int& mark_ptr(pointer p) { return mem[p + 1].intv; }
 // Section 142
 
 constexpr std::byte adjust_node {5};
-// TeX uses WEB equivalence to mark_ptr but i C++ we have to repeat the body for following function
-constexpr int& adjust_ptr(pointer p) { return mem[p + 1].intv; }
+constexpr int& adjust_ptr(pointer p) { return mark_ptr(p); }
 
 // Section 143
 
@@ -89,5 +90,64 @@ constexpr pointer& lig_ptr(pointer p) { return link(lig_char(p)); }
 // Section 144
 
 extern pointer new_ligature(quarterword f, quarterword c, pointer q);
+
+// Section 145
+
+constexpr std::byte disc_node {7};
+constexpr std::byte& replace_count(pointer p) { return subtype(p); }
+constexpr pointer& pre_break(pointer p) { return llink(p); }
+constexpr pointer& post_break(pointer p) { return llink(p); }
+
+extern pointer new_disc();
+
+// Section 146
+
+constexpr std::byte whatsit_node {8};
+
+// Section 147
+
+constexpr std::byte math_node {9};
+constexpr std::byte before {0};
+constexpr std::byte after {1};
+
+extern pointer new_math(scaled w, small_number s);
+
+// Section 148
+
+constexpr bool precedes_break(pointer p) { return type(p) < math_node; }
+constexpr bool non_discardable(pointer p) { return type(p) < math_node; }
+
+// Section 149
+
+constexpr std::byte glue_node {10};
+constexpr std::byte cond_math_glue {98};
+constexpr std::byte mu_glue {99};
+constexpr std::byte a_leaders {100};
+constexpr std::byte c_leaders {101};
+constexpr std::byte x_leaders {102};
+constexpr pointer& glue_ptr(pointer p) { return llink(p); }
+constexpr pointer& leader_ptr(pointer p) { return rlink(p); }
+
+// Section 150
+
+constexpr halfword glue_spec_size = 4;
+constexpr pointer& glue_ref_count(pointer p) { return link(p); }
+constexpr sc& stretch(pointer p) { return mem[p + 2].scv; }
+constexpr sc& shrink(pointer p) { return mem[p + 3].scv; }
+constexpr std::byte& stretch_order(pointer p) { return type(p); }
+constexpr std::byte& shrink_order(pointer p) { return subtype(p); }
+constexpr halfword fil = 1;
+constexpr halfword fill = 2;
+constexpr halfword filll = 3;
+
+using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) but halfword is more manageable
+
+// Section 151
+
+extern pointer new_spec(pointer p);
+
+// Section 152
+
+extern pointer new_param_glue(small_number n);
 
 #endif

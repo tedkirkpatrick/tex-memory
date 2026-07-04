@@ -4,7 +4,7 @@ CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
 LFLAGS=
 
 OBJ=basic-memory.o overflow.o
-BOX_OBJ=boxes.o
+BOX_OBJ=boxes.o eqtb.o
 
 basic-memory: $(OBJ) basic-tests.o test-main.o
 	$(CXX) $(STD) $(LFLAGS) -o basic-memory $(OBJ) basic-tests.o test-main.o

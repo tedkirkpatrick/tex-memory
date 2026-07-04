@@ -26,6 +26,7 @@ constexpr int stack_size = 200;
 // Section 12
 constexpr int mem_bot = 0;
 constexpr int mem_top = mem_max; // For our purposes we make these equivalent
+constexpr int hash_size = 2100;
 
 // Section 109
 using glue_ratio = float; // Moved this first so we can use the type in the next expressions
