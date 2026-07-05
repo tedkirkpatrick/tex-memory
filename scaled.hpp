@@ -13,4 +13,8 @@ using scaled = int;
 using non_negative_integer = unsigned int; // TeX defines this with a max. of 2^31 - 1, not 2^32 - 1
 using small_number = std::byte;
 
+// Section 108
+
+constexpr halfword inf_bad = 10'000;
+
 #endif

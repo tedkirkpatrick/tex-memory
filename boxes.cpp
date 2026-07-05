@@ -92,3 +92,51 @@ pointer new_param_glue(small_number n) {
   incr(glue_ref_count(q));
   return p;
 }
+
+//  Section 153
+
+pointer new_glue(pointer q) {
+  pointer p;
+  p = get_node(small_node_size);
+  type(p) = glue_node;
+  subtype(p) = normal;
+  leader_ptr(p) = null;
+  glue_ptr(p) = q;
+  incr(glue_ref_count(q));
+  return p;
+}
+
+// Section 154
+
+pointer new_skip_param(small_number n) {
+  pointer p;
+  temp_ptr = new_spec(glue_par(halfword(n)));
+  p = new_glue(temp_ptr);
+  glue_ref_count(temp_ptr) = null;
+  subtype(p) = small_number(int(n) + 1);
+  return p;
+}
+
+// Setion 156
+
+pointer new_kern(scaled w) {
+  pointer p;
+  p = get_node(small_node_size);
+  type(p) = kern_node;
+  subtype(p) = normal;
+  width(p) = w;
+  return p;
+}
+
+// Section 158
+
+pointer new_penalty(int m) {
+  pointer p;
+  p = get_node(small_node_size);
+  type(p) = penalty_node;
+  subtype(p) = std::byte(0);
+  penalty(p) = m;
+  return p;
+}
+
+

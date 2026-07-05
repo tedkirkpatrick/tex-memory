@@ -97,6 +97,8 @@ union memory_word {
 using pointer = halfword;
 constexpr halfword null = min_halfword;
 
+extern pointer temp_ptr;
+
 // Section 116 (type only)
 
 extern memory_word mem[];

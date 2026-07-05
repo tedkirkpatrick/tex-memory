@@ -150,4 +150,40 @@ extern pointer new_spec(pointer p);
 
 extern pointer new_param_glue(small_number n);
 
+// Section 153
+
+extern pointer new_glue(pointer q);
+
+// Section 154
+
+pointer new_skip_param(small_number n);
+
+// Section 155
+
+constexpr std::byte kern_node {11};
+constexpr std::byte explicit_kern {1};
+constexpr std::byte acc_kern {2};
+
+// Section 156
+
+extern pointer new_kern(scaled w);
+
+// Section 157
+
+constexpr std::byte penalty_node {12};
+constexpr int inf_penalty = inf_bad;
+constexpr int eject_penalty = - inf_penalty;
+constexpr int& penalty(pointer p) { return mem[p + 1].intv; }
+
+// Section 158
+
+extern pointer new_penalty(int m);
+
+// Section 159
+
+constexpr std::byte unset_node {13};
+constexpr sc& glue_stretch(pointer p) { return mem[p + glue_offset].scv; }
+constexpr sc& glue_shrink(pointer p) { return shift_amount(p); }
+constexpr std::byte& span_count(pointer p) { return subtype(p); }
+
 #endif
