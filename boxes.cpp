@@ -1,5 +1,9 @@
 #include "boxes.hpp"
 
+#include <iostream>
+#include <print>
+
+
 // Section 136
 
 pointer new_null_box() {
@@ -139,4 +143,35 @@ pointer new_penalty(int m) {
   return p;
 }
 
+// Section 173
+
+std::byte font_in_short_display;
+
+// Section 174
+
+void short_display(int p) {
+  //int n;
+  while (p > null) {
+    if (is_char_node(p)) {
+      if (p <= mem_end) {
+        if (font(p) != font_in_short_display) {
+          if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
+            std::cout << '*';
+          else {
+            // Begin Section 267
+            // End Section 267
+          }
+        std::cout << ' ';
+        font_in_short_display = font(p);
+        }
+        std::cout << char(character(p)); // Removed call to qo because it caused constexpr error
+      }
+    }
+    else {
+      // Begin Section 175
+      // End Section 175
+    }
+    p = link(p);
+  }
+}
 

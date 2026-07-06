@@ -5,6 +5,8 @@
 #ifndef EQTB_HPP
 #define EQTB_HPP
 
+#include <cstddef>
+
 #include "basic-memory.hpp"
 
 // Section 221
@@ -32,6 +34,10 @@ constexpr halfword& glue_par(halfword h) { return equiv(glue_base + h); }
 // Section 230
 
 constexpr halfword int_base = 4'367; // In Section 230, this is in fact computed from a long sequence of bases
+
+// Section 232
+
+constexpr std::byte null_font {font_base}; // null_font is implicitly type int in TeX but C++ has stricter requirements
 
 // Section 236
 

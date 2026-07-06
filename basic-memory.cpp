@@ -49,7 +49,7 @@ pointer hi_mem_min;
 // Section 118
 
 pointer avail;
-static pointer mem_end;
+pointer mem_end;
 
 // Section 120
 

@@ -185,4 +185,12 @@ constexpr sc& glue_stretch(pointer p) { return mem[p + glue_offset].scv; }
 constexpr sc& glue_shrink(pointer p) { return shift_amount(p); }
 constexpr std::byte& span_count(pointer p) { return subtype(p); }
 
+// Section 173
+
+extern std::byte font_in_short_display;
+
+// Section 174
+
+extern void short_display(int p);
+
 #endif

@@ -24,10 +24,12 @@ constexpr int mem_max = 30'000;
 constexpr int mem_min = 0;
 constexpr int buf_size = 500;
 constexpr int stack_size = 200;
+constexpr int font_max = 75;
 
 // Section 12
 constexpr int mem_bot = 0;
 constexpr int mem_top = mem_max; // For our purposes we make these equivalent
+constexpr int font_base = 0;
 constexpr int hash_size = 2100;
 
 // Section 109
@@ -108,8 +110,6 @@ extern pointer hi_mem_min;
 
 // Section 118
 
-extern pointer avail;
-
 constexpr pointer& link(pointer p) {
   return mem[p].hh.rh;
 }
@@ -117,6 +117,9 @@ constexpr pointer& link(pointer p) {
 constexpr halfword& info(pointer p) {
   return mem[p].hh.lh;
 }
+
+extern pointer avail;
+extern pointer mem_end;
 
 // Section 120
 
