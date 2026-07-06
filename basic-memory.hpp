@@ -10,6 +10,8 @@
   2. Implement the WEB constants and macros in corresponding C++ idioms. By declaring
      these constexpr and incorporating the routines in this header they are declared inline.
   3. Set global scope for the constants and routines exported from the .cpp file.
+
+  STYLE: See basic-memory.cpp comments for rationale for code style.
 */
 
 #ifndef basic_memory_hpp

@@ -16,6 +16,15 @@
   Although TeX places all the variables used in these routines in global-variables-13 scope,
   we instead make variables for the internal state of dynamic memory local to this file via 'static'
   and only declare variables 'extern' if they are used by macros in the .hpp file.
+
+  CODE STYLE
+  These routines adopt TeX's Pascal style as closely as possible in C++. The primary differnce
+  from TeX is that WEB macros are all implemented via inline constexpr constants or functions,
+  which retain type safety, rather than C-style preprocessor macros.
+
+  As a result, this code does not conform to typical C++ best practices. For example,
+  namespaces are only used for testing and debugging functions, variables are declared
+  without initialization, and other good practices are not followed.
 */
 
 #include "basic-memory.hpp"
