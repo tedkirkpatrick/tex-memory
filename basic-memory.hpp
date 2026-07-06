@@ -178,6 +178,10 @@ constexpr int merge_only = 0x40000000; // Size argument to get_node() requesting
 
 extern void free_node(pointer p, halfword s);
 
+// Section 162
+
+constexpr halfword zero_glue {mem_bot};
+
 // Section 164
 
 extern void init_table_entries();
