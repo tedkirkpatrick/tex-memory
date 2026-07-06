@@ -3,6 +3,8 @@
 #include <iostream>
 #include <print>
 
+#include "hash.hpp"
+#include "print.hpp"
 
 // Section 136
 
@@ -159,10 +161,11 @@ void short_display(int p) {
             std::cout << '*';
           else {
             // Begin Section 267
+            print_esc(font_id_text(font(p)));
             // End Section 267
           }
-        std::cout << ' ';
-        font_in_short_display = font(p);
+          std::cout << ' ';
+          font_in_short_display = font(p);
         }
         std::cout << char(character(p)); // Removed call to qo because it caused constexpr error
       }
