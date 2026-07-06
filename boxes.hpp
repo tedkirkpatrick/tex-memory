@@ -19,9 +19,8 @@ constexpr std::byte& subtype(pointer p) { return mem[p].hh.qw.b1; }
 // Section 134
 
 constexpr bool is_char_node(pointer p) { return p >= hi_mem_min; }
-// TeX defines the next two as WEB macros but C++ requires repeating the bodies
-constexpr std::byte& font(pointer p) { return mem[p].hh.qw.b0; }
-constexpr std::byte& character(pointer p) { return mem[p].hh.qw.b1; }
+constexpr std::byte& font(pointer p) { return type(p); }
+constexpr std::byte& character(pointer p) { return subtype(p); }
 
 // Section 135
 

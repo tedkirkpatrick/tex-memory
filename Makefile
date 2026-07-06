@@ -6,6 +6,8 @@ LFLAGS=
 OBJ=basic-memory.o overflow.o
 BOX_OBJ=boxes.o eqtb.o
 
+all: basic-memory test-boxes
+
 basic-memory: $(OBJ) basic-tests.o test-main.o
 	$(CXX) $(STD) $(LFLAGS) -o basic-memory $(OBJ) basic-tests.o test-main.o
 

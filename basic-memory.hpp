@@ -150,9 +150,8 @@ constexpr bool is_empty(pointer p) {
   return link(p) == empty_flag;
 }
 
-// Repeats body of link(). Knuth just does direct macro equivalence but C++ doesn't support that.
 constexpr halfword& node_size(pointer p) {
-  return mem[p].hh.lh;
+  return info(p);
 }
 
 constexpr pointer& llink(pointer p) {
