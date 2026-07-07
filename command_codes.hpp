@@ -1,6 +1,32 @@
 #ifndef COMMAND_CODES_HPP
 #define COMMAND_CODES_HPP
 
+// Section 207
+
+constexpr int escape = 0;
+constexpr int relax = 0;
+constexpr int left_brace = 1;
+constexpr int right_brace = 2;
+constexpr int math_shift = 3;
+constexpr int tab_mark = 4;
+constexpr int car_ret = 5;
+constexpr int out_param = 5;
+constexpr int mac_param = 6;
+constexpr int sup_mark = 7;
+constexpr int sub_mark = 8;
+constexpr int ignore = 9;
+constexpr int endv = 9;
+constexpr int spacer = 10;
 constexpr int letter = 11;
+constexpr int other_char = 12;
+constexpr int active_char = 13;
+constexpr int par_end = 13;
+constexpr int match = 13;
+constexpr int comment = 14;
+constexpr int end_match = 14;
+constexpr int stop = 14;
+constexpr int invalid_char = 15;
+constexpr int delim_num = 15;
+constexpr int max_char_cod = 15;
 
 #endif
