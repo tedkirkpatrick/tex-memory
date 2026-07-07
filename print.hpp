@@ -16,4 +16,8 @@ extern void print(const char* s);
 
 extern void print_esc(std::string_view s);
 
+// Section 70
+
+constexpr void print_current_string() { return; } // Stub
+
 #endif

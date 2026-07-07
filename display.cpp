@@ -6,6 +6,7 @@
 #include "boxes.hpp"
 #include "hash.hpp"
 #include "print.hpp"
+#include "string_handling.hpp"
 #include "token_list.hpp"
 
 // Section 173
@@ -106,7 +107,73 @@ static void print_mark(int p) {
   }
 }
 
-void to_avoid_errors() {
-  print_font_and_char(1);
-  print_mark(1);
+// Section 181
+
+static int depth_threshold;
+static int breadth_max;
+
+// Section 182
+
+void show_node_list(pointer p) {
+  int n;
+  float g;
+  if (cur_length() > depth_threshold) {
+    if (p > null)
+      print(" []");
+    return;
+  }
+  n = 0;
+  while (p > null) {
+    std::cout << '\n';
+    print_current_string();
+    if (p > mem_end) {
+      print("Bad link, display aborted.");
+      return;
+    }
+    n++;
+    if (n > breadth_max) {
+      print("etc.");
+      return;
+    }
+    // Begin Section 183
+    if (is_char_node(p))
+      print_font_and_char(p);
+    else switch (type(p)) {
+      case hlist_node:
+      case vlist_node:
+      case unset_node:
+        // Begin Section 184
+        // ...
+        // Begin Section 186
+        g = float(glue_set(p));
+        if (g != 0.0F && glue_sign(p) != normal) {
+          print(", glue set ");
+          // MORE ...
+        }
+        // End Section 186
+        // ...
+        // End Section 184
+        break;
+        //...
+      case mark_node:
+        // Begin Section 196
+        {
+          print_esc("mark");
+          print_mark(mark_ptr(p));
+        }
+        // End Section 196
+        break;
+      case adjust_node:
+        // Begin Section 197
+        // End Section 197
+        break;
+        // Begin Section 690
+        // End Section 690
+      default:
+        print("Uknown node type!");
+        break;
+      }
+    // End Section 183
+    p = link(p);
+  }
 }
