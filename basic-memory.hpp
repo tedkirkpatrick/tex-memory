@@ -23,6 +23,7 @@
 constexpr int mem_max = 30'000;
 constexpr int mem_min = 0;
 constexpr int buf_size = 500;
+constexpr int max_print_line = 79;
 constexpr int stack_size = 200;
 constexpr int font_max = 75;
 

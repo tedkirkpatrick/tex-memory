@@ -6,6 +6,7 @@
 #include "boxes.hpp"
 #include "hash.hpp"
 #include "print.hpp"
+#include "token_list.hpp"
 
 // Section 173
 
@@ -75,4 +76,37 @@ void short_display(int p) {
     }
     p = link(p);
   }
+}
+
+// Section 176
+
+static void print_font_and_char(int p) {
+  if (p > mem_end)
+    print_esc("CLOBBERED.");
+  else {
+    if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
+      std::cout << '*';
+    else {
+      // Begin Section 267
+      print_esc(font_id_text(font(p)));
+      // End Section 267
+      std::cout << ' ';
+      std::cout << char(character(p)); // Removed call to qo because it caused constexpr error      
+    }
+  }
+}
+
+static void print_mark(int p) {
+  std::cout << '{';
+  if (p < hi_mem_min || p > mem_end)
+    print_esc("CLOBBERED.");
+  else {
+    show_token_list(link(p), null, max_print_line - 10);
+    std::cout << '}';
+  }
+}
+
+void to_avoid_errors() {
+  print_font_and_char(1);
+  print_mark(1);
 }
