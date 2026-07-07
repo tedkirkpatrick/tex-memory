@@ -5,7 +5,7 @@ LFLAGS=
 
 EXE=basic-memory test-boxes
 OBJ=basic-memory.o overflow.o
-BOX_OBJ=boxes.o eqtb.o print.o
+BOX_OBJ=boxes.o eqtb.o print.o display.o
 
 all: $(EXE)
 	@echo "Rebuilt all"

@@ -45,7 +45,7 @@ constexpr glue_ratio& glue_set(pointer p) { return mem[p + glue_offset].gr; }
 
 // Section 136
 
-extern pointer new_null_box();
+[[nodiscard]] extern pointer new_null_box();
 
 // Section 137
 
@@ -59,7 +59,7 @@ constexpr int null_flag = - 0x40'00'00'00;
 
 // Section 139
 
-extern pointer new_rule();
+[[nodiscard]] extern pointer new_rule();
 
 // Section 140
 
@@ -88,7 +88,7 @@ constexpr pointer& lig_ptr(pointer p) { return link(lig_char(p)); }
 
 // Section 144
 
-extern pointer new_ligature(quarterword f, quarterword c, pointer q);
+[[nodiscard]] extern pointer new_ligature(quarterword f, quarterword c, pointer q);
 
 // Section 145
 
@@ -97,7 +97,7 @@ constexpr std::byte& replace_count(pointer p) { return subtype(p); }
 constexpr pointer& pre_break(pointer p) { return llink(p); }
 constexpr pointer& post_break(pointer p) { return llink(p); }
 
-extern pointer new_disc();
+[[nodiscard]] extern pointer new_disc();
 
 // Section 146
 
@@ -109,7 +109,7 @@ constexpr std::byte math_node {9};
 constexpr std::byte before {0};
 constexpr std::byte after {1};
 
-extern pointer new_math(scaled w, small_number s);
+[[nodiscard]] extern pointer new_math(scaled w, small_number s);
 
 // Section 148
 
@@ -143,15 +143,15 @@ using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) 
 
 // Section 151
 
-extern pointer new_spec(pointer p);
+[[nodiscard]] extern pointer new_spec(pointer p);
 
 // Section 152
 
-extern pointer new_param_glue(small_number n);
+[[nodiscard]] extern pointer new_param_glue(small_number n);
 
 // Section 153
 
-extern pointer new_glue(pointer q);
+[[nodiscard]] extern pointer new_glue(pointer q);
 
 // Section 154
 
@@ -165,7 +165,7 @@ constexpr std::byte acc_kern {2};
 
 // Section 156
 
-extern pointer new_kern(scaled w);
+[[nodiscard]] extern pointer new_kern(scaled w);
 
 // Section 157
 
@@ -176,7 +176,7 @@ constexpr int& penalty(pointer p) { return mem[p + 1].intv; }
 
 // Section 158
 
-extern pointer new_penalty(int m);
+[[nodiscard]] extern pointer new_penalty(int m);
 
 // Section 159
 
@@ -184,13 +184,5 @@ constexpr std::byte unset_node {13};
 constexpr sc& glue_stretch(pointer p) { return mem[p + glue_offset].scv; }
 constexpr sc& glue_shrink(pointer p) { return shift_amount(p); }
 constexpr std::byte& span_count(pointer p) { return subtype(p); }
-
-// Section 173
-
-extern std::byte font_in_short_display;
-
-// Section 174
-
-extern void short_display(int p);
 
 #endif
