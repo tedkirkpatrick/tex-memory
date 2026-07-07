@@ -89,3 +89,42 @@ void show_token_list(int p, int q, int l) {
   if (p != null)
     print_esc("ETC.");
 }
+
+// Section 295
+
+void token_show(pointer p) {
+  if (p != null)
+    show_token_list(link(p), null, 1'000);
+}
+
+// Section 296
+
+// We don't expect to be using print_meaning() as we aren't defining commands.
+// So we fake the following three variables
+
+// Next two defined in Section 297
+static std::byte cur_cmd;
+static halfword cur_chr;
+
+// Next routine defined in Section 298
+
+static void print_cmd_chr(quarterword cmd, halfword chr_code) {
+  return;
+}
+
+// Next array defined in Section 382
+static pointer cur_mark[5];
+
+void print_meaning() {
+  print_cmd_chr(cur_cmd, cur_chr);
+  if (int(cur_cmd) >= call) {
+    std::cout << ":\n";
+    token_show(cur_chr);
+  }
+  else {
+    if (int(cur_cmd) == top_bot_mark) {
+      std::cout << ":\n";
+      token_show(cur_mark[cur_chr]);
+    }
+  }
+}

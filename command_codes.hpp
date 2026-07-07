@@ -29,4 +29,9 @@ constexpr int invalid_char = 15;
 constexpr int delim_num = 15;
 constexpr int max_char_cod = 15;
 
+// Section 210
+
+constexpr int top_bot_mark = 109; // In TeX, this is defined as the result of a long calculation
+constexpr int call = 110; // In TeX, this is defined as the result of a long calculation
+
 #endif
