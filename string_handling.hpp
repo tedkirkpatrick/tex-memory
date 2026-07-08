@@ -1,13 +1,25 @@
 #ifndef STRING_HANDLING_HPP
 #define STRING_HANDLING_HPP
 
+#include <vector>
 #include <string>
 
 #include "basic-memory.hpp"
 
+class string_table {
+public:
+  string_table();
+
+  std::vector<std::string*> strings;
+};
+
+extern string_table str_start;
+
 // Following variables and routines are not from TeX
 
-extern std::string get_str(int s);
+constexpr std::string get_str(int s) {
+  return *str_start.strings[s];
+}
 
 // Section 38
 
@@ -15,10 +27,11 @@ constexpr halfword str_ptr = max_halfword; // In TeX, this is the next entry in 
 
 // Section 41
 constexpr int length(int n) {
-  std::string* s = reinterpret_cast<std::string*>(&n);
-  return int(s->size());
+  return int(str_start.strings[n]->size());
 }
 
-constexpr int cur_length() { return 1'000; } // Arbitrary length of current string
+constexpr int cur_length() {
+  return str_start.strings.back()->size();
+}
 
 #endif
