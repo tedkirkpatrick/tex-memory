@@ -6,7 +6,7 @@
 #include "basic-memory.hpp"
 #include "command_codes.hpp"
 #include "hash.hpp"
-#include "print.hpp"
+#include "printing.hpp"
 #include "trick_count.hpp"
 
 // Section 292

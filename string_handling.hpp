@@ -5,6 +5,10 @@
 
 #include "basic-memory.hpp"
 
+// Following variables and routines are not from TeX
+
+extern std::string get_str(int s);
+
 // Section 38
 
 constexpr halfword str_ptr = max_halfword; // In TeX, this is the next entry in the string table

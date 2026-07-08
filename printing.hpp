@@ -1,5 +1,5 @@
-#ifndef PRINT_HPP
-#define PRINT_HPP
+#ifndef PRINTING_HPP
+#define PRINTING_HPP
 
 #include <string_view>
 
@@ -7,14 +7,34 @@
 
 extern int tally;
 
+// Section 58
+
+extern void print_char(char c);
+
 // Section 59
 
 extern void print(int sn);
 extern void print(const char* s);
 
+// Section 62
+
+extern void print_ln();
+
 // Section 63
 
 extern void print_esc(std::string_view s);
+
+// Section 65
+
+extern void print_int(int n);
+
+// Section 67
+
+extern void print_hex(int n);
+
+// Section 68
+
+extern void print_ASCII(int c);
 
 // Section 70
 

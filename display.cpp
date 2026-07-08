@@ -5,7 +5,7 @@
 
 #include "boxes.hpp"
 #include "hash.hpp"
-#include "print.hpp"
+#include "printing.hpp"
 #include "string_handling.hpp"
 #include "token_list.hpp"
 
@@ -21,16 +21,16 @@ void short_display(int p) {
       if (p <= mem_end) {
         if (font(p) != font_in_short_display) {
           if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
-            std::cout << '*';
+            print_char('*');
           else {
             // Begin Section 267
             print_esc(font_id_text(font(p)));
             // End Section 267
           }
-          std::cout << ' ';
+          print_char(' ');
           font_in_short_display = font(p);
         }
-        std::cout << char(character(p)); // Removed call to qo because it caused constexpr error
+        print_ASCII(int(character(p))); // Removed call to qo because it caused constexpr error
       }
     }
     else {
@@ -45,17 +45,17 @@ void short_display(int p) {
           case mark_node:
           case adjust_node:
           case unset_node:
-            std::cout << "[]";
+            print("[]");
             break;
           case rule_node:
-            std::cout << '|';
+            print_char('|');
             break;
           case glue_node:
             if (glue_ptr(p) != zero_glue)
-              std::cout << ' ';
+              print_char(' ');
             break;
           case math_node:
-            std::cout << '$';
+            print_char('$');
             break;
           case ligature_node:
             short_display(lig_ptr(p));
@@ -86,24 +86,24 @@ static void print_font_and_char(int p) {
     print_esc("CLOBBERED.");
   else {
     if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
-      std::cout << '*';
+      print_char('*');
     else {
       // Begin Section 267
       print_esc(font_id_text(font(p)));
       // End Section 267
-      std::cout << ' ';
-      std::cout << char(character(p)); // Removed call to qo because it caused constexpr error      
+      print_char(' ');
+      print_ASCII(int(character(p))); // Removed call to qo because it caused constexpr error      
     }
   }
 }
 
 static void print_mark(int p) {
-  std::cout << '{';
+  print_char('{');
   if (p < hi_mem_min || p > mem_end)
     print_esc("CLOBBERED.");
   else {
     show_token_list(link(p), null, max_print_line - 10);
-    std::cout << '}';
+    print_char('}');
   }
 }
 
@@ -124,7 +124,7 @@ void show_node_list(pointer p) {
   }
   n = 0;
   while (p > null) {
-    std::cout << '\n';
+    print_ln();
     print_current_string();
     if (p > mem_end) {
       print("Bad link, display aborted.");
