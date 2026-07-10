@@ -107,6 +107,14 @@ static void print_mark(int p) {
   }
 }
 
+// Section 180
+
+static void node_list_display(pointer p) {
+  append_char('.');
+  show_node_list(p);
+  flush_char();
+}
+
 // Section 181
 
 static int depth_threshold;
@@ -143,15 +151,36 @@ void show_node_list(pointer p) {
       case vlist_node:
       case unset_node:
         // Begin Section 184
-        // ...
-        // Begin Section 186
-        g = float(glue_set(p));
-        if (g != 0.0F && glue_sign(p) != normal) {
-          print(", glue set ");
-          // MORE ...
+        if (type(p) == hlist_node)
+          print_esc("h");
+        else if (type(p) == vlist_node)
+          print_esc("v");
+        else
+          print_esc("unset");
+        print("box(");
+        print_scaled(height(p));
+        print_char('+');
+        print_scaled(depth(p));
+        print(")x");
+        print_scaled(width(p));
+        if (type(p) == unset_node) {
+          // Begin Section 185
+          // End Section 185
         }
-        // End Section 186
-        // ...
+        else {
+          // Begin Section 186
+          g = float(glue_set(p));
+          if (g != 0.0F && glue_sign(p) != normal) {
+            print(", glue set ");
+            
+          }
+          // End Section 186
+          if (shift_amount(p) != 0) {
+            print(", unshifted ");
+            print_scaled(shift_amount(p));
+          }
+        }
+        node_list_display(list_ptr(p));
         // End Section 184
         break;
         //...

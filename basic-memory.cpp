@@ -25,6 +25,8 @@
   As a result, this code does not conform to typical C++ best practices. For example,
   namespaces are only used for testing and debugging functions, variables are declared
   without initialization, and other good practices are not followed.
+
+  BLERG embedding subsections into the functions directly.
 */
 
 #include "basic-memory.hpp"

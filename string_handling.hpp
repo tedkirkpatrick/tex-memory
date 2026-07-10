@@ -34,4 +34,15 @@ constexpr int cur_length() {
   return str_start.strings.back()->size();
 }
 
+constexpr void append_char(char c) {
+  str_start.strings.back()->push_back(c);
+}
+
+constexpr void flush_char() {
+str_start.strings.back()->pop_back();}
+
+// Section 42
+
+extern int make_string();
+
 #endif

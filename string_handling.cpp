@@ -16,6 +16,10 @@
 
 #include "string_handling.hpp"
 
+#include <iostream> // for debugging
+using std::cout, std::flush;
+#include <print>
+
 #include <string>
 
 class string_table str_start;
@@ -38,6 +42,16 @@ string_table::string_table() {
     else {
       s->append(1, char(k));
     }
-    str_start.strings[k] = s;
+    strings.push_back(s);
   }
+  // We append an empty string to the array for append_char(), flush_char(), and make_string()
+  strings.push_back(new std::string());
+}
+
+// Section 42
+
+int make_string() {
+  int curr = int(str_start.strings.size() - 1);
+  str_start.strings.push_back(new std::string()); // New empty string for append_char() etc.
+  return curr;
 }

@@ -1,7 +1,14 @@
 #ifndef PRINTING_HPP
 #define PRINTING_HPP
 
+#include <sstream>
 #include <string_view>
+
+// The following variables and routines and not from TeX
+
+extern void set_cout();
+
+extern void set_str(std::ostringstream* ostr);
 
 // Section 54
 
