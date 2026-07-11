@@ -30,6 +30,9 @@ constexpr std::string get_str(int s) {
 
 using str_number = int;
 
+// Not present in TeX (which computes this value via WEB's string-to-str_number conversion)
+extern str_number mu_string;
+
 // Section 39
 
 constexpr halfword str_ptr = max_halfword; // In TeX, this is the next entry in the string table

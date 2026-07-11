@@ -31,6 +31,10 @@ constexpr halfword glue_base = undefined_control_sequence + 1;
 
 constexpr halfword& glue_par(halfword h) { return equiv(glue_base + h); }
 
+// Section 225
+
+extern void print_skip_param(int n);
+
 // Section 230
 
 constexpr halfword cat_code_base = 3'727; // In Section 230, this is in fact computed from a long sequence of bases

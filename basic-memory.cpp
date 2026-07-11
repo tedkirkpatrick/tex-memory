@@ -45,7 +45,7 @@ pointer temp_ptr;
 // Section 116
 
 memory_word mem [mem_max+1]; // Pascal uses inclusive upper bound but C/C++ use exclusive upper bound
-static pointer lo_mem_max;
+pointer lo_mem_max;
 pointer hi_mem_min;
 
 // Section 118

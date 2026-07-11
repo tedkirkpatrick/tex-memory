@@ -3,7 +3,9 @@
 #include <iostream>
 #include <print>
 
+#include "basic-memory.hpp"
 #include "boxes.hpp"
+#include "extensions.hpp"
 #include "hash.hpp"
 #include "printing.hpp"
 #include "string_handling.hpp"
@@ -132,6 +134,26 @@ static void print_glue(scaled d, std::byte order, str_number s) {
     print(s);
 }
 
+// Section 178
+
+static void print_spec(int p, str_number s) {
+  if (p < mem_min || p >= lo_mem_max)
+    print_char('*');
+  else {
+    print_scaled(width(p));
+    if (s != 0)
+      print(s);
+    if (stretch(p) != 0) {
+      print(" plus ");
+      print_glue(stretch(p), stretch_order(p), s);
+    }
+    if (shrink(p) != 0) {
+      print(" minus ");
+      print_glue(shrink(p), shrink_order(p), s);
+    }
+  }
+}
+
 // Section 180
 
 static void node_list_display(pointer p) {
@@ -222,37 +244,144 @@ void show_node_list(pointer p) {
         // End Section 184
         break;
       case rule_node:
-        print_esc("rule(");
+        // Begin Section 187
+         print_esc("rule(");
         print_rule_dimen(height(p));
         print_char('+');
         print_rule_dimen(depth(p));
         print(")x");
         print_rule_dimen(width(p));
+        // End Section 187
         break;
       case ins_node:
-        //...
+        // Begin Section 188
+         print_esc("insert");
+        print_int(int(subtype(p)));
+        print(", natural size ");
+        print_scaled(height(p));
+        print("; split(");
+        print_spec(split_top_ptr(p), 0);
+        print_char(',');
+        print_scaled(depth(p));
+        print(") float cost ");
+        print_int(float_cost(p));
+        node_list_display(ins_ptr(p));
+        // End Section 188
         break;
       case whatsit_node:
-        //...
-        break;
+        // Begin Section 1356
+        switch (subtype(p)) {
+        case open_node:
+          print("open_node subytpe of whatsit_node");
+          break;
+        case write_node:
+          print("write_node subtype of whatsit_node");
+          break;
+        case close_node:
+          print("close_node subtype of whatsit_node");
+          break;
+        case special_node:
+          print("special_node subtype of whatsit_node");
+          break;
+        default:
+          print("Unknown subtype of whatsit_node");
+          break;
+        }
+        // End Section 1356
+       break;
       case glue_node:
-        //...
+        // Begin Section 189
+        if (int(subtype(p)) > int(a_leaders)) {
+          // Begin Section 190
+          print_esc("");
+          if (subtype(p) == c_leaders)
+            print_char('c');
+          else if (subtype(p) == x_leaders)
+            print_char('x');
+          print("leaders");
+          print_spec(glue_ptr(p), 0);
+          node_list_display(leader_ptr(p));
+          // End Section 190
+        }
+        else {
+          if (subtype(p) != normal) {
+            print_char('(');
+            if (subtype(p) < cond_math_glue)
+              print_skip_param(int(subtype(p)) - 1);
+            else if (subtype(p) == cond_math_glue)
+              print("nonscript");
+            else
+              print_esc("mskip");
+            print_char(')');
+          }
+        }
+        if (subtype(p) != cond_math_glue) {
+          print_char(' ');
+          if (subtype(p) < cond_math_glue)
+            print_spec(glue_ptr(p), 0);
+          else
+            print_spec(glue_ptr(p), mu_string);
+        }
+        // End Section 189
         break;
       case kern_node:
-        //...
+        // Begin Section 191
+        if (subtype(p) != mu_glue) {
+          print_esc("kern");
+          if (subtype(p) != normal)
+            print_char(' ');
+          print_scaled(width(p));
+          if (subtype(p) == acc_kern)
+            print(" (for accent)");
+        }
+        else {
+          print_esc("mkern");
+          print_scaled(width(p));
+          print(mu_string);
+        }
+        // End Section 191
         break;
       case math_node:
-        //...
+        // Begin Sectio 192
+        print_esc("math");
+        if (subtype(p) == before)
+          print("on");
+        else
+          print("off");
+        if (width(p) != 0) {
+          print(", surrounded ");
+          print_scaled(width(p));
+        }
+        // End Section 192
         break;
       case ligature_node:
-        //...
+        // Begin Section 193
+        print_font_and_char(lig_char(p));
+        print(" (ligature ");
+        font_in_short_display = font(lig_char(p));
+        short_display(lig_ptr(p));
+        print_char(')');
+        // End Section
         break;
       case penalty_node:
-        //...
+        // Begin Section 194
+        print_esc("penalty ");
+        print_int(penalty(p));
+        // End Section 194
         break;
       case disc_node:
-        //...
-        break;
+        // Begin Section 195
+        print_esc("discretionary");
+        if (int(replace_count(p)) > 0) {
+          print(" replacing ");
+          print_int(int(replace_count(p)));
+        }
+        node_list_display(pre_break(p));
+        append_char('|');
+        show_node_list(post_break(p));
+        flush_char();
+        // End Section 195
+       break;
       case mark_node:
         // Begin Section 196
         {

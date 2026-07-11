@@ -107,6 +107,7 @@ extern pointer temp_ptr;
 // Section 116 (type only)
 
 extern memory_word mem[];
+extern pointer lo_mem_max;
 extern pointer hi_mem_min;
 
 // Section 118

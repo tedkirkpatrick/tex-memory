@@ -23,6 +23,7 @@ using std::cout, std::flush;
 #include <string>
 
 class string_table str_start;
+str_number mu_string;
 
 // Based on Section 48 (Initialize the first 127 entries of the string table with
 // printable representations of the ASCII characters).
@@ -44,6 +45,9 @@ string_table::string_table() {
     }
     strings.push_back(s);
   }
+  // Some display routines need to pass this as a str_number
+  mu_string = strings.size();
+  strings.push_back(new std::string("mu"));
   init_array_size = strings.size();
   // We append an empty string to the array for append_char(), flush_char(), and make_string()
   strings.push_back(new std::string());
