@@ -5,6 +5,7 @@
 
 #include "basic-memory.hpp"
 #include "boxes.hpp"
+#include "eqtb.hpp"
 #include "extensions.hpp"
 #include "hash.hpp"
 #include "printing.hpp"
@@ -406,4 +407,16 @@ void show_node_list(pointer p) {
     // End Section 183
     p = link(p);
   }
+}
+
+void show_box(pointer p) {
+  // Begin Section 236
+  depth_threshold = show_box_depth();
+  breadth_max = show_box_breadth();
+  // End Section 236
+  if (breadth_max <= 0)
+    breadth_max = 5;
+  // Code for pool_size not included because we have no string pool size limit
+  show_node_list(p);
+  print_ln();
 }

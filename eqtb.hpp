@@ -9,6 +9,10 @@
 
 #include "basic-memory.hpp"
 
+// This routine peforms multiple functions from Part 17
+
+extern void init_eqtb();
+
 // Section 221
 
 extern memory_word eqtb[]; // Declared in Section 253 but required for earlier definitions
@@ -48,22 +52,19 @@ constexpr std::byte null_font {font_base}; // null_font is implicitly type int i
 
 // Section 236
 
+constexpr halfword show_box_breadth_code = 24;
+constexpr halfword show_box_depth_code = 25;
 constexpr halfword escape_char_code = 45;
 constexpr halfword int_pars = 50;
 constexpr halfword count_base = int_base + int_pars;
 constexpr halfword del_code_base = count_base + 256;
 constexpr halfword dimen_base = del_code_base + 128;
 
-constexpr halfword int_par(halfword code) { // This implementation will be expanded when eqtb is defined
-  if (code == escape_char_code) {
-    return halfword('/');
-  }
-  else {
-    return halfword('*');
-  }
-}
+constexpr int& int_par(halfword code) { return eqtb[int_base + code].intv; }
 
-constexpr halfword escape_char() { return int_par(escape_char_code); }
+constexpr int& show_box_breadth() { return int_par(show_box_breadth_code); }
+constexpr int& show_box_depth() { return int_par(show_box_depth_code); }
+constexpr int& escape_char() { return int_par(escape_char_code); }
 
 // Section 247
 
