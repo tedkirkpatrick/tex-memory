@@ -56,6 +56,7 @@ constexpr std::byte vlist_node {1};
 constexpr std::byte rule_node {2};
 constexpr halfword rule_node_size = 4;
 constexpr int null_flag = - 0x40'00'00'00;
+constexpr bool is_running(scaled d) { return d == null_flag; }
 
 // Section 139
 

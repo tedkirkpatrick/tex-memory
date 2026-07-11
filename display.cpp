@@ -107,6 +107,31 @@ static void print_mark(int p) {
   }
 }
 
+static void print_rule_dimen(scaled d) {
+  if (is_running(d))
+    print_char('*');
+  else
+    print_scaled(d);
+}
+
+// Section 177
+
+static void print_glue(scaled d, std::byte order, str_number s) {
+  print_scaled(d);
+  if (order < normal || halfword(order) > fill)
+    print("foul");
+  else if (order > normal) {
+    print("fil");
+    halfword h_order = halfword(order);
+    while (h_order > fil) {
+      print_char('l');
+      decr(h_order);
+    }
+  }
+  else if (s != 0)
+    print(s);
+}
+
 // Section 180
 
 static void node_list_display(pointer p) {
@@ -165,6 +190,19 @@ void show_node_list(pointer p) {
         print_scaled(width(p));
         if (type(p) == unset_node) {
           // Begin Section 185
+          if (span_count(p) != min_quarterword) {
+            print(" (");
+            print_int(int(span_count(p)) + 1); // Eliminated qo call to remove type error
+            print(" columns)");
+          }
+          if (glue_stretch(p) != 0) {
+            print(", stretch ");
+            print_glue(glue_stretch(p), glue_order(p), 0);
+          }
+          if (glue_shrink(p) != 0) {
+            print(", shrink ");
+            print_glue(glue_shrink(p), glue_sign(p), 0);
+          }
           // End Section 185
         }
         else {
@@ -183,7 +221,38 @@ void show_node_list(pointer p) {
         node_list_display(list_ptr(p));
         // End Section 184
         break;
+      case rule_node:
+        print_esc("rule(");
+        print_rule_dimen(height(p));
+        print_char('+');
+        print_rule_dimen(depth(p));
+        print(")x");
+        print_rule_dimen(width(p));
+        break;
+      case ins_node:
         //...
+        break;
+      case whatsit_node:
+        //...
+        break;
+      case glue_node:
+        //...
+        break;
+      case kern_node:
+        //...
+        break;
+      case math_node:
+        //...
+        break;
+      case ligature_node:
+        //...
+        break;
+      case penalty_node:
+        //...
+        break;
+      case disc_node:
+        //...
+        break;
       case mark_node:
         // Begin Section 196
         {
@@ -196,8 +265,8 @@ void show_node_list(pointer p) {
         // Begin Section 197
         // End Section 197
         break;
-        // Begin Section 690
-        // End Section 690
+      // Begin Section 690
+      // End Section 690
       default:
         print("Uknown node type!");
         break;

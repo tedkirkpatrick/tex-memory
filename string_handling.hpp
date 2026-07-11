@@ -28,6 +28,10 @@ constexpr std::string get_str(int s) {
 
 // Section 38
 
+using str_number = int;
+
+// Section 39
+
 constexpr halfword str_ptr = max_halfword; // In TeX, this is the next entry in the string table
 
 // Section 41
