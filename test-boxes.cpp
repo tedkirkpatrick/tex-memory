@@ -43,8 +43,28 @@ TEST_CASE("Printing ASCII <del>") {
 TEST_CASE("Creating and printing a string") {
   std::ostringstream ostr;
   set_str(&ostr);
+  str_start.reset_strings();
   append_char('a');
   append_char('b');
-  print(make_string());
+  int a = make_string();
+  REQUIRE(a == 128);
+  print(a);
   REQUIRE(ostr.view() == "ab"sv);
+}
+
+TEST_CASE("Create several strings") {
+  std::ostringstream ostr;
+  set_str(&ostr);
+  str_start.reset_strings();
+  append_char('a');
+  append_char('b');
+  int s1 = make_string();
+  append_char('c');
+  append_char('d');
+  int s2 = make_string();
+  REQUIRE(s1 == 128);
+  REQUIRE(s2 == 129);
+  print(s1);
+  print_nl(s2);
+  REQUIRE(ostr.view() == "ab\ncd"sv);
 }

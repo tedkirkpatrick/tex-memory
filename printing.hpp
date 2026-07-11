@@ -14,6 +14,10 @@ extern void set_str(std::ostringstream* ostr);
 
 extern int tally;
 
+// Section 57
+
+extern void print_ln();
+
 // Section 58
 
 extern void print_char(char c);
@@ -25,7 +29,8 @@ extern void print(const char* s);
 
 // Section 62
 
-extern void print_ln();
+extern void print_nl(int sn);
+extern void print_nl(const char* s);
 
 // Section 63
 

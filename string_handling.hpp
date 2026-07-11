@@ -9,8 +9,12 @@
 class string_table {
 public:
   string_table();
+  void reset_strings();
 
   std::vector<std::string*> strings;
+
+private:
+  std::vector<std::string*>::size_type init_array_size;
 };
 
 extern string_table str_start;
@@ -20,6 +24,7 @@ extern string_table str_start;
 constexpr std::string get_str(int s) {
   return *str_start.strings[s];
 }
+
 
 // Section 38
 

@@ -44,6 +44,7 @@ string_table::string_table() {
     }
     strings.push_back(s);
   }
+  init_array_size = strings.size();
   // We append an empty string to the array for append_char(), flush_char(), and make_string()
   strings.push_back(new std::string());
 }
@@ -54,4 +55,11 @@ int make_string() {
   int curr = int(str_start.strings.size() - 1);
   str_start.strings.push_back(new std::string()); // New empty string for append_char() etc.
   return curr;
+}
+
+// Restore the string table to its initial state
+void string_table::reset_strings() {
+  strings.resize(init_array_size);
+  // Add fresh empty string for append_char() etc.
+  strings.push_back(new std::string());
 }

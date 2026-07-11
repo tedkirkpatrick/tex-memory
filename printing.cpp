@@ -36,6 +36,12 @@ void set_str(std::ostringstream* ostr) {
 
 int tally = 0; // Initialized in Section 55
 
+// Section 57
+
+void print_ln() {
+  *ostream << '\n';
+}
+
 // Section 58
 
 void print_char(char c) {
@@ -57,8 +63,15 @@ void print(const char* s) {
 
 // The actual TeX code only displays a newline if the current position is not at line start.
 // This implementation always displays a newline, accepting the occasional extra blank line.
-void print_ln() {
+void print_nl(int sn) {
   *ostream << '\n';
+  print(sn);
+}
+
+// A simple overload to handle C-style strings
+void print_nl(const char* s) {
+  *ostream << '\n';
+  print(s);
 }
 
 // Section 63
