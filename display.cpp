@@ -392,9 +392,12 @@ void show_node_list(pointer p) {
         break;
       case adjust_node:
         // Begin Section 197
+        print_esc("vadjust");
+        node_list_display(adjust_ptr(p));
         // End Section 197
         break;
       // Begin Section 690
+      // Not implemented---math mode nodes will fall through to default case
       // End Section 690
       default:
         print("Uknown node type!");
