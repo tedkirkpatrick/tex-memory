@@ -6,10 +6,19 @@
 
 #include "basic-memory.hpp"
 
+
+// Section 38
+
+using str_number = int;
+
+
+// C++ equivalent to TeX's string table
+
 class string_table {
 public:
   string_table();
   void reset_strings();
+  str_number first_avail() { return str_number(init_array_size); }
 
   std::vector<std::string*> strings;
 
@@ -24,11 +33,6 @@ extern string_table str_start;
 constexpr std::string get_str(int s) {
   return *str_start.strings[s];
 }
-
-
-// Section 38
-
-using str_number = int;
 
 // Not present in TeX (which computes this value via WEB's string-to-str_number conversion)
 extern str_number mu_string;
@@ -50,11 +54,10 @@ constexpr void append_char(char c) {
   str_start.strings.back()->push_back(c);
 }
 
-constexpr void flush_char() {
-str_start.strings.back()->pop_back();}
+constexpr void flush_char() { str_start.strings.back()->pop_back();}
 
 // Section 42
 
-extern int make_string();
+[[nodiscard]] extern int make_string();
 
 #endif

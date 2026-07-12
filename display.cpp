@@ -1,5 +1,6 @@
 #include "display.hpp"
 
+#include <cmath>
 #include <iostream>
 #include <print>
 
@@ -11,6 +12,8 @@
 #include "printing.hpp"
 #include "string_handling.hpp"
 #include "token_list.hpp"
+
+using std::cout, std::flush;
 
 // Section 173
 
@@ -104,10 +107,9 @@ static void print_mark(int p) {
   print_char('{');
   if (p < hi_mem_min || p > mem_end)
     print_esc("CLOBBERED.");
-  else {
+  else
     show_token_list(link(p), null, max_print_line - 10);
-    print_char('}');
-  }
+  print_char('}');
 }
 
 static void print_rule_dimen(scaled d) {
@@ -233,7 +235,19 @@ void show_node_list(pointer p) {
           g = float(glue_set(p));
           if (g != 0.0F && glue_sign(p) != normal) {
             print(", glue set ");
-            
+            if (glue_sign(p) == shrinking)
+              print("- ");
+            if (abs(mem[p + glue_offset].intv) < 04'000'000)
+              print("?.?");
+            else if (abs(g) > float_constant(20'000)) {
+              if (g > float_constant(0))
+                print_char('>');
+              else
+                print("< -");
+              print_glue(20'000 * unity, glue_order(p), 0);
+            }
+            else
+              print_glue(std::round(unity * g), glue_order(p), 0);
           }
           // End Section 186
           if (shift_amount(p) != 0) {
@@ -246,7 +260,7 @@ void show_node_list(pointer p) {
         break;
       case rule_node:
         // Begin Section 187
-         print_esc("rule(");
+        print_esc("rule(");
         print_rule_dimen(height(p));
         print_char('+');
         print_rule_dimen(depth(p));
@@ -256,7 +270,7 @@ void show_node_list(pointer p) {
         break;
       case ins_node:
         // Begin Section 188
-         print_esc("insert");
+        print_esc("insert");
         print_int(int(subtype(p)));
         print(", natural size ");
         print_scaled(height(p));
@@ -408,6 +422,8 @@ void show_node_list(pointer p) {
     p = link(p);
   }
 }
+
+// Section 198
 
 void show_box(pointer p) {
   // Begin Section 236

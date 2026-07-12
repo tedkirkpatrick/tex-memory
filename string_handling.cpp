@@ -55,7 +55,7 @@ string_table::string_table() {
 
 // Section 42
 
-int make_string() {
+[[nodiscard]] int make_string() {
   int curr = int(str_start.strings.size() - 1);
   str_start.strings.push_back(new std::string()); // New empty string for append_char() etc.
   return curr;

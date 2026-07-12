@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string_view>
 
+#include "string_handling.hpp"
+
 // The following variables and routines and not from TeX
 
 extern void set_cout();
@@ -50,6 +52,6 @@ extern void print_ASCII(int c);
 
 // Section 70
 
-constexpr void print_current_string() { return; } // Stub
+constexpr void print_current_string() { print(str_number(str_start.strings.size() - 1)); }
 
 #endif

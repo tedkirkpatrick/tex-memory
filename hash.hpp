@@ -15,7 +15,7 @@ constexpr halfword& text(int i) { return hash[i].rh; }
 
 // This implementation will be elaborated when the hash table is implemented
 constexpr std::string_view font_id_text(std::byte font_id) {
-  return std::string_view("Font name will go here");
+  return std::string_view("Default font");
 }
 
 // Section 262

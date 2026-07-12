@@ -17,4 +17,8 @@ extern void short_display(int p);
 
 extern void show_node_list(pointer p);
 
+// Section 198
+
+extern void show_box(pointer p);
+
 #endif
