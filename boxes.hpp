@@ -70,6 +70,10 @@ constexpr int& float_cost(pointer p) { return mem[p + 1].intv; }
 constexpr pointer& ins_ptr(pointer p) { return info(p + 4); }
 constexpr pointer& split_top_ptr(pointer p) { return link(p + 4); }
 
+// Not in TeX, added for testing convenience
+[[nodiscard]] extern pointer new_ins(std::byte subtype, scaled height, scaled depth,
+                                     pointer split_top_ptr, int float_penalty, pointer ins_ptr);
+
 // Section 141
 
 constexpr std::byte mark_node {4};
@@ -145,6 +149,7 @@ using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) 
 // Section 151
 
 [[nodiscard]] extern pointer new_spec(pointer p);
+[[nodiscard]] pointer new_glue_spec(scaled width, scaled stretch_v, std::byte stretch_o, scaled shrink_v, std::byte shrink_o);
 
 // Section 152
 
@@ -156,7 +161,7 @@ using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) 
 
 // Section 154
 
-pointer new_skip_param(small_number n);
+[[nodiscard]] pointer new_skip_param(small_number n);
 
 // Section 155
 

@@ -22,6 +22,14 @@ using small_number = std::byte;
 
 extern void print_scaled(scaled s);
 
+// Section 104
+
+extern bool arith_error;
+
+// Section 105
+
+extern scaled nx_plus_y(int n, scaled x, scaled y);
+
 // Section 108
 
 constexpr halfword inf_bad = 10'000;

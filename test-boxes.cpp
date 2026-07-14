@@ -104,3 +104,26 @@ TEST_CASE("Printing a vlist") {
   show_box(v);
   REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n"sv);
 }
+
+TEST_CASE("Create various node types") {
+  init_table_entries();
+  init_eqtb();
+  str_start.reset_strings();
+  std::ostringstream ostr;
+  set_str(&ostr);
+  SECTION("Create rule node") {
+    pointer r = new_rule();
+    height(r) = two;
+    depth(r) = nx_plus_y(2, two, 0);
+    width(r) = unity;
+    show_box(r);
+    REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n"sv);
+  }
+  SECTION("Create ins node") {
+    std::byte boxn {11};
+    pointer gs = new_glue_spec(unity, 0, std::byte{0}, 0, std::byte{0});
+    pointer p = new_ins(boxn, two, unity, gs, 0, null);
+    show_box(p);
+    REQUIRE(ostr.view() == "\n\\insert11, natural size 2.0; split(1.0,1.0) float cost 0\n");
+  }
+}

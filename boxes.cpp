@@ -30,6 +30,22 @@ pointer new_rule() {
   return p;
 }
 
+// Section 140
+
+// Not in TeX, added for testing convenience
+pointer new_ins(std::byte st, scaled h, scaled d,
+                pointer st_ptr, int float_penalty, pointer i_ptr) {
+  pointer p = get_node(ins_node_size);
+  type(p) = ins_node;
+  subtype(p) = st;
+  height(p) = h;
+  depth(p) = d;
+  split_top_ptr(p) = st_ptr;
+  float_cost(p) = float_penalty;
+  ins_ptr(p) = i_ptr;
+  return p;
+}
+
 // Section 144
 
 pointer new_ligature(quarterword f, quarterword c, pointer q) {
@@ -67,7 +83,7 @@ pointer new_math(scaled w, small_number s) {
 
 // Section 151
 
-pointer new_spec(pointer p) {
+[[nodiscard]] pointer new_spec(pointer p) {
   pointer q;
   q = get_node(glue_spec_size);
   mem[q] = mem[p];
@@ -78,9 +94,20 @@ pointer new_spec(pointer p) {
   return q;
 }
 
+// Not in TeX but useful for testing. Create a glue spec with a ref count of 0.
+[[nodiscard]] pointer new_glue_spec(scaled width, scaled stretch_v, std::byte stretch_o, scaled shrink_v, std::byte shrink_o) {
+  pointer p = get_node(glue_spec_size);
+  glue_ref_count(p) = 0;
+  stretch(p) = stretch_v;
+  stretch_order(p) = stretch_o;
+  shrink(p) = shrink_v;
+  shrink_order(p) = shrink_o;
+  return p;
+}
+
 // Section 152
 
-pointer new_param_glue(small_number n) {
+[[nodiscard]] pointer new_param_glue(small_number n) {
   pointer p;
   pointer q;
   p = get_node(small_node_size);
@@ -95,7 +122,7 @@ pointer new_param_glue(small_number n) {
 
 //  Section 153
 
-pointer new_glue(pointer q) {
+[[nodiscard]] pointer new_glue(pointer q) {
   pointer p;
   p = get_node(small_node_size);
   type(p) = glue_node;
@@ -108,7 +135,7 @@ pointer new_glue(pointer q) {
 
 // Section 154
 
-pointer new_skip_param(small_number n) {
+[[nodiscard]] pointer new_skip_param(small_number n) {
   pointer p;
   temp_ptr = new_spec(glue_par(halfword(n)));
   p = new_glue(temp_ptr);
@@ -119,7 +146,7 @@ pointer new_skip_param(small_number n) {
 
 // Setion 156
 
-pointer new_kern(scaled w) {
+[[nodiscard]] pointer new_kern(scaled w) {
   pointer p;
   p = get_node(small_node_size);
   type(p) = kern_node;
@@ -130,7 +157,7 @@ pointer new_kern(scaled w) {
 
 // Section 158
 
-pointer new_penalty(int m) {
+[[nodiscard]] pointer new_penalty(int m) {
   pointer p;
   p = get_node(small_node_size);
   type(p) = penalty_node;

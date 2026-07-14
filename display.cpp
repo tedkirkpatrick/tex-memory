@@ -139,7 +139,7 @@ static void print_glue(scaled d, std::byte order, str_number s) {
 
 // Section 178
 
-static void print_spec(int p, str_number s) {
+static void print_spec(pointer p, str_number s) {
   if (p < mem_min || p >= lo_mem_max)
     print_char('*');
   else {
@@ -172,6 +172,10 @@ static int breadth_max;
 
 // Section 182
 
+// The style of this function is the worst outcome of the
+// style choice to embed WEB subsection macros directly
+// into their parent code rather than make them separate
+// functions.
 void show_node_list(pointer p) {
   int n;
   float g;
