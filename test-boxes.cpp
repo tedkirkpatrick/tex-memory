@@ -125,7 +125,7 @@ TEST_CASE("Create various node types") {
     show_box(r);
     REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n"sv);
   }
-  SECTION("Create ins node with basic glue") {
+  SECTION("Create ins node with basic glue spec") {
     std::byte boxn {11};
     pointer gs = new_glue_spec(unity, 0, std::byte{0}, 0, std::byte{0});
     pointer p = new_ins(boxn, two, unity, gs, 0, null);
@@ -133,7 +133,7 @@ TEST_CASE("Create various node types") {
     REQUIRE(ostr.view() ==
             std::format("\n\\insert{}, natural size 2.0; split(1.0,1.0) float cost 0\n", int(boxn)));
   }
-  SECTION("Test more complete glue from an ins node") {
+  SECTION("Test more complete glue spec from an ins node containing a vlist") {
     std::byte boxn {43};
     pointer gs= new_glue_spec(nx_plus_y(1, unity, half), unity, fil, two, fill);
     pointer v = new_vlist();

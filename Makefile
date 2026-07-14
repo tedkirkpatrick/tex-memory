@@ -4,8 +4,9 @@ CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
 LFLAGS=
 
 EXE=basic-memory test-boxes
-OBJ=basic-memory.o overflow.o
-BOX_OBJ=boxes.o display.o eqtb.o hash.o printing.o scaled.o string_handling.o token_list.o
+OBJ=basic-memory.o reporting_errors.o
+BOX_OBJ=boxes.o destroying_boxes.o display.o eqtb.o hash.o printing.o \
+	scaled.o string_handling.o token_list.o
 
 all: $(EXE)
 	@echo "Rebuilt all"
