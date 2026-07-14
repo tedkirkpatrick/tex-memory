@@ -2,6 +2,15 @@
 #define TOKEN_LIST_HPP
 
 #include "basic-memory.hpp"
+#include "command_codes.hpp"
+
+// Not in TeX but useful for testing and debugging
+
+[[nodiscard]] constexpr halfword make_letter_token(char c) { return halfword(letter * 0x1'00 + c); }
+
+[[nodiscard]] extern pointer new_token_list(int refc);
+
+extern pointer add_token_to_list(pointer p, halfword token);
 
 // Section 289
 

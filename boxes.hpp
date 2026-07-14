@@ -80,6 +80,9 @@ constexpr std::byte mark_node {4};
 constexpr halfword small_node_size = 2;
 constexpr int& mark_ptr(pointer p) { return mem[p + 1].intv; }
 
+// Not in TeX, added for testing convenience
+[[nodiscard]] extern pointer new_mark(pointer token_list);
+
 // Section 142
 
 constexpr std::byte adjust_node {5};

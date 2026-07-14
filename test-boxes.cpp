@@ -7,10 +7,12 @@
 #include "display.hpp"
 #include "printing.hpp"
 #include "string_handling.hpp"
+#include "token_list.hpp"
 
 using namespace std::literals;
 
-using std::cout, std::dec, std::flush, std::hex;
+// Debugging
+#include <print>
 
 TEST_CASE("Printing char") {
   std::ostringstream ostr;
@@ -133,7 +135,7 @@ TEST_CASE("Create various node types") {
     REQUIRE(ostr.view() ==
             std::format("\n\\insert{}, natural size 2.0; split(1.0,1.0) float cost 0\n", int(boxn)));
   }
-  SECTION("Test more complete glue spec from an ins node containing a vlist") {
+  SECTION("Create more complete glue spec from an ins node containing a vlist") {
     std::byte boxn {43};
     pointer gs= new_glue_spec(nx_plus_y(1, unity, half), unity, fil, two, fill);
     pointer v = new_vlist();
@@ -141,5 +143,15 @@ TEST_CASE("Create various node types") {
     show_box(p);
     REQUIRE(ostr.view() ==
             std::format("\n\\insert{}, natural size 2.0; split(1.5 plus 1.0fil minus 2.0fill,1.0) float cost 3\n.\\vbox(0.0+0.0)x0.0\n..\\hbox(0.0+0.0)x0.0\n...\\Default font a\n", int(boxn)));
+  }
+
+  SECTION("Create mark node") {
+    pointer token_list = new_token_list(1);
+    halfword a = make_letter_token('a');
+    halfword z = make_letter_token('z');
+    add_token_to_list(add_token_to_list(token_list, a), z);
+    pointer m = new_mark(token_list);
+    show_box(m);
+    REQUIRE(ostr.view() == "\n\\mark{az}\n");
   }
 }

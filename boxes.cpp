@@ -46,6 +46,16 @@ pointer new_ins(std::byte st, scaled h, scaled d,
   return p;
 }
 
+// Section 141
+
+// Not in TeX, added for testing convenience
+[[nodiscard]] pointer new_mark(pointer token_list) {
+  pointer p = get_node(small_node_size);
+  type(p) = mark_node;
+  mark_ptr(p) = token_list;
+  return p;
+}
+
 // Section 144
 
 pointer new_ligature(quarterword f, quarterword c, pointer q) {

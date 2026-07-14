@@ -1,6 +1,7 @@
 #include "destroying_boxes.hpp"
 
 #include "boxes.hpp"
+#include "extensions.hpp"
 #include "reporting_errors.hpp"
 
 // Section 201
@@ -32,9 +33,26 @@ void flush_node_list(pointer p) {
         free_node(p, ins_node_size);
         goto done;
       case whatsit_node:
-        // BLERG
+        // Begin Section 1358
+        switch (subtype(p)) {
+        case open_node:
+          free_node(p, open_node_size);
+          break;
+        case write_node:
+        case special_node:
+          delete_token_ref(write_tokens(p));
+          free_node(p, write_node_size);
+          goto done; // Could just be 'break' but retained because it's in TeX
+        case close_node:
+          free_node(p, small_node_size);
+          break;
+        default:
+          confusion("ext3");
+          break;
+        }
         goto done;
-      case glue_node:
+        // End Section 1358
+       case glue_node:
         fast_delete_glue_ref(glue_ptr(p));
         if (leader_ptr(p) != null)
           flush_node_list(leader_ptr(p));
