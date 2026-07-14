@@ -1,3 +1,4 @@
+#include <format>
 #include <iostream>
 #include <sstream>
 
@@ -9,7 +10,7 @@
 
 using namespace std::literals;
 
-using std::cout, std::flush;
+using std::cout, std::dec, std::flush, std::hex;
 
 TEST_CASE("Printing char") {
   std::ostringstream ostr;
@@ -87,12 +88,7 @@ TEST_CASE("Test print_current_string()") {
   REQUIRE(ostr.view() == "ef"sv);
 }
 
-TEST_CASE("Printing a vlist") {
-  init_table_entries();
-  init_eqtb();
-  str_start.reset_strings();
-  std::ostringstream ostr;
-  set_str(&ostr);
+static pointer new_vlist() {
   pointer v = new_null_box();
   type(v) = vlist_node;
   pointer h = new_null_box();
@@ -101,6 +97,16 @@ TEST_CASE("Printing a vlist") {
   font(c) = std::byte(0);
   character(c) = std::byte('a');
   list_ptr(h) = c;
+  return v;
+}
+
+TEST_CASE("Printing a vlist") {
+  init_table_entries();
+  init_eqtb();
+  str_start.reset_strings();
+  std::ostringstream ostr;
+  set_str(&ostr);
+  pointer v = new_vlist();
   show_box(v);
   REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n"sv);
 }
@@ -119,11 +125,21 @@ TEST_CASE("Create various node types") {
     show_box(r);
     REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n"sv);
   }
-  SECTION("Create ins node") {
+  SECTION("Create ins node with basic glue") {
     std::byte boxn {11};
     pointer gs = new_glue_spec(unity, 0, std::byte{0}, 0, std::byte{0});
     pointer p = new_ins(boxn, two, unity, gs, 0, null);
     show_box(p);
-    REQUIRE(ostr.view() == "\n\\insert11, natural size 2.0; split(1.0,1.0) float cost 0\n");
+    REQUIRE(ostr.view() ==
+            std::format("\n\\insert{}, natural size 2.0; split(1.0,1.0) float cost 0\n", int(boxn)));
+  }
+  SECTION("Test more complete glue from an ins node") {
+    std::byte boxn {43};
+    pointer gs= new_glue_spec(nx_plus_y(1, unity, half), unity, fil, two, fill);
+    pointer v = new_vlist();
+    pointer p = new_ins(boxn, two, unity, gs, 3, v);
+    show_box(p);
+    REQUIRE(ostr.view() ==
+            std::format("\n\\insert{}, natural size 2.0; split(1.5 plus 1.0fil minus 2.0fill,1.0) float cost 3\n.\\vbox(0.0+0.0)x0.0\n..\\hbox(0.0+0.0)x0.0\n...\\Default font a\n", int(boxn)));
   }
 }

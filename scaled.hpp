@@ -11,6 +11,7 @@
 
 // Section 101
 
+constexpr int half = 0x0'80'00; // Not in TeX but useful for testing
 constexpr int unity = 0x1'00'00;
 constexpr int two = 0x2'00'00;
 

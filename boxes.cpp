@@ -95,9 +95,10 @@ pointer new_math(scaled w, small_number s) {
 }
 
 // Not in TeX but useful for testing. Create a glue spec with a ref count of 0.
-[[nodiscard]] pointer new_glue_spec(scaled width, scaled stretch_v, std::byte stretch_o, scaled shrink_v, std::byte shrink_o) {
+[[nodiscard]] pointer new_glue_spec(scaled width_v, scaled stretch_v, std::byte stretch_o, scaled shrink_v, std::byte shrink_o) {
   pointer p = get_node(glue_spec_size);
   glue_ref_count(p) = 0;
+  width(p) = width_v;
   stretch(p) = stretch_v;
   stretch_order(p) = stretch_o;
   shrink(p) = shrink_v;

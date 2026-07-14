@@ -123,14 +123,13 @@ static void print_rule_dimen(scaled d) {
 
 static void print_glue(scaled d, std::byte order, str_number s) {
   print_scaled(d);
-  if (order < normal || halfword(order) > fill)
+  if (order < normal || order > fill)
     print("foul");
   else if (order > normal) {
     print("fil");
-    halfword h_order = halfword(order);
-    while (h_order > fil) {
+    while (order > fil) {
       print_char('l');
-      decr(h_order);
+      order = std::byte(int(order) - 1);
     }
   }
   else if (s != 0)
@@ -143,7 +142,7 @@ static void print_spec(pointer p, str_number s) {
   if (p < mem_min || p >= lo_mem_max)
     print_char('*');
   else {
-    print_scaled(width(p));
+     print_scaled(width(p));
     if (s != 0)
       print(s);
     if (stretch(p) != 0) {

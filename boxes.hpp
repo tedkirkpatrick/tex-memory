@@ -140,9 +140,9 @@ constexpr sc& stretch(pointer p) { return mem[p + 2].scv; }
 constexpr sc& shrink(pointer p) { return mem[p + 3].scv; }
 constexpr std::byte& stretch_order(pointer p) { return type(p); }
 constexpr std::byte& shrink_order(pointer p) { return subtype(p); }
-constexpr halfword fil = 1;
-constexpr halfword fill = 2;
-constexpr halfword filll = 3;
+constexpr std::byte fil {1};
+constexpr std::byte fill {2};
+constexpr std::byte filll {3};
 
 using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) but halfword is more manageable
 
