@@ -22,6 +22,10 @@ constexpr bool is_char_node(pointer p) { return p >= hi_mem_min; }
 constexpr std::byte& font(pointer p) { return type(p); }
 constexpr std::byte& character(pointer p) { return subtype(p); }
 
+// Next two not present in TeX but useful for testing
+[[nodiscard]] extern pointer new_char_node(std::byte font_v, char c_v);
+extern pointer add_char_node_to_list(pointer p, std::byte font_v, char c_v);
+
 // Section 135
 
 constexpr std::byte hlist_node {0};
@@ -87,6 +91,9 @@ constexpr int& mark_ptr(pointer p) { return mem[p + 1].intv; }
 
 constexpr std::byte adjust_node {5};
 constexpr int& adjust_ptr(pointer p) { return mark_ptr(p); }
+
+// Not in TeX, added for testing convenience
+[[nodiscard]] extern pointer new_adjust(pointer vlist);
 
 // Section 143
 

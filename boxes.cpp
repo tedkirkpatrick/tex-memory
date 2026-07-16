@@ -1,5 +1,23 @@
 #include "boxes.hpp"
 
+// Section 134
+
+// Next two not present in TeX but useful for testing
+[[nodiscard]] pointer new_char_node(std::byte font_v, char c_v) {
+  pointer c = get_avail();
+  font(c) = font_v;
+  character(c) = std::byte(c_v);
+  return c;
+}
+
+pointer add_char_node_to_list(pointer p, std::byte font_v, char c_v) {
+  while(link(p) != null)
+    p = link(p);
+  pointer c_n = new_char_node(font_v, c_v);
+  link(p) = c_n;
+  return c_n;
+}
+
 // Section 136
 
 pointer new_null_box() {
@@ -56,21 +74,32 @@ pointer new_ins(std::byte st, scaled h, scaled d,
   return p;
 }
 
+// Section 142
+
+// Not in TeX, added for testing convenience
+[[nodiscard]] pointer new_adjust(pointer vlist) {
+  pointer p = get_node(small_node_size);
+  type(p) = adjust_node;
+  adjust_ptr(p) = vlist;
+  return p;
+}
+ 
 // Section 144
 
-pointer new_ligature(quarterword f, quarterword c, pointer q) {
+[[nodiscard]] pointer new_ligature(quarterword f, quarterword c, pointer q) {
   pointer p;
   p = get_node(small_node_size);
   type(p) = ligature_node;
   subtype(p) = std::byte(0);
   font(lig_char(p)) = f;
   character(lig_char(p)) = c;
+  lig_ptr(p) = q;
   return p;
 }
 
 // Section 145
 
-pointer new_disc() {
+[[nodiscard]] pointer new_disc() {
   pointer p;
   p = get_node(small_node_size);
   type(p) = disc_node;
@@ -82,7 +111,7 @@ pointer new_disc() {
 
 // Section 147
 
-pointer new_math(scaled w, small_number s) {
+[[nodiscard]] pointer new_math(scaled w, small_number s) {
   pointer p;
   p = get_node(small_node_size);
   type(p) = math_node;

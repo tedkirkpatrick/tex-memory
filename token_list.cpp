@@ -8,8 +8,7 @@
 #include "printing.hpp"
 #include "trick_count.hpp"
 
-// Not in TeX but useful for testing and debugging
-
+// Next two not present in TeX but useful for testing
 [[nodiscard]] pointer new_token_list(int refc) {
   pointer p = get_avail();
   info(p) = refc;
@@ -22,7 +21,7 @@ pointer add_token_to_list(pointer p, halfword token) {
   pointer t = get_avail();
   info(t) = token;
   link(p) = t;
-  return p;
+  return t;
 }
 
 

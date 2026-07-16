@@ -90,13 +90,15 @@ TEST_CASE("Test print_current_string()") {
   REQUIRE(ostr.view() == "ef"sv);
 }
 
+constexpr std::byte default_font {0};
+
 static pointer new_vlist() {
   pointer v = new_null_box();
   type(v) = vlist_node;
   pointer h = new_null_box();
   list_ptr(v) = h;
   pointer c = get_avail();
-  font(c) = std::byte(0);
+  font(c) = default_font;
   character(c) = std::byte('a');
   list_ptr(h) = c;
   return v;
@@ -144,7 +146,6 @@ TEST_CASE("Create various node types") {
     REQUIRE(ostr.view() ==
             std::format("\n\\insert{}, natural size 2.0; split(1.5 plus 1.0fil minus 2.0fill,1.0) float cost 3\n.\\vbox(0.0+0.0)x0.0\n..\\hbox(0.0+0.0)x0.0\n...\\Default font a\n", int(boxn)));
   }
-
   SECTION("Create mark node") {
     pointer token_list = new_token_list(1);
     halfword a = make_letter_token('a');
@@ -152,6 +153,19 @@ TEST_CASE("Create various node types") {
     add_token_to_list(add_token_to_list(token_list, a), z);
     pointer m = new_mark(token_list);
     show_box(m);
-    REQUIRE(ostr.view() == "\n\\mark{az}\n");
+    REQUIRE(ostr.view() == "\n\\mark{az}\n"sv);
+  }
+  SECTION("Create adjust node") {
+    pointer v = new_vlist();
+    pointer a = new_adjust(v);
+    show_box(a);
+    REQUIRE(ostr.view() == "\n\\vadjust\n.\\vbox(0.0+0.0)x0.0\n..\\hbox(0.0+0.0)x0.0\n...\\Default font a\n");
+  }
+  SECTION("Create ligature node") {
+    pointer cl = new_char_node(default_font, 'f');
+    add_char_node_to_list(cl, default_font, 'f');
+    pointer l = new_ligature(default_font, quarterword('f'), cl);
+    show_box(l);
+    REQUIRE(ostr.view() == "\n\\Default font f (ligature ff)\n");
   }
 }
