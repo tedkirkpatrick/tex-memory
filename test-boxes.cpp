@@ -216,6 +216,13 @@ TEST_CASE("Create various node types") {
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu\n");
   }
+  SECTION("Conditional math glue node") {
+    pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
+    pointer g = new_glue(gs);
+    subtype(g) = cond_math_glue;
+    show_box(g);
+    REQUIRE(ostr.view() == "\n\\glue(nonscript)\n");
+  }
   SECTION("leaders glue nodes with hlist") {
     pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
     pointer g = new_glue(gs);
