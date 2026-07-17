@@ -5,6 +5,7 @@
 #include "boxes.hpp"
 #include "catch2.hpp"
 #include "display.hpp"
+#include "eqtb.hpp"
 #include "extensions.hpp"
 #include "printing.hpp"
 #include "string_handling.hpp"
@@ -223,7 +224,7 @@ TEST_CASE("Create various node types") {
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue(nonscript)\n");
   }
-  SECTION("leaders glue nodes with hlist") {
+  SECTION("Leaders glue nodes with hlist") {
     pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
     pointer g = new_glue(gs);
     leader_ptr(g) = new_hlist('g');
@@ -242,5 +243,24 @@ TEST_CASE("Create various node types") {
       show_box(g);
       REQUIRE(ostr.view() == "\n\\xleaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
     }
+  }
+  SECTION("new_param_glue") {
+    pointer gs = new_glue_spec(unity, 0, normal, 0, normal, 2);
+    glue_par(halfword(line_skip_code)) = gs;
+    pointer g = new_param_glue(line_skip_code);
+    show_box(g);
+    REQUIRE(ostr.view() == "\n\\glue(\\skip of type 0) 1.0\n");
+    REQUIRE(glue_ref_count(gs) == 3);
+  }
+  SECTION("new_spec") {
+    pointer gs1 = new_glue_spec(unity, two, normal, two, fill, 4);
+    pointer gs2 = new_spec(gs1);
+    REQUIRE(gs1 != gs2);
+    REQUIRE(type(gs1) == type(gs2));
+    REQUIRE(subtype(gs1) == subtype(gs2));
+    REQUIRE(glue_ref_count(gs2) == null);
+    REQUIRE(width(gs2) == unity);
+    REQUIRE(stretch(gs2) == two);
+    REQUIRE(shrink(gs2) == two);
   }
 }
