@@ -316,7 +316,7 @@ void show_node_list(pointer p) {
             print_char('c');
           else if (subtype(p) == x_leaders)
             print_char('x');
-          print("leaders");
+          print("leaders ");
           print_spec(glue_ptr(p), 0);
           node_list_display(leader_ptr(p));
           // End Section 190
@@ -333,13 +333,13 @@ void show_node_list(pointer p) {
               print_esc("mskip");
             print_char(')');
           }
-        }
-        if (subtype(p) != cond_math_glue) {
-          print_char(' ');
-          if (subtype(p) < cond_math_glue)
-            print_spec(glue_ptr(p), 0);
-          else
-            print_spec(glue_ptr(p), mu_string);
+          if (subtype(p) != cond_math_glue) {
+            print_char(' ');
+            if (subtype(p) < cond_math_glue)
+              print_spec(glue_ptr(p), 0);
+            else
+              print_spec(glue_ptr(p), mu_string);
+          }
         }
         // End Section 189
         break;

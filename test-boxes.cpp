@@ -93,15 +93,20 @@ TEST_CASE("Test print_current_string()") {
 
 constexpr std::byte default_font {0};
 
-static pointer new_vlist(char ch = 'a') {
-  pointer v = new_null_box();
-  type(v) = vlist_node;
+[[nodiscard]] static pointer new_hlist(char ch='a') {
   pointer h = new_null_box();
-  list_ptr(v) = h;
   pointer c = get_avail();
   font(c) = default_font;
   character(c) = std::byte(ch);
   list_ptr(h) = c;
+  return h;
+}
+
+[[nodiscard]] static pointer new_vlist(char ch='a') {
+  pointer v = new_null_box();
+  type(v) = vlist_node;
+  pointer h = new_hlist(ch);
+  list_ptr(v) = h;
   return v;
 }
 
@@ -210,5 +215,13 @@ TEST_CASE("Create various node types") {
     subtype(g) = mu_glue;
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu\n");
+  }
+  SECTION("A-leaders glue node with hlist") {
+    pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
+    pointer g = new_glue(gs);
+    subtype(g) = a_leaders;
+    leader_ptr(g) = new_hlist('g');
+    show_box(g);
+    REQUIRE(ostr.view() == "\n\\leaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
   }
 }
