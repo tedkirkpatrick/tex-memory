@@ -5,6 +5,7 @@
 #include "boxes.hpp"
 #include "catch2.hpp"
 #include "display.hpp"
+#include "extensions.hpp"
 #include "printing.hpp"
 #include "string_handling.hpp"
 #include "token_list.hpp"
@@ -183,5 +184,12 @@ TEST_CASE("Create various node types") {
             "|.\\hbox(0.0+0.0)x0.0\n"
             "|..\\Default font y\n"
             );
+  }
+  SECTION("Whatsit node") {
+    pointer w = get_node(small_node_size);
+    type(w) = whatsit_node;
+    subtype(w) = open_node;
+    show_box(w);
+    REQUIRE(ostr.view() == "\nopen_node subtype of whatsit_node\n");
   }
 }

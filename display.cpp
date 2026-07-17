@@ -290,7 +290,7 @@ void show_node_list(pointer p) {
         // Begin Section 1356
         switch (subtype(p)) {
         case open_node:
-          print("open_node subytpe of whatsit_node");
+          print("open_node subtype of whatsit_node");
           break;
         case write_node:
           print("write_node subtype of whatsit_node");
