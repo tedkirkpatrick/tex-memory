@@ -204,4 +204,11 @@ TEST_CASE("Create various node types") {
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue 2.0 plus 1.0 minus 1.0\n");
   }
+  SECTION("Math glue node") {
+    pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
+    pointer g = new_glue(gs);
+    subtype(g) = mu_glue;
+    show_box(g);
+    REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu\n");
+  }
 }
