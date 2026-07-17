@@ -92,14 +92,14 @@ TEST_CASE("Test print_current_string()") {
 
 constexpr std::byte default_font {0};
 
-static pointer new_vlist() {
+static pointer new_vlist(char ch = 'a') {
   pointer v = new_null_box();
   type(v) = vlist_node;
   pointer h = new_null_box();
   list_ptr(v) = h;
   pointer c = get_avail();
   font(c) = default_font;
-  character(c) = std::byte('a');
+  character(c) = std::byte(ch);
   list_ptr(h) = c;
   return v;
 }
@@ -167,5 +167,21 @@ TEST_CASE("Create various node types") {
     pointer l = new_ligature(default_font, quarterword('f'), cl);
     show_box(l);
     REQUIRE(ostr.view() == "\n\\Default font f (ligature ff)\n");
+  }
+  SECTION("Create discretionary line break node") {
+    pointer d = new_disc();
+    replace_count(d) = std::byte(5);
+    pre_break(d) = new_vlist('x');
+    post_break(d) = new_vlist('y');
+    show_box(d);
+    REQUIRE(ostr.view() ==
+            "\n\\discretionary replacing 5\n"
+            ".\\vbox(0.0+0.0)x0.0\n"
+            "..\\hbox(0.0+0.0)x0.0\n"
+            "...\\Default font x\n"
+            "|\\vbox(0.0+0.0)x0.0\n"
+            "|.\\hbox(0.0+0.0)x0.0\n"
+            "|..\\Default font y\n"
+            );
   }
 }

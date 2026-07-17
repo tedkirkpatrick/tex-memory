@@ -110,7 +110,7 @@ constexpr pointer& lig_ptr(pointer p) { return link(lig_char(p)); }
 constexpr std::byte disc_node {7};
 constexpr std::byte& replace_count(pointer p) { return subtype(p); }
 constexpr pointer& pre_break(pointer p) { return llink(p); }
-constexpr pointer& post_break(pointer p) { return llink(p); }
+constexpr pointer& post_break(pointer p) { return rlink(p); }
 
 [[nodiscard]] extern pointer new_disc();
 
