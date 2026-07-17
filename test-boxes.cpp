@@ -132,7 +132,7 @@ TEST_CASE("Create various node types") {
   }
   SECTION("Create ins node with basic glue spec") {
     std::byte boxn {11};
-    pointer gs = new_glue_spec(unity, 0, std::byte{0}, 0, std::byte{0});
+    pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
     pointer p = new_ins(boxn, two, unity, gs, 0, null);
     show_box(p);
     REQUIRE(ostr.view() ==
