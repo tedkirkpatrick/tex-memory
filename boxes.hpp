@@ -159,7 +159,9 @@ using glue_ord = halfword; // Could fit into a std::byte (range is only 0 .. 3) 
 // Section 151
 
 [[nodiscard]] extern pointer new_spec(pointer p);
-[[nodiscard]] pointer new_glue_spec(scaled width, scaled stretch_v, std::byte stretch_o, scaled shrink_v, std::byte shrink_o);
+// Not in TeX but useful for testing. Create a glue spec
+[[nodiscard]] pointer new_glue_spec(scaled width, scaled stretch_v, std::byte stretch_o,
+                                    scaled shrink_v, std::byte shrink_o, halfword ref_c=0);
 
 // Section 152
 

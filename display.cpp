@@ -309,7 +309,7 @@ void show_node_list(pointer p) {
        break;
       case glue_node:
         // Begin Section 189
-        if (int(subtype(p)) > int(a_leaders)) {
+        if (int(subtype(p)) >= int(a_leaders)) {
           // Begin Section 190
           print_esc("");
           if (subtype(p) == c_leaders)
@@ -322,6 +322,7 @@ void show_node_list(pointer p) {
           // End Section 190
         }
         else {
+          print_esc("glue");
           if (subtype(p) != normal) {
             print_char('(');
             if (subtype(p) < cond_math_glue)

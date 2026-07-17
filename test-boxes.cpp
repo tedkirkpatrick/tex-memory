@@ -198,4 +198,10 @@ TEST_CASE("Create various node types") {
     REQUIRE(ostr.view() == "\n\\mathoff, surrounded 2.0\n");
     
   }
+  SECTION("Normal glue node") {
+    pointer gs = new_glue_spec(two, unity, normal, unity, normal);
+    pointer g = new_glue(gs);
+    show_box(g);
+    REQUIRE(ostr.view() == "\n\\glue 2.0 plus 1.0 minus 1.0\n");
+  }
 }

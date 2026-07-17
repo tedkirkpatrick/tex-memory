@@ -33,6 +33,14 @@ constexpr halfword glue_base = undefined_control_sequence + 1;
 
 // Section 224
 
+constexpr std::byte line_skip_code {0};
+constexpr std::byte baseline_skip_code {1};
+constexpr std::byte par_skip_code {2};
+constexpr std::byte above_display_skip_code {3};
+constexpr std::byte below_display_skip_code {4};
+constexpr std::byte above_display_short_skip_code {5};
+constexpr std::byte below_display_short_skip_code {6};
+// Skip codes 7--17 not yet defined
 constexpr halfword& glue_par(halfword h) { return equiv(glue_base + h); }
 
 // Section 225
