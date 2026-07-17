@@ -256,6 +256,7 @@ TEST_CASE("Create various node types") {
   SECTION("new_spec") {
     pointer gs1 = new_glue_spec(unity, two, normal, two, fill, 4);
     pointer gs2 = new_spec(gs1);
+    REQUIRE(glue_ref_count(gs1) == 4);
     REQUIRE(gs1 != gs2);
     REQUIRE(type(gs1) == type(gs2));
     REQUIRE(subtype(gs1) == subtype(gs2));
@@ -263,5 +264,21 @@ TEST_CASE("Create various node types") {
     REQUIRE(width(gs2) == unity);
     REQUIRE(stretch(gs2) == two);
     REQUIRE(shrink(gs2) == two);
+  }
+  SECTION("new_skip_param") {
+    pointer gs1 = new_glue_spec(unity, 0, normal, 0, normal, 2);
+    glue_par(halfword(line_skip_code)) = gs1;
+    pointer g = new_skip_param(line_skip_code);
+    REQUIRE(glue_ref_count(gs1) == 2);
+    REQUIRE(type(g) == glue_node);
+    REQUIRE(subtype(g) == std::byte(int(line_skip_code) + 1));
+    pointer gs2 = glue_ptr(g);
+    REQUIRE(gs1 != gs2);
+    REQUIRE(type(gs1) == type(gs2));
+    REQUIRE(subtype(gs1) == subtype(gs2));
+    REQUIRE(glue_ref_count(gs2) == null);
+    REQUIRE(width(gs2) == unity);
+    REQUIRE(stretch(gs2) == 0);
+    REQUIRE(shrink(gs2) == 0);
   }
 }
