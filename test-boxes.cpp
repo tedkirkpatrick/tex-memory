@@ -207,6 +207,7 @@ TEST_CASE("Create various node types") {
   SECTION("Normal glue node") {
     pointer gs = new_glue_spec(two, unity, normal, unity, normal);
     pointer g = new_glue(gs);
+    REQUIRE(glue_ref_count(glue_ptr(g)) == 1);
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue 2.0 plus 1.0 minus 1.0\n");
   }
