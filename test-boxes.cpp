@@ -216,12 +216,24 @@ TEST_CASE("Create various node types") {
     show_box(g);
     REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu\n");
   }
-  SECTION("A-leaders glue node with hlist") {
+  SECTION("leaders glue nodes with hlist") {
     pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
     pointer g = new_glue(gs);
-    subtype(g) = a_leaders;
     leader_ptr(g) = new_hlist('g');
-    show_box(g);
-    REQUIRE(ostr.view() == "\n\\leaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
+    SECTION("A-leaders") {
+      subtype(g) = a_leaders;
+      show_box(g);
+      REQUIRE(ostr.view() == "\n\\leaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
+    }
+    SECTION("C-leaders") {
+      subtype(g) = c_leaders;
+      show_box(g);
+      REQUIRE(ostr.view() == "\n\\cleaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
+    }
+    SECTION("X-leaders") {
+      subtype(g) = x_leaders;
+      show_box(g);
+      REQUIRE(ostr.view() == "\n\\xleaders 1.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font g\n");
+    }
   }
 }
