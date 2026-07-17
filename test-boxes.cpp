@@ -192,4 +192,10 @@ TEST_CASE("Create various node types") {
     show_box(w);
     REQUIRE(ostr.view() == "\nopen_node subtype of whatsit_node\n");
   }
+  SECTION("Math node") {
+    pointer m = new_math(two, after);
+    show_box(m);
+    REQUIRE(ostr.view() == "\n\\mathoff, surrounded 2.0\n");
+    
+  }
 }
