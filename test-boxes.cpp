@@ -310,5 +310,16 @@ TEST_CASE("Create various node types") {
     pointer p = new_penalty(5);
     show_box(p);
     REQUIRE(ostr.view() == "\n\\penalty 5\n");
-  }                        
+  }
+  SECTION("Unset node") {
+    pointer p = new_hlist();
+    subtype(p) = unset_node;
+    glue_stretch(p) = two;
+    glue_order(p) = normal;
+    glue_shrink(p) = unity;
+    glue_sign(p) = fil;
+    span_count(p) = std::byte(5);
+    show_box(p);
+    REQUIRE("\n\\unsetbox(0.0+0.0)x0.0 (6 columns), stretch 2.0, shrink 1.0fil\n");
+  }
 }
