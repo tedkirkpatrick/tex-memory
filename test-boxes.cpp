@@ -1,3 +1,8 @@
+/*
+  Style:  Since this code is original and does not mimic TeX's Pascal code,
+  it uses a more modern C++ style, such as initializing variables at declaration.
+ */
+
 #include <format>
 #include <iostream>
 #include <sstream>
@@ -280,5 +285,27 @@ TEST_CASE("Create various node types") {
     REQUIRE(width(gs2) == unity);
     REQUIRE(stretch(gs2) == 0);
     REQUIRE(shrink(gs2) == 0);
+  }
+  SECTION("Kern node") {
+    pointer k = new_kern(two);
+    SECTION("Normal kern") {
+      show_box(k);
+      REQUIRE(ostr.view() == "\n\\kern2.0\n");
+    }
+    SECTION("Explicit kern") {
+      subtype(k) = explicit_kern;
+      show_box(k);
+      REQUIRE(ostr.view() == "\n\\kern 2.0\n");
+    }
+    SECTION("Accent kern") {
+      subtype(k) = acc_kern;
+      show_box(k);
+      REQUIRE(ostr.view() == "\n\\kern 2.0 (for accent)\n");
+    }
+    SECTION("mkern") {
+      subtype(k) = mu_glue;
+      show_box(k);
+      REQUIRE(ostr.view() == "\n\\mkern2.0mu\n");
+    }
   }
 }
