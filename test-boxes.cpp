@@ -16,7 +16,6 @@
 #include "string_handling.hpp"
 #include "token_list.hpp"
 
-
 // Debugging
 #include <print>
 
@@ -307,4 +306,9 @@ TEST_CASE("Create various node types") {
       REQUIRE(ostr.view() == "\n\\mkern2.0mu\n");
     }
   }
+  SECTION("Penalty node") {
+    pointer p = new_penalty(5);
+    show_box(p);
+    REQUIRE(ostr.view() == "\n\\penalty 5\n");
+  }                        
 }
