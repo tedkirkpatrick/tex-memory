@@ -16,7 +16,6 @@
 #include "string_handling.hpp"
 #include "token_list.hpp"
 
-using namespace std::literals;
 
 // Debugging
 #include <print>
@@ -25,7 +24,7 @@ TEST_CASE("Printing char") {
   std::ostringstream ostr;
   set_str(&ostr);
   print_char('a');
-  REQUIRE(ostr.view() == "a"sv);
+  REQUIRE(ostr.view() == "a");
 }
 
 
@@ -33,21 +32,21 @@ TEST_CASE("Printing ASCII 0") {
   std::ostringstream ostr;
   set_str(&ostr);
   print(0);
-  REQUIRE(ostr.view() == "^^@"sv);
+  REQUIRE(ostr.view() == "^^@");
 }
 
 TEST_CASE("Printing ASCII A") {
   std::ostringstream ostr;
   set_str(&ostr);
   print(65);
-  REQUIRE(ostr.view() == "A"sv);
+  REQUIRE(ostr.view() == "A");
 }
 
 TEST_CASE("Printing ASCII <del>") {
   std::ostringstream ostr;
   set_str(&ostr);
   print(127);
-  REQUIRE(ostr.view() == "^^?"sv);
+  REQUIRE(ostr.view() == "^^?");
 }
 
 TEST_CASE("Creating and printing a string") {
@@ -60,7 +59,7 @@ TEST_CASE("Creating and printing a string") {
   int a = make_string();
   REQUIRE(a == first_string);
   print(a);
-  REQUIRE(ostr.view() == "ab"sv);
+  REQUIRE(ostr.view() == "ab");
 }
 
 TEST_CASE("Create several strings") {
@@ -78,7 +77,7 @@ TEST_CASE("Create several strings") {
   REQUIRE(s2 == first_string + 1);
   print(s1);
   print_nl(s2);
-  REQUIRE(ostr.view() == "ab\ncd"sv);
+  REQUIRE(ostr.view() == "ab\ncd");
 }
 
 TEST_CASE("Test print_current_string()") {
@@ -94,7 +93,7 @@ TEST_CASE("Test print_current_string()") {
   append_char('e');
   append_char('f');
   print_current_string();
-  REQUIRE(ostr.view() == "ef"sv);
+  REQUIRE(ostr.view() == "ef");
 }
 
 constexpr std::byte default_font {0};
@@ -124,7 +123,7 @@ TEST_CASE("Printing a vlist") {
   set_str(&ostr);
   pointer v = new_vlist();
   show_box(v);
-  REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n"sv);
+  REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n");
 }
 
 TEST_CASE("Create various node types") {
@@ -139,7 +138,7 @@ TEST_CASE("Create various node types") {
     depth(r) = nx_plus_y(2, two, 0);
     width(r) = unity;
     show_box(r);
-    REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n"sv);
+    REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n");
   }
   SECTION("Create ins node with basic glue spec") {
     std::byte boxn {11};
@@ -165,7 +164,7 @@ TEST_CASE("Create various node types") {
     add_token_to_list(add_token_to_list(token_list, a), z);
     pointer m = new_mark(token_list);
     show_box(m);
-    REQUIRE(ostr.view() == "\n\\mark{az}\n"sv);
+    REQUIRE(ostr.view() == "\n\\mark{az}\n");
   }
   SECTION("Create adjust node") {
     pointer v = new_vlist();
