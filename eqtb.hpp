@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "basic-memory.hpp"
+#include "basic_memory.hpp"
 
 // This routine peforms multiple functions from Part 17
 

@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "basic-memory.hpp"
+#include "basic_memory.hpp"
 #include "eqtb.hpp"
 #include "scaled.hpp"
 

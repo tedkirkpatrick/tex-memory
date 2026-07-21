@@ -1,5 +1,5 @@
 *.o
 *~
-basic-memory
-test-boxes
+test_memory
+test_boxes
 *-extra

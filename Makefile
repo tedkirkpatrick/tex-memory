@@ -3,19 +3,19 @@ STD=-std=c++23
 CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
 LFLAGS=
 
-EXE=basic-memory test-boxes
-OBJ=basic-memory.o reporting_errors.o
+EXE=test_boxes test_memory
+OBJ=reporting_errors.o basic_memory.o
 BOX_OBJ=boxes.o destroying_boxes.o display.o eqtb.o hash.o printing.o \
 	scaled.o string_handling.o token_list.o
 
 all: $(EXE)
 	@echo "Rebuilt all"
 
-basic-memory: $(OBJ) basic-tests.o test-main.o
-	$(CXX) $(STD) $(LFLAGS) -o basic-memory $(OBJ) basic-tests.o test-main.o
+test_memory: $(OBJ) test_memory.o test_main.o
+	$(CXX) $(STD) $(LFLAGS) -o test_memory $(OBJ) test_memory.o test_main.o
 
-test-boxes: $(OBJ) $(BOX_OBJ) test-boxes.o test-main.o
-	$(CXX) $(STD) $(LFLAGS) -o test-boxes $(OBJ) $(BOX_OBJ) test-boxes.o test-main.o
+test_boxes: $(OBJ) $(BOX_OBJ) test_boxes.o test_main.o
+	$(CXX) $(STD) $(LFLAGS) -o test_boxes $(OBJ) $(BOX_OBJ) test_boxes.o test_main.o
 
 clean:
-	/bin/rm -f $(EXE) basic-tests.o test-main.o $(OBJ) $(BOX_OBJ)
+	/bin/rm -f $(EXE) basic_tests.o test_main.o $(OBJ) $(BOX_OBJ)

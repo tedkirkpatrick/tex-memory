@@ -1,7 +1,7 @@
 #ifndef DESTROYING_BOXES_HPP
 #define DESTROYING_BOXES_HPP
 
-#include "basic-memory.hpp"
+#include "basic_memory.hpp"
 #include "boxes.hpp"
 
 // Section 200

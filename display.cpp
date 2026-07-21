@@ -4,7 +4,7 @@
 #include <iostream>
 #include <print>
 
-#include "basic-memory.hpp"
+#include "basic_memory.hpp"
 #include "boxes.hpp"
 #include "eqtb.hpp"
 #include "extensions.hpp"

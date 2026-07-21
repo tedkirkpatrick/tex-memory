@@ -1,7 +1,7 @@
 #ifndef TOKEN_LIST_HPP
 #define TOKEN_LIST_HPP
 
-#include "basic-memory.hpp"
+#include "basic_memory.hpp"
 #include "command_codes.hpp"
 
 // Not in TeX but useful for testing and debugging
