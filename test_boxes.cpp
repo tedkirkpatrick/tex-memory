@@ -121,8 +121,34 @@ TEST_CASE("Printing a vlist") {
   std::ostringstream ostr;
   set_str(&ostr);
   pointer v = new_vlist();
-  show_box(v);
-  REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n");
+  SECTION("Empty dimensions") {
+    show_box(v);
+    REQUIRE(ostr.view() == "\n\\vbox(0.0+0.0)x0.0\n.\\hbox(0.0+0.0)x0.0\n..\\Default font a\n");
+  }
+  SECTION("Stretch and shift the vlist") {
+    set_glue_ratio_one(glue_set(v));
+    shift_amount(v) = unity;
+    glue_sign(v) = stretching;
+    glue_order(v) = fil;
+    show_box(v);
+    REQUIRE(ostr.view() ==
+            "\n\\vbox(0.0+0.0)x0.0, glue set 1.0fil, unshifted 1.0\n"
+            ".\\hbox(0.0+0.0)x0.0\n"
+            "..\\Default font a\n"
+            );
+  }
+  SECTION("Shrink the hlist") {
+    pointer hl = list_ptr(v);
+    set_glue_ratio_one(glue_set(hl));
+    glue_sign(hl) = shrinking;
+    glue_order(hl) = fill;
+    show_box(v);
+    REQUIRE(ostr.view() ==
+            "\n\\vbox(0.0+0.0)x0.0\n"
+            ".\\hbox(0.0+0.0)x0.0, glue set - 1.0fill\n"
+            "..\\Default font a\n"
+            );
+  }
 }
 
 TEST_CASE("Create various node types") {
@@ -135,9 +161,9 @@ TEST_CASE("Create various node types") {
     pointer r = new_rule();
     height(r) = two;
     depth(r) = nx_plus_y(2, two, 0);
-    width(r) = unity;
+    // Leave width as default "running"
     show_box(r);
-    REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x1.0\n");
+    REQUIRE(ostr.view() == "\n\\rule(2.0+4.0)x*\n");
   }
   SECTION("Create ins node with basic glue spec") {
     std::byte boxn {11};
@@ -215,11 +241,11 @@ TEST_CASE("Create various node types") {
     REQUIRE(ostr.view() == "\n\\glue 2.0 plus 1.0 minus 1.0\n");
   }
   SECTION("Math glue node") {
-    pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
+    pointer gs = new_glue_spec(unity, unity, normal, 0, normal);
     pointer g = new_glue(gs);
     subtype(g) = mu_glue;
     show_box(g);
-    REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu\n");
+    REQUIRE(ostr.view() == "\n\\glue(\\mskip) 1.0mu plus 1.0mu\n");
   }
   SECTION("Conditional math glue node") {
     pointer gs = new_glue_spec(unity, 0, normal, 0, normal);
@@ -313,13 +339,16 @@ TEST_CASE("Create various node types") {
   }
   SECTION("Unset node") {
     pointer p = new_hlist();
-    subtype(p) = unset_node;
+    type(p) = unset_node;
     glue_stretch(p) = two;
     glue_order(p) = normal;
     glue_shrink(p) = unity;
     glue_sign(p) = fil;
     span_count(p) = std::byte(5);
     show_box(p);
-    REQUIRE("\n\\unsetbox(0.0+0.0)x0.0 (6 columns), stretch 2.0, shrink 1.0fil\n");
+    REQUIRE(ostr.view() ==
+            "\n\\unsetbox(0.0+0.0)x0.0 (6 columns), stretch 2.0, shrink 1.0fil\n"
+            ".\\Default font a\n"
+            );
   }
 }

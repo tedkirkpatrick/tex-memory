@@ -1,7 +1,16 @@
 CXX=g++
 STD=-std=c++23
-CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
+BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
 LFLAGS=
+COVERAGE_FLAGS=--coverage -g
+
+ifeq ($(COV),yes)
+	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS)
+	LFLAGS=--coverage
+else
+	CPPFLAGS=$(BASIC_CPPFLAGS)
+endif
+
 
 EXE=test_boxes test_memory
 OBJ=reporting_errors.o basic_memory.o

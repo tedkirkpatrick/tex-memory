@@ -103,8 +103,8 @@ TEST_CASE("Allocating from available list works") {
   REQUIRE(p4 == p3);
   REQUIRE(avail == p2);
   REQUIRE(hi_mem_min == mem_max - 3);
-  pointer p5;
-  fast_get_avail(p5);
+  // Also exercise the code in get_avail() that pulls from avail list
+  pointer p5 = get_avail();
   expose_avail_vars(mem, avail, mem_end, hi_mem_min);
   REQUIRE(p5 == p2);
   REQUIRE(avail == p1);

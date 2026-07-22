@@ -1,5 +1,8 @@
 *.o
 *~
+*.gcov
+*.gcno
+*.gcda
 test_memory
 test_boxes
 *-extra
