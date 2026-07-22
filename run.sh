@@ -1,1 +1,1 @@
-docker container run -it --rm -v $PWD:/ted gcc:15
+docker container run -it --rm -v $PWD:/usr/code/src gcc:15
