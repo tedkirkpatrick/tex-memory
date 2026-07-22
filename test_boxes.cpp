@@ -149,6 +149,16 @@ TEST_CASE("Printing a vlist") {
             "..\\Default font a\n"
             );
   }
+  SECTION("Use huge glue set on vlist") {
+    glue_set(v) = 20'002.0f;
+    glue_sign(v) = stretching;
+    show_box(v);
+    REQUIRE(ostr.view() ==
+            "\n\\vbox(0.0+0.0)x0.0, glue set >20000.0\n"
+            ".\\hbox(0.0+0.0)x0.0\n"
+            "..\\Default font a\n"
+            );
+  }
 }
 
 TEST_CASE("Create various node types") {
