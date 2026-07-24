@@ -18,6 +18,7 @@
 #include <print>
 
 using namespace dynmemdbg;
+
 /*
 static void print_single_word(pointer p) {
   int m = info(p) / 0x1'00;
@@ -116,7 +117,7 @@ static void print_used(std::vector<char>& used) {
   return total;
 }
 
-TEST_CASE("Destroying list") {
+TEST_CASE("Exercise all branches of flush_node_list()") {
   init_table_entries();
   init_eqtb();
   str_start.reset_strings();
