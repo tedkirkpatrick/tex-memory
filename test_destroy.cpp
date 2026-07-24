@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <format>
 #include <iostream>
 #include <sstream>
@@ -17,7 +18,7 @@
 #include <print>
 
 using namespace dynmemdbg;
-
+/*
 static void print_single_word(pointer p) {
   int m = info(p) / 0x1'00;
   int c = info(p) % 0x1'00;
@@ -53,7 +54,7 @@ static void short_display_avail_list(std::ostringstream& ostr) {
     }
   }
 }
-
+*/
 
 [[nodiscard]] static int avail_len(pointer avail) {
   int count = 0;
@@ -68,6 +69,42 @@ static void short_display_free_list(pointer rover) {
   std::println("Rover {} size {}", rover, node_size(rover));
   for (pointer p=rlink(rover); p != rover; p=rlink(p)) {
     std::println("{} size {}", p, node_size(p));
+  }
+}
+
+static void set_free(std::vector<char>& used, pointer start, int size) {
+  for (pointer p=start; p < start+size; p++)
+    used[p] = '0';
+}
+
+// Map used space over [0, highest_used]
+static std::vector<char>  map_occupied_nodes(pointer rover, pointer highest_used) {
+  std::vector<char> used (std::size_t(highest_used), '1');
+  set_free(used, rover, node_size(rover));
+  for (pointer p=rlink(rover); p != rover; p=rlink(p)) {
+    set_free(used, p, node_size(p));
+  }
+  return used;
+}
+
+static void print_used(std::vector<char>& used) {
+  bool used_run_started {false};
+  int count {0};
+  int run_begin {0};
+  for(char c : used) {
+    if (c == '1' && ! used_run_started) {
+      used_run_started = true;
+      run_begin = count;
+      std::print("Used starts at {}", count); 
+    }
+    else if (c == '0' && used_run_started) {
+      std::println(" for {} words", count - run_begin);
+      used_run_started = false;
+    }
+    count++;
+  }
+  if (used_run_started) {
+    std::println(" for {} words", count - run_begin);
   }
 }
 
@@ -95,26 +132,41 @@ TEST_CASE("Destroying list") {
   pointer lo_mem_max;
   halfword node_increment;
 
+  SECTION("Tests on a fresh data structure should show empty memory") {
+    expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+    REQUIRE(avail_len(avail) == mem_max - hi_mem_min);
+    expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+    REQUIRE(free_list_len(rover) == lo_mem_max);    
+  }
+
   SECTION("Basic list") {
     pointer nbl = new_basic_list();
+    /*
     short_display_avail_list(ostr);
     show_box(nbl);
     std::print("{}\n", ostr.view());
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
     std::print("avail {} avail_len(avail) {} mem_max {} hi_mem_min {}\n",
                avail, avail_len(avail), mem_max, hi_mem_min);
+    */
     flush_node_list(nbl);
-    short_display_avail_list(ostr);
+    //short_display_avail_list(ostr);
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
+    /*
     std::print("avail {} avail_len(avail) {} mem_max {} hi_mem_min {}\n",
                avail, avail_len(avail), mem_max, hi_mem_min);
+    */
     REQUIRE(avail_len(avail) == mem_max - hi_mem_min);
  
     expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+    std::println("--- Free node list before merge ---");
     short_display_free_list(rover);
-    ostr.str("");
-    show_box(953);
-    std::println("^^^^box 953\n{}", ostr.view());
+    std::println("---- Free node list after merge ---");
+    (void) get_node(merge_only);
+    expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
+    short_display_free_list(rover);
+    std::vector<char> used = map_occupied_nodes(rover, node_increment);
+    print_used(used);
     REQUIRE(free_list_len(rover) == lo_mem_max);
   }
 }

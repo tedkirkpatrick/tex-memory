@@ -54,8 +54,6 @@ constexpr std::byte default_font {0};
   halfword q = make_letter_token('q');
   halfword r = make_letter_token('r');
   add_token_to_list(add_token_to_list(token_list, q), r);
-  //pointer nb = new_null_box();
-  //std::println("new_null_box() for whatsit {}", nb);
   write_tokens(w) = token_list;
   return w;
 }
@@ -63,6 +61,7 @@ constexpr std::byte default_font {0};
 [[nodiscard]] static pointer new_glue_node(pointer leader=null) {
   pointer gs = new_glue_spec(two, unity, normal, unity, normal);
   pointer g = new_glue(gs);
+  glue_ref_count(gs) = 0; // Was incremented by new_glue()
   leader_ptr(g) = leader;
   return g;
 }
@@ -91,10 +90,8 @@ constexpr std::byte default_font {0};
 
 [[nodiscard]] pointer new_basic_list() {
   pointer vl = new_null_box();
-  std::println("new_null() box for vlist at {}", vl);
   type(vl) = vlist_node;
   pointer hl = new_null_box();
-  std::println("new_null() box for hlist at {}", hl);
   list_ptr(vl) = hl;
   pointer ac = new_char_node('a');
   list_ptr(hl) = ac;
@@ -106,7 +103,6 @@ constexpr std::byte default_font {0};
   pointer wo = new_whatsit_write_node();
   link(ins) = wo;
   pointer gn = new_null_box();
-  std::println("new_null() box for glue at {}", gn);
   pointer g = new_glue_node(gn);
   link(wo) = g;
   pointer k = new_kern(two);

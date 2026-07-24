@@ -131,7 +131,6 @@ extern pointer mem_end;
 // Section 121
 
 constexpr void free_avail(pointer p) {
-  std::println("*** free_avail({})", p);
   link(p) = avail;
   avail = p;
 }

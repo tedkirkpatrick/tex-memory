@@ -72,7 +72,6 @@ pointer mem_end;
     }
   }
   link(p) = null;
-  println("get_avail() returned {}", p);
   return p;
 }
 

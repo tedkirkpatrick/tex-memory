@@ -17,19 +17,10 @@ void flush_node_list(pointer p) {
   pointer q;
   while (p != null) {
     q = link(p);
-    if (p == 957) {
-      std::println("*** flush_node_list on 957");
-    }
     if (is_char_node(p)) {
-      if (p == 957) {
-        std::println("*** flush_node_list on 957---free_avail, is_char_node {}", is_char_node(p));
-      }
       free_avail(p);
     }
     else {
-      if (p == 957) {
-        std::println("*** flush_node_list on 957---node type {}", int(type(p)));
-      }
       switch(type(p)) {
       case hlist_node:
       case vlist_node:
@@ -53,8 +44,7 @@ void flush_node_list(pointer p) {
           break;
         case write_node:
         case special_node:
-          std::println("^^^^ Deleting whatsit write_node at {}, write_tokens {}", p, write_tokens(p));
-          delete_token_ref(write_tokens(p));
+           delete_token_ref(write_tokens(p));
           free_node(p, write_node_size);
           goto done;
         case close_node:
@@ -79,8 +69,7 @@ void flush_node_list(pointer p) {
         flush_node_list(lig_ptr(p));
         break;
       case mark_node:
-        std::println("&&&& Deleting mark_node at {}, mark_ptr {}", p, mark_ptr(p));
-        delete_token_ref(mark_ptr(p));
+         delete_token_ref(mark_ptr(p));
         break;
       case disc_node:
         flush_node_list(pre_break(p));

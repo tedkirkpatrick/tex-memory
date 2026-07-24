@@ -4,12 +4,14 @@
 #include "basic_memory.hpp"
 #include "boxes.hpp"
 
+// For debugging
+#include <print>
+
 // Section 200
 
 constexpr halfword& token_ref_count(pointer p) { return info(p); }
 constexpr void delete_token_ref(pointer p) {
   if (token_ref_count(p) == null) {
-    std::println("delete_token_ref of {}", p);
     flush_list(p);
   }
   else
