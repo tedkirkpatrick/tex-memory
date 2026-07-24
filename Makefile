@@ -3,7 +3,7 @@ STD=-std=c++23
 BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
 DEBUG_FLAGS=-g -O0
 LFLAGS=
-COVERAGE_FLAGS=--coverage -g -O0
+COVERAGE_FLAGS=--coverage
 
 ifeq ($(COV),yes)
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS) $(DEBUG_FLAGS)
