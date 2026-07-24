@@ -1,3 +1,4 @@
+#-*- Makefile-*-
 CXX=g++
 STD=-std=c++23
 BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror

@@ -88,6 +88,7 @@ constexpr std::byte default_font {0};
   return d;
 }
 
+// Create a list that, when deleted, will exercise every case of flush_node_list()
 [[nodiscard]] pointer new_basic_list() {
   pointer vl = new_null_box();
   type(vl) = vlist_node;
