@@ -33,3 +33,9 @@ test_memory: $(MEMORY_OBJ) test_memory.o test_main.o
 
 clean:
 	/bin/rm -f $(EXE) test_memory.o test_boxes.o test_main.o $(MEMORY_OBJ) $(BOX_OBJ)
+
+test: $(EXE)
+	./test_memory
+	./test_boxes
+	./test_destroy
+
