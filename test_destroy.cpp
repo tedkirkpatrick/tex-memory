@@ -5,6 +5,9 @@
 #include <sstream>
 #include <vector>
 
+// Enable benchmarking code in this routine
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+
 #include "basic_memory.hpp"
 #include "boxes.hpp"
 #include "catch2.hpp"
@@ -170,4 +173,8 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
     print_used(used);
     REQUIRE(free_list_len(rover) == lo_mem_max);
   }
+  BENCHMARK("Basic list") {
+    pointer nbl = new_basic_list();
+    flush_node_list(nbl);
+  };
 }
