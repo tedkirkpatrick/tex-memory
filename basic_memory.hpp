@@ -18,6 +18,7 @@
 #define basic_memory_hpp
 
 #include <cstddef>
+#include <print>
 
 // Section 11
 constexpr int mem_max = 30'000;
@@ -130,6 +131,7 @@ extern pointer mem_end;
 // Section 121
 
 constexpr void free_avail(pointer p) {
+  std::println("*** free_avail({})", p);
   link(p) = avail;
   avail = p;
 }
@@ -197,6 +199,7 @@ namespace dynmemdbg {
 
   // Expose the key variables of the dynamic memory routines for debugging
   extern void expose_avail_vars(memory_word*& mem_parm, pointer& avail_parm, pointer& mem_end_parm, pointer& hi_mem_min_parm);
+  extern void dump_avail_list();
   extern void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm);
   extern void dump_free_list();
 }

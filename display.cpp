@@ -91,7 +91,7 @@ static void print_font_and_char(int p) {
   if (p > mem_end)
     print_esc("CLOBBERED.");
   else {
-    if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
+     if (font(p) < std::byte(font_base) || font(p) > std::byte(font_max))
       print_char('*');
     else {
       // Begin Section 267

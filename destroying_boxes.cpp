@@ -4,6 +4,9 @@
 #include "extensions.hpp"
 #include "reporting_errors.hpp"
 
+// For debugging
+#include <print>
+
 // Section 201
 
 void delete_glue_ref(pointer p) { fast_delete_glue_ref(p); }
@@ -14,9 +17,19 @@ void flush_node_list(pointer p) {
   pointer q;
   while (p != null) {
     q = link(p);
-    if (is_char_node(p))
+    if (p == 957) {
+      std::println("*** flush_node_list on 957");
+    }
+    if (is_char_node(p)) {
+      if (p == 957) {
+        std::println("*** flush_node_list on 957---free_avail, is_char_node {}", is_char_node(p));
+      }
       free_avail(p);
+    }
     else {
+      if (p == 957) {
+        std::println("*** flush_node_list on 957---node type {}", int(type(p)));
+      }
       switch(type(p)) {
       case hlist_node:
       case vlist_node:
@@ -40,9 +53,10 @@ void flush_node_list(pointer p) {
           break;
         case write_node:
         case special_node:
+          std::println("^^^^ Deleting whatsit write_node at {}, write_tokens {}", p, write_tokens(p));
           delete_token_ref(write_tokens(p));
           free_node(p, write_node_size);
-          goto done; // Could just be 'break' but retained because it's in TeX
+          goto done;
         case close_node:
           free_node(p, small_node_size);
           break;
@@ -65,6 +79,7 @@ void flush_node_list(pointer p) {
         flush_node_list(lig_ptr(p));
         break;
       case mark_node:
+        std::println("&&&& Deleting mark_node at {}, mark_ptr {}", p, mark_ptr(p));
         delete_token_ref(mark_ptr(p));
         break;
       case disc_node:

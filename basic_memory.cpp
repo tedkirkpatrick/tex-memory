@@ -72,6 +72,7 @@ pointer mem_end;
     }
   }
   link(p) = null;
+  println("get_avail() returned {}", p);
   return p;
 }
 
@@ -250,6 +251,13 @@ namespace dynmemdbg {
     avail_parm = avail;
     mem_end_parm = mem_end;
     hi_mem_min_parm = hi_mem_min;
+  }
+
+  void dump_avail_list() {
+    println("-- Avail list --");
+    for (pointer p=avail; p != null; p=link(p)) {
+      println("{}: {}  ({} or {:X} {:X})", p, mem[p].hh.rh, mem[p].hh.lh, int(mem[p].hh.qw.b0), int(mem[p].hh.qw.b1));
+    }
   }
 
   void expose_node_vars(pointer& rover_parm, pointer& lo_mem_max_parm, pointer& hi_mem_min_parm, halfword& node_increment_parm) {
