@@ -27,7 +27,7 @@ constexpr int end_match = 14;
 constexpr int stop = 14;
 constexpr int invalid_char = 15;
 constexpr int delim_num = 15;
-constexpr int max_char_cod = 15;
+constexpr int max_char_code = 15;
 
 // Section 210
 
