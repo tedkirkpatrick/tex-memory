@@ -22,6 +22,34 @@ namespace types {
     shrinking
   };
 
+  enum class TokenType {
+    escape,
+    relax,
+    left_brace,
+    right_brace,
+    math_shift,
+    tab_mark,
+    car_ret,
+    out_param,
+    mac_param,
+    sup_mark,
+    sub_mark,
+    ignore,
+    endv,
+    spacer,
+    letter,
+    other_char,
+    active_char,
+    par_end,
+    match,
+    comment,
+    end_match,
+    stop,
+    invalid_char,
+    delim_num,
+    max_char_code,
+  };
+
 } // namespace types
 
 #endif

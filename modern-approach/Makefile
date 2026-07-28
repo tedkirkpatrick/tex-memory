@@ -20,5 +20,8 @@ OBJ=box_classes.o
 all: $(EXE)
 	@echo "Rebuilt all"
 
+box_classes.o: box_classes.cpp box_classes.hpp
+	$(CXX) $(STD) $(CPPFLAGS) -c box_classes.cpp
+
 test_box_classes: $(OBJ) test_main.o
 	$(CXX) $(STD) $(LFLAGS) -o test_box_classes $(OBJ) test_main.o

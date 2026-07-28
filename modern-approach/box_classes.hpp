@@ -51,6 +51,43 @@ namespace boxes {
     int span_count;
   };
 
+  class Disc : public types::Node {
+  public:
+    Disc(types::NodePtr next_, types::NodePtr pre_break, types::NodePtr post_break) :
+      types::Node(std::move(next_)), pre_break(std::move(pre_break)), post_break(std::move(post_break)) {};
+  private:
+    types::NodePtr pre_break {nullptr};
+    types::NodePtr post_break {nullptr};
+    int replace_count {0};
+  };
+
+  class Token : public types::Node {
+  public:
+    Token(types::NodePtr next_, types::TokenType tt_, int val_) : types::Node(std::move(next_)),
+                                                                 type(tt_), val(val_) {};
+  private:
+    types::TokenType type {types::TokenType::letter};
+    int val {0};
+  };
+  using TokenPtr = types::NodePtr; // So we can pass TokenPtr to NodePtr
+
+  class TokenList : public types::Node {
+  public:
+    TokenList(types::NodePtr next_, TokenPtr first_token_) : types::Node(std::move(next_)),
+                                                                   first_token(std::move(first_token_)) {};
+  private:
+    TokenPtr first_token {nullptr};
+  };
+  using TokenListPtr = types::NodePtr; // So we can pass TokenListPtr to NodePtr
+  
+  class Mark : public types::Node {
+  public:
+    Mark(types::NodePtr next_, TokenListPtr tl_) : types::Node(std::move(next_)),
+                                                   token_list(std::move(tl_)) {};
+  private:
+    TokenListPtr token_list {nullptr};
+  };
+
 } // namespace boxes
 
 #endif
