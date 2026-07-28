@@ -1,3 +1,3 @@
 #include "box_classes.hpp"
 
-Box b;
+types::Node b {nullptr};

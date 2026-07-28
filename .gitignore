@@ -6,4 +6,5 @@
 test_destroy
 test_memory
 test_boxes
+test_box_classes
 *-extra
