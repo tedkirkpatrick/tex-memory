@@ -14,6 +14,7 @@ namespace boxes {
     int font_v;
     char char_v;
   };
+  using CharNodePtr = types::NodePtr;
 
   class List : public types::Node {
   public:
@@ -60,6 +61,7 @@ namespace boxes {
     types::NodePtr post_break {nullptr};
     int replace_count {0};
   };
+  using DiscPtr = types::NodePtr;
 
   class Token : public types::Node {
   public:
@@ -87,6 +89,18 @@ namespace boxes {
   private:
     TokenListPtr token_list {nullptr};
   };
+  using MarkPtr = types::NodePtr;
+
+  class Ligature : public types::Node {
+  public:
+    Ligature(types::NodePtr next_, int font_, char lig_, CharNodePtr cc_) :
+      types::Node(std::move(next_)), component_chars(std::move(cc_)), font(font_), lig(lig_) {};
+  private:
+    CharNodePtr component_chars {nullptr};
+    int font {0};
+    char lig {'a'};
+  };
+  using LigaturePtr = types::NodePtr;
 
 } // namespace boxes
 

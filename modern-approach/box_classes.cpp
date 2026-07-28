@@ -10,13 +10,19 @@ namespace boxes {
   namespace {
     // Build a vlist semantically equivalent to new_basic_list() in original
     void new_basic_list () {
-      types::NodePtr d {new Disc(nullptr, nullptr, nullptr)};
+      DiscPtr d {new Disc(nullptr, nullptr, nullptr)};
+
       TokenPtr tz {new Token(nullptr, types::TokenType::letter, 'z')};
       TokenPtr az {new Token(std::move(tz), types::TokenType::letter, 'a')};
       TokenListPtr tl {new TokenList(nullptr, std::move(az))};
-      Mark m {std::move(d), std::move(tl)};
-      types::NodePtr zch {new CharNode(nullptr, 'z', 0)};
-      types::NodePtr ach {new CharNode(std::move(zch), 'a', 0)};
+      MarkPtr m {new Mark(std::move(d), std::move(tl))};
+
+      CharNodePtr i {new CharNode(nullptr, 'i', 0)};
+      CharNodePtr f {new CharNode(std::move(i), 'f', 0)};
+      LigaturePtr lig {new Ligature(std::move(m), 0, 'F', std::move(f))};
+
+      CharNodePtr zch {new CharNode(nullptr, 'z', 0)};
+      CharNodePtr ach {new CharNode(std::move(zch), 'a', 0)};
       types::NodePtr hl {new HList(nullptr, std::move(ach))};
     }
   } // unnamed namespace
