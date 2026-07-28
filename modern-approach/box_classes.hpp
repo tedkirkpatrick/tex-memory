@@ -5,38 +5,49 @@
 
 namespace boxes {
 
+  class CharNode : public types::Node {
+  public:
+    CharNode(types::NodePtr next_, char c_, int font_) : types::Node(std::move(next_)),
+                                                         font_v(font_), char_v {c_} 
+    {};
+  private:
+    int font_v;
+    char char_v;
+  };
+
   class List : public types::Node {
   public:
-    List(types::NodePtr contents_) : types::Node(nullptr),
-                                     contents(std::move(contents_)), height {0}, width {0},
-                                     depth {0}, shift_amount {0}, glue_set {0.0f},
-                                     glue_sign {types::GlueSign::normal}
+    List(types::NodePtr next_, types::NodePtr contents_) : types::Node(std::move(next_)),
+                                     contents(std::move(contents_))
                                      {};
   private:
     types::NodePtr contents;
-    types::scaled height;
-    types::scaled width;
-    types::scaled depth;
-    types::scaled shift_amount;
-    types::glue_ratio glue_set;
-    types::GlueSign glue_sign;
+    types::scaled height {0};
+    types::scaled width {0};
+    types::scaled depth {0};
+    types::scaled shift_amount {0};
+    types::glue_ratio glue_set {0.0f};
+    types::GlueSign glue_sign {types::GlueSign::normal};
+  };
+
+  class HList : public List {
+  public:
+    HList(types::NodePtr next_, types::NodePtr contents_) :
+      List(std::move(next_), std::move(contents_)) {};
   };
 
   class Unset : public types::Node {
   public:
-    Unset(types::NodePtr contents_) : types::Node(nullptr),
-                                      contents(std::move(contents_)),
-                                      height {0}, width {0},
-                                      depth {0}, glue_shrink {0}, glue_sign {types::GlueSign::normal},
-                                      span_count {0}
+    Unset(types::NodePtr next_, types::NodePtr contents_) : types::Node(std::move(next_)),
+                                      contents(std::move(contents_))
                                       {};
   private:
-    types::NodePtr contents;
-    types::scaled height;
-    types::scaled width;
-    types::scaled depth;
-    types::scaled glue_shrink;
-    types::GlueSign glue_sign;
+    types::NodePtr contents {nullptr};
+    types::scaled height {0};
+    types::scaled width {0};
+    types::scaled depth {0};
+    types::scaled glue_shrink {0};
+    types::GlueSign glue_sign {types::GlueSign::normal};
     int span_count;
   };
 
