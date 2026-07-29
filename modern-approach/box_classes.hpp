@@ -140,6 +140,14 @@ namespace boxes {
   };
   using GluePtr = types::NodePtr;
 
+  class WhatsItWrite : public types::Node {
+  public:
+    WhatsItWrite(types::NodePtr next_, TokenListPtr tl_) : types::Node(std::move(next_)), write_tokens(std::move(tl_)) {}
+  private:
+    TokenListPtr write_tokens {nullptr};
+  };
+  using WhatsItWritePtr = types::NodePtr;
+
 } // namespace boxes
 
 #endif

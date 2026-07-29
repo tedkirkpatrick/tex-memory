@@ -8,13 +8,15 @@
 namespace boxes {
 
   namespace {
+    using namespace types::scaled_literals;
+
     // Build a vlist semantically equivalent to new_basic_list() in original
     void new_basic_list () {
       DiscPtr d {new Disc(nullptr, nullptr, nullptr)};
 
       TokenPtr tz {new Token(nullptr, types::TokenType::letter, 'z')};
-      TokenPtr az {new Token(std::move(tz), types::TokenType::letter, 'a')};
-      TokenListPtr tl {new TokenList(nullptr, std::move(az))};
+      TokenPtr ta {new Token(std::move(tz), types::TokenType::letter, 'a')};
+      TokenListPtr tl {new TokenList(nullptr, std::move(ta))};
       MarkPtr m {new Mark(std::move(d), std::move(tl))};
 
       CharNodePtr i {new CharNode(nullptr, 'i', 0)};
@@ -23,11 +25,16 @@ namespace boxes {
 
       KernPtr k {new Kern(std::move(lig), 0, types::KernType::normal_kern)};
 
-      GlueSpecPtr gs {std::make_shared<GlueSpec>(types::two,
-                                   types::unity, types::InfinityOrder::normal,
-                                   types::two, types::InfinityOrder::fil)};
+      GlueSpecPtr gs {std::make_shared<GlueSpec>(2_sc,
+                                   1_sc, types::InfinityOrder::normal,
+                                   2_sc, types::InfinityOrder::fil)};
       HListPtr leader {new HList(nullptr, nullptr)};
       GluePtr g {new Glue(std::move(k), gs, std::move(leader))};
+
+      TokenPtr tr {new Token(nullptr, types::TokenType::letter, 'r')};
+      TokenPtr tq {new Token(std::move(tr), types::TokenType::letter, 'q')};
+      TokenListPtr tlw {new TokenList(nullptr, std::move(tq))};
+      WhatsItWritePtr w {new WhatsItWrite(std::move(g), std::move(tlw))};
 
       CharNodePtr zch {new CharNode(nullptr, 'z', 0)};
       CharNodePtr ach {new CharNode(std::move(zch), 'a', 0)};

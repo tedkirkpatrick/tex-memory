@@ -9,9 +9,6 @@ namespace types {
   namespace scaled_literals {
     constexpr scaled operator ""_sc(unsigned long long int v) { return 0x1'00'00 * scaled(v); }
   } // namespace scaled_literals
-  using namespace scaled_literals;
-  constexpr scaled unity = 1_sc;
-  constexpr scaled two = 2_sc;
 
   using glue_ratio = float;
 
