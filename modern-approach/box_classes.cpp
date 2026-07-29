@@ -36,6 +36,12 @@ namespace boxes {
       TokenListPtr tlw {new TokenList(nullptr, std::move(tq))};
       WhatsItWritePtr w {new WhatsItWrite(std::move(g), std::move(tlw))};
 
+      GlueSpecPtr ins_gs {std::make_shared<GlueSpec>(1_sc,
+                                   1_sc, types::InfinityOrder::fill,
+                                   2_sc, types::InfinityOrder::filll)};
+      HListPtr ins_l {new HList(nullptr, nullptr)};
+      InsPtr ins {new Ins(std::move(w), ins_gs, 4, std::move(ins_l))};
+
       CharNodePtr zch {new CharNode(nullptr, 'z', 0)};
       CharNodePtr ach {new CharNode(std::move(zch), 'a', 0)};
       HListPtr hl {new HList(nullptr, std::move(ach))};

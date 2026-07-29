@@ -32,6 +32,7 @@ namespace boxes {
     types::glue_ratio m_glue_set {0.0f};
     types::GlueSign m_glue_sign {types::GlueSign::normal};
   };
+  using ListPtr = types::NodePtr;
 
   class HList : public List {
   public:
@@ -147,6 +148,17 @@ namespace boxes {
     TokenListPtr m_write_tokens {nullptr};
   };
   using WhatsItWritePtr = types::NodePtr;
+
+  class Ins : public types::Node {
+  public:
+    Ins(types::NodePtr t_next, GlueSpecPtr t_gs, int t_box_num, ListPtr t_list) :
+      types::Node(std::move(t_next)), m_gs(t_gs), m_list(std::move(t_list)), m_box_num(t_box_num) {};
+  private:
+    GlueSpecPtr m_gs {nullptr};
+    ListPtr m_list {nullptr};
+    int m_box_num {0};
+  };
+  using InsPtr = types::NodePtr;
 
 } // namespace boxes
 
