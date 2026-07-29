@@ -23,7 +23,7 @@ namespace boxes {
       CharNodePtr f {new CharNode(std::move(i), 'f', 0)};
       LigaturePtr lig {new Ligature(std::move(m), 0, 'F', std::move(f))};
 
-      KernPtr k {new Kern(std::move(lig), 0, types::KernType::normal_kern)};
+      KernPtr k {new Kern(std::move(lig), 0_sc, types::KernType::normal_kern)};
 
       GlueSpecPtr gs {std::make_shared<GlueSpec>(2_sc,
                                    1_sc, types::InfinityOrder::normal,
@@ -42,9 +42,13 @@ namespace boxes {
       HListPtr ins_l {new HList(nullptr, nullptr)};
       InsPtr ins {new Ins(std::move(w), ins_gs, 4, std::move(ins_l))};
 
-      CharNodePtr zch {new CharNode(nullptr, 'z', 0)};
-      CharNodePtr ach {new CharNode(std::move(zch), 'a', 0)};
-      HListPtr hl {new HList(nullptr, std::move(ach))};
+      RulePtr rule {new Rule(std::move(ins), 1_sc, 3_sc, 0_sc)};
+
+      CharNodePtr bch {new CharNode(nullptr, 'b', 0)};
+      CharNodePtr ach {new CharNode(std::move(bch), 'a', 0)};
+      HListPtr hl {new HList(std::move(rule), std::move(ach))};
+
+      VListPtr vl {new VList(nullptr, std::move(hl))};
     }
   } // unnamed namespace
 
