@@ -21,6 +21,10 @@ namespace types {
   };
   using NodePtr = std::unique_ptr<Node>;
 
+  enum class Font {
+    default_font,
+  };
+
   enum class GlueSign {
     normal,
     stretching,

@@ -19,8 +19,8 @@ namespace boxes {
       TokenListPtr tl {new TokenList(nullptr, std::move(ta))};
       MarkPtr m {new Mark(std::move(d), std::move(tl))};
 
-      CharNodePtr i {new CharNode(nullptr, 'i', 0)};
-      CharNodePtr f {new CharNode(std::move(i), 'f', 0)};
+      CharNodePtr i {new CharNode(nullptr, 'i', types::Font::default_font)};
+      CharNodePtr f {new CharNode(std::move(i), 'f', types::Font::default_font)};
       LigaturePtr lig {new Ligature(std::move(m), 0, 'F', std::move(f))};
 
       KernPtr k {new Kern(std::move(lig), 0_sc, types::KernType::normal_kern)};
@@ -44,8 +44,8 @@ namespace boxes {
 
       RulePtr rule {new Rule(std::move(ins), 1_sc, 3_sc, 0_sc)};
 
-      CharNodePtr bch {new CharNode(nullptr, 'b', 0)};
-      CharNodePtr ach {new CharNode(std::move(bch), 'a', 0)};
+      CharNodePtr bch {new CharNode(nullptr, 'b', types::Font::default_font)};
+      CharNodePtr ach {new CharNode(std::move(bch), 'a', types::Font::default_font)};
       HListPtr hl {new HList(std::move(rule), std::move(ach))};
 
       VListPtr vl {new VList(nullptr, std::move(hl))};

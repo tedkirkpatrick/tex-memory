@@ -10,11 +10,11 @@ namespace boxes {
 
   class CharNode : public types::Node {
   public:
-    CharNode(types::NodePtr t_next, char t_c, int t_font) : types::Node(std::move(t_next)),
+    CharNode(types::NodePtr t_next, char t_c, types::Font t_font) : types::Node(std::move(t_next)),
                                                          m_font(t_font), m_char {t_c} 
     {};
   private:
-    int m_font;
+    types::Font m_font;
     char m_char;
   };
   using CharNodePtr = types::NodePtr;
