@@ -7,16 +7,16 @@ namespace types {
 
   using scaled = int;
   namespace scaled_literals {
-    constexpr scaled operator ""_sc(unsigned long long int v) { return 0x1'00'00 * scaled(v); }
+    constexpr scaled operator ""_sc(unsigned long long int t_v) { return 0x1'00'00 * scaled(t_v); }
   } // namespace scaled_literals
 
   using glue_ratio = float;
 
   class Node {
   public:
-    Node(std::unique_ptr<Node> link_) : link(std::move(link_)) {};
+    Node(std::unique_ptr<Node> t_link) : m_link(std::move(t_link)) {};
   private:
-    std::unique_ptr<Node> link;
+    std::unique_ptr<Node> m_link;
   };
   using NodePtr = std::unique_ptr<Node>;
 
