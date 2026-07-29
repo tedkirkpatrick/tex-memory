@@ -1,6 +1,6 @@
 #include "box_classes.hpp"
 
-// Enable benchmarking code in this routine
+// Enable benchmarking code in this translation unit
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 
 #include "catch2.hpp"
@@ -21,9 +21,17 @@ namespace boxes {
       CharNodePtr f {new CharNode(std::move(i), 'f', 0)};
       LigaturePtr lig {new Ligature(std::move(m), 0, 'F', std::move(f))};
 
+      KernPtr k {new Kern(std::move(lig), 0, types::KernType::normal_kern)};
+
+      GlueSpecPtr gs {std::make_shared<GlueSpec>(types::two,
+                                   types::unity, types::InfinityOrder::normal,
+                                   types::two, types::InfinityOrder::fil)};
+      HListPtr leader {new HList(nullptr, nullptr)};
+      GluePtr g {new Glue(std::move(k), gs, std::move(leader))};
+
       CharNodePtr zch {new CharNode(nullptr, 'z', 0)};
       CharNodePtr ach {new CharNode(std::move(zch), 'a', 0)};
-      types::NodePtr hl {new HList(nullptr, std::move(ach))};
+      HListPtr hl {new HList(nullptr, std::move(ach))};
     }
   } // unnamed namespace
 

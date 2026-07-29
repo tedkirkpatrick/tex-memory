@@ -1,6 +1,8 @@
 #ifndef BOX_CLASSES_HPP
 #define BOX_CLASSES_HPP
 
+#include <memory>
+
 #include "box_types.hpp"
 
 namespace boxes {
@@ -36,6 +38,7 @@ namespace boxes {
     HList(types::NodePtr next_, types::NodePtr contents_) :
       List(std::move(next_), std::move(contents_)) {};
   };
+  using HListPtr = types::NodePtr;
 
   class Unset : public types::Node {
   public:
@@ -51,6 +54,7 @@ namespace boxes {
     types::GlueSign glue_sign {types::GlueSign::normal};
     int span_count;
   };
+  using UnsetPtr = types::NodePtr;
 
   class Disc : public types::Node {
   public:
@@ -101,6 +105,40 @@ namespace boxes {
     char lig {'a'};
   };
   using LigaturePtr = types::NodePtr;
+
+  class Kern : public types::Node {
+  public:
+    Kern(types::NodePtr next_, types::scaled width_, types::KernType type_) :
+      types::Node(std::move(next_)), width(width_), type(type_) {}
+  private:
+    types::scaled width {0};
+    types::KernType type {types::KernType::normal_kern};
+  };
+  using KernPtr = types::NodePtr;
+
+  class GlueSpec { // A GlueSpec is not a Node because it doesn't have a link field
+  public:
+    GlueSpec(types::scaled width_, types::scaled stretch_, types::InfinityOrder stretch_order_, types::scaled shrink_,
+             types::InfinityOrder shrink_order_) : width(width_), stretch(stretch_), shrink(shrink_),
+                                                   stretch_o(stretch_order_), shrink_o(shrink_order_) {};
+  private:
+    types::scaled width {0};
+    types::scaled stretch {0};
+    types::scaled shrink {0};
+    types::InfinityOrder stretch_o {types::InfinityOrder::normal};
+    types::InfinityOrder shrink_o {types::InfinityOrder::normal};
+  };
+  using GlueSpecPtr = std::shared_ptr<GlueSpec>;
+
+  class Glue : public types::Node {
+  public:
+    Glue(types::NodePtr next_, GlueSpecPtr gs_, types::NodePtr leader_) :
+      types::Node(std::move(next_)), leader(std::move(leader_)), gs(gs_) {};
+  private:
+    types::NodePtr leader {nullptr};
+    GlueSpecPtr gs {nullptr};
+  };
+  using GluePtr = types::NodePtr;
 
 } // namespace boxes
 

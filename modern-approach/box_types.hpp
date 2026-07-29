@@ -6,6 +6,13 @@
 namespace types {
 
   using scaled = int;
+  namespace scaled_literals {
+    constexpr scaled operator ""_sc(unsigned long long int v) { return 0x1'00'00 * scaled(v); }
+  } // namespace scaled_literals
+  using namespace scaled_literals;
+  constexpr scaled unity = 1_sc;
+  constexpr scaled two = 2_sc;
+
   using glue_ratio = float;
 
   class Node {
@@ -48,6 +55,20 @@ namespace types {
     invalid_char,
     delim_num,
     max_char_code,
+  };
+
+  // explicit is a C++ keyword so we add a "_kern" suffix to all entries
+  enum class KernType {
+    normal_kern,
+    explicit_kern,
+    acc_kern,
+  };
+
+  enum class InfinityOrder {
+    normal,
+    fil, // I didn't come up with these names, people
+    fill,
+    filll
   };
 
 } // namespace types
