@@ -15,7 +15,7 @@ constexpr void delete_token_ref(pointer p) {
     flush_list(p);
   }
   else
-    token_ref_count(p)--;
+    decr(token_ref_count(p));
 }
 
 // Section 201

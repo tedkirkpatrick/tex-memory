@@ -17,6 +17,7 @@
 #ifndef basic_memory_hpp
 #define basic_memory_hpp
 
+#include <concepts>
 #include <cstddef>
 #include <print>
 
@@ -33,6 +34,11 @@ constexpr int mem_bot = 0;
 constexpr int mem_top = mem_max; // For our purposes we make these equivalent
 constexpr int font_base = 0;
 constexpr int hash_size = 2100;
+
+// Section 16
+// Use generic functions so we can apply to any integral type
+constexpr void incr(std::integral auto& v) { v++; }
+constexpr void decr(std::integral auto& v) { v--; }
 
 // Section 109
 using glue_ratio = float; // Moved this first so we can use the type in the next expressions
@@ -57,10 +63,6 @@ consteval short int ho(short int v) { return v; } // Because min_halfword == 0
 using sc = int;
 using quarterword = std::byte;
 using halfword = short unsigned int;
-
-// Next two defined in Section 16 in TeX but I want to use the type alias 'halfword'
-constexpr void incr(halfword& v) { v++; }
-constexpr void decr(halfword& v) { v--; }
 
 // Next two defined in Section 110 in TeX but I want to use the type alias 'halfword'
 constexpr halfword min_halfword = 0;

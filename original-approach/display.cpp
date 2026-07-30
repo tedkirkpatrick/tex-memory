@@ -191,7 +191,7 @@ void show_node_list(pointer p) {
       print("Bad link, display aborted.");
       return;
     }
-    n++;
+    incr(n);
     if (n > breadth_max) {
       print("etc.");
       return;

@@ -82,7 +82,7 @@ void show_token_list(int p, int q, int l) {
         case match:
           match_chr = char(c);
           print(c);
-          n++;
+          incr(n);
           print(n);
           if (n > '9')
             return;
