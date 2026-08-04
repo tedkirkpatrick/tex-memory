@@ -1,3 +1,10 @@
+/*
+  A function to touch an element of every node linked from pointer p.
+  Logic based on node_display() except we don't display, we simply
+  grab an integer value and recurse down into any linked nodes.
+ */
+
+
 #include "traverse.hpp"
 
 #include <cassert>
