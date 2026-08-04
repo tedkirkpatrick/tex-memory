@@ -19,7 +19,7 @@ EXE=test_boxes test_destroy test_memory
 MEMORY_OBJ=basic_memory.o reporting_errors.o
 BOX_OBJ=boxes.o destroying_boxes.o display.o eqtb.o hash.o printing.o \
 	scaled.o string_handling.o token_list.o
-SAMPLE_LISTS=sample_lists.o
+SAMPLE_LISTS=sample_lists.o traverse.o
 
 all: $(EXE)
 	@echo "Rebuilt all"

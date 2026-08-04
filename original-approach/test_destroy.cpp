@@ -16,6 +16,7 @@
 #include "display.hpp"
 #include "printing.hpp"
 #include "sample_lists.hpp"
+#include "traverse.hpp"
 
 // Debugging
 #include <print>
@@ -175,6 +176,9 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
   }
   BENCHMARK("Basic list") {
     pointer nbl = new_basic_list();
+    for (int v = 0; v < 1000; v++) {
+      traverse_node(nbl);
+    }
     flush_node_list(nbl);
   };
 }
