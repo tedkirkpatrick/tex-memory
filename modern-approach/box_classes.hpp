@@ -25,6 +25,7 @@ namespace boxes {
                                      m_contents(std::move(t_contents))
                                      {};
     int traverse_node() override;
+    void set_height(types::scaled t_h) { m_height = t_h; }; // For testing
   private:
     types::NodePtr m_contents;
     types::scaled m_height {0_sc};

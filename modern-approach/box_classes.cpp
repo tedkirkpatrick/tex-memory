@@ -138,11 +138,11 @@ namespace boxes {
   } // unnamed namespace
 
   TEST_CASE("Benchmarks") {
-    BENCHMARK("Basic hlist create/delete") {
+    BENCHMARK("Basic vlist create/traverse/delete") {
       VListPtr v = new_basic_list();
       for (int i = 0; i < 1000; i++) {
         v->traverse_node();
       }
-    };
+    }; // v will be deleted at end of scope for each run
   }
 } // namespace boxes
