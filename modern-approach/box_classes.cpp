@@ -7,11 +7,95 @@
 
 namespace boxes {
 
+  int List::traverse_node() {
+    int v = m_height;
+    if (m_contents != nullptr) {
+      m_contents->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+
+  int Unset::traverse_node() {
+    int v = m_height;
+    if (m_contents != nullptr) {
+      m_contents->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+
+  int Disc::traverse_node() {
+    int v = m_replace_count;
+    if (m_pre_break != nullptr) {
+      m_pre_break->traverse_node();
+    }
+    if (m_post_break != nullptr) {
+      m_post_break->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+
+  int TokenList::traverse_node() {
+    if (m_first_token != nullptr) {
+      m_first_token->traverse_node();
+    }
+    return Node::traverse_node();
+  }
+
+  int Mark::traverse_node() {
+    if (m_token_list != nullptr) {
+      m_token_list->traverse_node();
+    }
+    return Node::traverse_node();
+  }
+
+  int Ligature::traverse_node() {
+    int v = m_font;
+    if (m_component_chars != nullptr) {
+      m_component_chars->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+
+  int Glue::traverse_node() {
+    int v = 0;
+    if (m_gs != nullptr) {
+      v = m_gs->get_width();
+    }
+    if (m_leader != nullptr) {
+      m_leader->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+  
+  int WhatsItWrite::traverse_node() {
+    if (m_write_tokens != nullptr) {
+      m_write_tokens->traverse_node();
+    }
+    return Node::traverse_node();
+  }
+
+  int Ins::traverse_node() {
+    int v = 0;
+    if (m_gs != nullptr) {
+      v = m_gs->get_width();
+    }
+    if (m_list != nullptr) {
+      m_list->traverse_node();
+    }
+    Node::traverse_node();
+    return v;
+  }
+
   namespace {
     using namespace types::scaled_literals;
 
     // Build a vlist semantically equivalent to new_basic_list() in original
-    void new_basic_list () {
+    VListPtr new_basic_list () {
       DiscPtr d {new Disc(nullptr, nullptr, nullptr)};
 
       TokenPtr tz {new Token(nullptr, types::TokenType::letter, 'z')};
@@ -49,12 +133,16 @@ namespace boxes {
       HListPtr hl {new HList(std::move(rule), std::move(ach))};
 
       VListPtr vl {new VList(nullptr, std::move(hl))};
+      return vl;
     }
   } // unnamed namespace
 
   TEST_CASE("Benchmarks") {
     BENCHMARK("Basic hlist create/delete") {
-      new_basic_list();
+      VListPtr v = new_basic_list();
+      for (int i = 0; i < 1000; i++) {
+        v->traverse_node();
+      }
     };
   }
 } // namespace boxes

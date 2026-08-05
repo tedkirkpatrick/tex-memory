@@ -23,7 +23,7 @@ else
 endif
 
 EXE=test_box_classes
-OBJ=box_classes.o
+OBJ=box_classes.o box_types.o
 
 all: $(EXE)
 	@echo "Rebuilt all"

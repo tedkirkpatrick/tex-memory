@@ -11,7 +11,7 @@ namespace boxes {
   class CharNode : public types::Node {
   public:
     CharNode(types::NodePtr t_next, char t_c, types::Font t_font) : types::Node(std::move(t_next)),
-                                                         m_font(t_font), m_char {t_c} 
+                                                                    m_font(t_font), m_char {t_c} 
     {};
   private:
     types::Font m_font;
@@ -24,6 +24,7 @@ namespace boxes {
     List(types::NodePtr t_next, types::NodePtr t_contents) : types::Node(std::move(t_next)),
                                      m_contents(std::move(t_contents))
                                      {};
+    int traverse_node() override;
   private:
     types::NodePtr m_contents;
     types::scaled m_height {0_sc};
@@ -54,6 +55,7 @@ namespace boxes {
     Unset(types::NodePtr t_next, types::NodePtr t_contents) : types::Node(std::move(t_next)),
                                       m_contents(std::move(t_contents))
                                       {};
+    int traverse_node() override;
   private:
     types::NodePtr m_contents {nullptr};
     types::scaled m_height {0_sc};
@@ -69,6 +71,7 @@ namespace boxes {
   public:
     Disc(types::NodePtr t_next, types::NodePtr t_pre_break, types::NodePtr t_post_break) :
       types::Node(std::move(t_next)), m_pre_break(std::move(t_pre_break)), m_post_break(std::move(t_post_break)) {};
+    int traverse_node() override;
   private:
     types::NodePtr m_pre_break {nullptr};
     types::NodePtr m_post_break {nullptr};
@@ -90,6 +93,7 @@ namespace boxes {
   public:
     TokenList(types::NodePtr t_next, TokenPtr t_first_token) : types::Node(std::move(t_next)),
                                                                    m_first_token(std::move(t_first_token)) {};
+    int traverse_node() override;
   private:
     TokenPtr m_first_token {nullptr};
   };
@@ -99,6 +103,7 @@ namespace boxes {
   public:
     Mark(types::NodePtr t_next, TokenListPtr t_tl) : types::Node(std::move(t_next)),
                                                    m_token_list(std::move(t_tl)) {};
+    int traverse_node() override;
   private:
     TokenListPtr m_token_list {nullptr};
   };
@@ -108,6 +113,7 @@ namespace boxes {
   public:
     Ligature(types::NodePtr t_next, int t_font, char t_lig, CharNodePtr t_cc) :
       types::Node(std::move(t_next)), m_component_chars(std::move(t_cc)), m_font(t_font), m_lig(t_lig) {};
+    int traverse_node() override;
   private:
     CharNodePtr m_component_chars {nullptr};
     int m_font {0};
@@ -130,6 +136,7 @@ namespace boxes {
     GlueSpec(types::scaled t_width, types::scaled t_stretch, types::InfinityOrder t_stretch_order, types::scaled t_shrink,
              types::InfinityOrder t_shrink_order) : m_width(t_width), m_stretch(t_stretch), m_shrink(t_shrink),
                                                    m_stretch_o(t_stretch_order), m_shrink_o(t_shrink_order) {};
+    types::scaled get_width() { return m_width; };
   private:
     types::scaled m_width {0_sc};
     types::scaled m_stretch {0_sc};
@@ -143,6 +150,7 @@ namespace boxes {
   public:
     Glue(types::NodePtr t_next, GlueSpecPtr t_gs, types::NodePtr t_leader) :
       types::Node(std::move(t_next)), m_leader(std::move(t_leader)), m_gs(t_gs) {};
+    int traverse_node() override;
   private:
     types::NodePtr m_leader {nullptr};
     GlueSpecPtr m_gs {nullptr};
@@ -152,6 +160,7 @@ namespace boxes {
   class WhatsItWrite : public types::Node {
   public:
     WhatsItWrite(types::NodePtr t_next, TokenListPtr t_tl) : types::Node(std::move(t_next)), m_write_tokens(std::move(t_tl)) {}
+    int traverse_node() override;
   private:
     TokenListPtr m_write_tokens {nullptr};
   };
@@ -161,6 +170,7 @@ namespace boxes {
   public:
     Ins(types::NodePtr t_next, GlueSpecPtr t_gs, int t_box_num, ListPtr t_list) :
       types::Node(std::move(t_next)), m_gs(t_gs), m_list(std::move(t_list)), m_box_num(t_box_num) {};
+    int traverse_node() override;
   private:
     GlueSpecPtr m_gs {nullptr};
     ListPtr m_list {nullptr};

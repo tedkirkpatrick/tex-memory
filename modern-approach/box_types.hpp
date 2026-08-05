@@ -16,6 +16,7 @@ namespace types {
   public:
     Node(std::unique_ptr<Node> t_link) : m_link(std::move(t_link)) {};
     virtual ~Node() = default;
+    virtual int traverse_node();
   private:
     std::unique_ptr<Node> m_link;
   };
