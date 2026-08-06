@@ -1,6 +1,10 @@
 #ifndef BOX_CLASSES_HPP
 #define BOX_CLASSES_HPP
 
+/*
+  Define the classes for every box type. Boxes are subclasses of Nodes.
+ */
+
 #include "box_types.hpp"
 
 #include <memory>
@@ -132,29 +136,14 @@ namespace boxes {
   };
   using KernPtr = types::NodePtr;
 
-  class GlueSpec { // A GlueSpec is not a Node because it doesn't have a link field
-  public:
-    GlueSpec(types::scaled t_width, types::scaled t_stretch, types::InfinityOrder t_stretch_order, types::scaled t_shrink,
-             types::InfinityOrder t_shrink_order) : m_width(t_width), m_stretch(t_stretch), m_shrink(t_shrink),
-                                                   m_stretch_o(t_stretch_order), m_shrink_o(t_shrink_order) {};
-    types::scaled get_width() { return m_width; };
-  private:
-    types::scaled m_width {0_sc};
-    types::scaled m_stretch {0_sc};
-    types::scaled m_shrink {0_sc};
-    types::InfinityOrder m_stretch_o {types::InfinityOrder::normal};
-    types::InfinityOrder m_shrink_o {types::InfinityOrder::normal};
-  };
-  using GlueSpecPtr = std::shared_ptr<GlueSpec>;
-
   class Glue : public types::Node {
   public:
-    Glue(types::NodePtr t_next, GlueSpecPtr t_gs, types::NodePtr t_leader) :
+    Glue(types::NodePtr t_next, types::GlueSpecPtr t_gs, types::NodePtr t_leader) :
       types::Node(std::move(t_next)), m_leader(std::move(t_leader)), m_gs(t_gs) {};
     int traverse_node() override;
   private:
     types::NodePtr m_leader {nullptr};
-    GlueSpecPtr m_gs {nullptr};
+    types::GlueSpecPtr m_gs {nullptr};
   };
   using GluePtr = types::NodePtr;
 
@@ -169,11 +158,11 @@ namespace boxes {
 
   class Ins : public types::Node {
   public:
-    Ins(types::NodePtr t_next, GlueSpecPtr t_gs, int t_box_num, ListPtr t_list) :
+    Ins(types::NodePtr t_next, types::GlueSpecPtr t_gs, int t_box_num, ListPtr t_list) :
       types::Node(std::move(t_next)), m_gs(t_gs), m_list(std::move(t_list)), m_box_num(t_box_num) {};
     int traverse_node() override;
   private:
-    GlueSpecPtr m_gs {nullptr};
+    types::GlueSpecPtr m_gs {nullptr};
     ListPtr m_list {nullptr};
     int m_box_num {0};
   };

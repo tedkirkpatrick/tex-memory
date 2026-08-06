@@ -109,7 +109,7 @@ namespace boxes {
 
       KernPtr k {new Kern(std::move(lig), 0_sc, types::KernType::normal_kern)};
 
-      GlueSpecPtr gs {std::make_shared<GlueSpec>(2_sc,
+      types::GlueSpecPtr gs {std::make_shared<types::GlueSpec>(2_sc,
                                    1_sc, types::InfinityOrder::normal,
                                    2_sc, types::InfinityOrder::fil)};
       HListPtr leader {new HList(nullptr, nullptr)};
@@ -120,7 +120,7 @@ namespace boxes {
       TokenListPtr tlw {new TokenList(nullptr, std::move(tq))};
       WhatsItWritePtr w {new WhatsItWrite(std::move(g), std::move(tlw))};
 
-      GlueSpecPtr ins_gs {std::make_shared<GlueSpec>(1_sc,
+      types::GlueSpecPtr ins_gs {std::make_shared<types::GlueSpec>(1_sc,
                                    1_sc, types::InfinityOrder::fill,
                                    2_sc, types::InfinityOrder::filll)};
       HListPtr ins_l {new HList(nullptr, nullptr)};
