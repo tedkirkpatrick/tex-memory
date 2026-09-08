@@ -16,9 +16,10 @@ namespace types {
   // Nodes form a singly-linked list. All boxes are derived from this base.
   class Node {
   public:
-    Node(std::unique_ptr<Node> t_link) : m_link(std::move(t_link)) {};
+    Node(std::unique_ptr<Node> t_link) : m_link(std::move(t_link)) {}
     virtual ~Node() = default;
-    virtual int traverse_node();
+    virtual int traverse_node(); // Just used for performance testing
+
   private:
     std::unique_ptr<Node> m_link;
   };
@@ -35,9 +36,11 @@ namespace types {
   class GlueSpec {
   public:
     GlueSpec(scaled t_width, scaled t_stretch, InfinityOrder t_stretch_order, scaled t_shrink,
-             InfinityOrder t_shrink_order) : m_width(t_width), m_stretch(t_stretch), m_shrink(t_shrink),
-                                                   m_stretch_o(t_stretch_order), m_shrink_o(t_shrink_order) {};
-    scaled get_width() { return m_width; };
+             InfinityOrder t_shrink_order) :
+      m_width(t_width), m_stretch(t_stretch), m_shrink(t_shrink),
+      m_stretch_o(t_stretch_order), m_shrink_o(t_shrink_order) {}
+    scaled get_width() { return m_width; }
+
   private:
     scaled m_width {0_sc};
     scaled m_stretch {0_sc};
