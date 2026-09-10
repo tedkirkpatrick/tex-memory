@@ -34,7 +34,7 @@ test_memory: $(MEMORY_OBJ) test_memory.o test_main.o
 	$(CXX) $(STD) $(LFLAGS) -o test_memory $(MEMORY_OBJ) test_memory.o test_main.o
 
 clean:
-	/bin/rm -f $(EXE) test_memory.o test_boxes.o test_main.o $(MEMORY_OBJ) $(BOX_OBJ)
+	/bin/rm -f $(EXE) test_boxes.o test_destroy.o test_memory.o test_main.o $(MEMORY_OBJ) $(BOX_OBJ) $(SAMPLE_LISTS)
 
 test: $(EXE)
 	./test_memory

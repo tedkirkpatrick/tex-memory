@@ -174,7 +174,7 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
     print_used(used);
     REQUIRE(free_list_len(rover) == lo_mem_max);
   }
-  BENCHMARK("Basic vlist create/traverse/delete"") {
+  BENCHMARK("Basic vlist create/traverse/delete") {
     pointer nbl = new_basic_list();
     for (int v = 0; v < 1000; v++) {
       traverse_node(nbl);

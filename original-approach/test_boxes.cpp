@@ -16,9 +16,6 @@
 #include "string_handling.hpp"
 #include "token_list.hpp"
 
-// Debugging
-#include <print>
-
 TEST_CASE("Printing char") {
   std::ostringstream ostr;
   set_str(&ostr);
