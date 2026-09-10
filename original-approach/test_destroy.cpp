@@ -145,7 +145,7 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
 
   SECTION("Basic list") {
     pointer nbl = new_basic_list();
-    if (trace_memory) {
+    if constexpr (trace_memory) {
       short_display_avail_list(ostr);
       show_box(nbl);
       std::print("{}\n", ostr.view());
@@ -155,7 +155,7 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
     }
     flush_node_list(nbl);
     expose_avail_vars(mem, avail, mem_end, hi_mem_min);
-    if (trace_memory) {
+    if constexpr (trace_memory) {
       short_display_avail_list(ostr);
       std::print("avail {} avail_len(avail) {} mem_max {} hi_mem_min {}\n",
                  avail, avail_len(avail), mem_max, hi_mem_min);
@@ -163,14 +163,14 @@ TEST_CASE("Exercise all branches of flush_node_list()") {
     REQUIRE(avail_len(avail) == mem_max - hi_mem_min);
  
     expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
-    if (trace_memory) {
+    if constexpr (trace_memory) {
       std::println("--- Free node list before merge ---");
       short_display_free_list(rover);
       std::println("---- Free node list after merge ---");
     }
     (void) get_node(merge_only);
     expose_node_vars(rover, lo_mem_max, hi_mem_min, node_increment);
-    if (trace_memory) {
+    if constexpr (trace_memory) {
       short_display_free_list(rover);
       std::vector<char> used = map_occupied_nodes(rover, node_increment);
       print_used(used);
