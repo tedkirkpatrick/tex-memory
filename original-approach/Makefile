@@ -15,7 +15,7 @@ else
 endif
 
 
-EXE=test_boxes test_destroy test_memory
+EXE=run_benchmarks test_boxes test_destroy test_memory
 MEMORY_OBJ=basic_memory.o reporting_errors.o
 BOX_OBJ=boxes.o destroying_boxes.o display.o eqtb.o hash.o printing.o \
 	scaled.o string_handling.o token_list.o
@@ -23,6 +23,9 @@ SAMPLE_LISTS=sample_lists.o traverse.o
 
 all: $(EXE)
 	@echo "Rebuilt all"
+
+run_benchmarks: $(MEMORY_OBJ) $(BOX_OBJ) $(SAMPLE_LISTS) benchmarks.o test_main.o
+	$(CXX) $(STD) $(LFLAGS) -o run_benchmarks $(MEMORY_OBJ) $(BOX_OBJ) $(SAMPLE_LISTS) benchmarks.o test_main.o
 
 test_boxes: $(MEMORY_OBJ) $(BOX_OBJ) test_boxes.o test_main.o
 	$(CXX) $(STD) $(LFLAGS) -o test_boxes $(MEMORY_OBJ) $(BOX_OBJ) test_boxes.o test_main.o
@@ -34,10 +37,11 @@ test_memory: $(MEMORY_OBJ) test_memory.o test_main.o
 	$(CXX) $(STD) $(LFLAGS) -o test_memory $(MEMORY_OBJ) test_memory.o test_main.o
 
 clean:
-	/bin/rm -f $(EXE) test_boxes.o test_destroy.o test_memory.o test_main.o $(MEMORY_OBJ) $(BOX_OBJ) $(SAMPLE_LISTS)
+	/bin/rm -f $(EXE) benchmarks.o test_boxes.o test_destroy.o test_memory.o test_main.o $(MEMORY_OBJ) $(BOX_OBJ) $(SAMPLE_LISTS)
 
 test: $(EXE)
 	./test_memory
 	./test_boxes
 	./test_destroy
+	./run_benchmarks
 

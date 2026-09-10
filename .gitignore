@@ -3,8 +3,9 @@
 *.gcov
 *.gcno
 *.gcda
-test_destroy
-test_memory
 test_boxes
 test_box_classes
+run_benchmarks
+test_destroy
+test_memory
 *-extra
