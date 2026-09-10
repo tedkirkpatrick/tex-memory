@@ -31,12 +31,7 @@
 
 #include "basic_memory.hpp"
 
-#include <print>
-
 #include "reporting_errors.hpp"
-
-using std::print, std::println;
-
 
 // Section 115
 
@@ -241,6 +236,9 @@ static void initialize_the_special_list_heads_and_constant_nodes_790() {
 
 // Not part of original TeX
 
+// Only used in debugging routines
+#include <print>
+
 namespace dynmemdbg {
 
   // A more modern approach would return a std::tuple but updating the parameters is closer
@@ -253,9 +251,9 @@ namespace dynmemdbg {
   }
 
   void dump_avail_list() {
-    println("-- Avail list --");
+    std::println("-- Avail list --");
     for (pointer p=avail; p != null; p=link(p)) {
-      println("{}: {}  ({} or {:X} {:X})", p, mem[p].hh.rh, mem[p].hh.lh, int(mem[p].hh.qw.b0), int(mem[p].hh.qw.b1));
+      std::println("{}: {}  ({} or {:X} {:X})", p, mem[p].hh.rh, mem[p].hh.lh, int(mem[p].hh.qw.b0), int(mem[p].hh.qw.b1));
     }
   }
 
@@ -268,15 +266,15 @@ namespace dynmemdbg {
 
   void dump_free_list() {
     pointer p = rover;
-    println("-- Free list --");
+    std::println("-- Free list --");
     do {
       if (p == rover)
-        println("Rover node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
+        std::println("Rover node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
       else
-        println("Free node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
+        std::println("Free node at {} (size {}, llink {}, rlink {}, free {})", p, node_size(p), llink(p), rlink(p), is_empty(p));
       p  = rlink(p);
     }
     while (p != rover);
   }
 
-}
+} // namespace dynmemdbg
