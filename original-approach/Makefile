@@ -11,8 +11,6 @@ ASM_OPT=$(DEBUG_FLAGS)
 ifeq ($(COV),yes)
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(LIB_INCLUDE_DIRS)
 	LFLAGS=--coverage
-else ifeq ($(ASM),yes)
-	CPPFLAGS=$(BASIC_CPPFLAGS) $(LIB_INCLUDE_DIRS) $(ASM_OPT) -S -fno-verbose-asm
 else
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(DEBUG_FLAGS) $(LIB_INCLUDE_DIRS)
 endif
@@ -23,6 +21,9 @@ MEMORY_OBJ=basic_memory.o reporting_errors.o
 BOX_OBJ=boxes.o destroying_boxes.o display.o eqtb.o hash.o printing.o \
 	scaled.o string_handling.o token_list.o
 SAMPLE_LISTS=sample_lists.o traverse.o
+
+%.s: %.cpp
+	$(CXX) $(STD) $(BASIC_CPPFLAGS) $(LIB_INCLUDE_DIRS) $(ASM_OPT) -S -fno-verbose-asm $< -o $@
 
 all: $(EXE)
 	@echo "Rebuilt all"
