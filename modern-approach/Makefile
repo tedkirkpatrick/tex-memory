@@ -7,6 +7,7 @@ LFLAGS=
 COVERAGE_FLAGS=--coverage
 SANITIZER_FLAGS=-fsanitize=leak
 LIB_INCLUDE_DIRS=-I../include
+ASM_OPT=$(DEBUG_FLAGS)
 
 ifeq ($(COV),yes)
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(LIB_INCLUDE_DIRS)
@@ -25,6 +26,9 @@ endif
 EXE=test_box_classes
 OBJ=box_classes.o box_types.o
 
+%.s: %.cpp
+	$(CXX) $(STD) $(BASIC_CPPFLAGS) $(LIB_INCLUDE_DIRS) $(ASM_OPT) -S -fno-verbose-asm $< -o $@
+
 all: $(EXE)
 	@echo "Rebuilt all"
 
@@ -36,3 +40,6 @@ test_box_classes: $(OBJ) test_main.o
 
 clean:
 	/bin/rm -f $(EXE) $(OBJ) test_main.o
+
+test: $(EXE)
+	./test_box_classes
