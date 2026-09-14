@@ -22,7 +22,7 @@ TEST_CASE("Run benchmarks") {
   };
   BENCHMARK("Basic vlist create/traverse/delete") {
     pointer nbl = new_basic_list();
-    for (int v = 0; v < 1000; v++) {
+    for (int v = 0; v < 1; v++) {
       traverse_node(nbl);
     }
     flush_node_list(nbl);
