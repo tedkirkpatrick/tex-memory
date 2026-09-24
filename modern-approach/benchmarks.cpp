@@ -1,43 +1,28 @@
-/*
-  Benchmark the original style of TeX memory manageent
- */
-
-#include <chrono>
-
 #include "benchmark_utils.hpp"
-// Enable benchmarking code in this file
+#include "box_classes.hpp"
+// Enable benchmarking code in this translation unit
 #define CATCH_CONFIG_ENABLE_BENCHMARKING
 #include "catch2.hpp"
-#include "destroying_boxes.hpp"
 #include "sample_lists.hpp"
-#include "string_handling.hpp"
-#include "traverse.hpp"
 
-TEST_CASE("Run benchmarks") {
-  init_table_entries();
-  init_eqtb();
-  str_start.reset_strings();
-
+TEST_CASE("Benchmarks") {
   BENCHMARK(benchmark_utils::create_benchmark_name("Basic vlist create/delete",
-                                                   "original",
+                                                   "modern",
                                                    0,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
                                                    std::chrono::utc_clock::now()))
-  {
-    pointer nbl = new_basic_list();
-    flush_node_list(nbl);
-  };
-
+    {
+      boxes::VListPtr v = boxes::new_basic_list();
+    }; // v will be deleted at end of scope for each run
   BENCHMARK(benchmark_utils::create_benchmark_name("Basic vlist create/traverse/delete",
-                                                   "original",
+                                                   "modern",
                                                    benchmark_utils::traversals,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
                                                    std::chrono::utc_clock::now()))
-  {
-    pointer nbl = new_basic_list();
-    for (int v = 0; v < benchmark_utils::traversals; v++) {
-      traverse_node(nbl);
-    }
-    flush_node_list(nbl);
-  };
+    {
+      boxes::VListPtr v = boxes::new_basic_list();
+      for (int i = 0; i < benchmark_utils::traversals; i++) {
+        v->traverse_node();
+      }
+    }; // v will be deleted at end of scope for each run
 }

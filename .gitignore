@@ -3,6 +3,12 @@
 *.gcov
 *.gcno
 *.gcda
+# Most CSVs are from test runs of benchmarking code
+*.csv
+# But we want to save the CSV with the reference results
+!benchmarks.csv
+# Raw results from benchmark runs
+*.xml
 test_boxes
 test_box_classes
 run_benchmarks

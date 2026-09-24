@@ -1,0 +1,25 @@
+#-*- Makefile-*-
+CXX=g++
+STD=-std=c++23
+BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
+DEBUG_FLAGS=-g
+OPT_LEVEL=-O0
+DEFINED_SYMBOLS=-D OPT_LEVEL=\"$(OPT_LEVEL)\"
+LFLAGS=
+COVERAGE_FLAGS=--coverage
+LIB_INCLUDE_DIRS=-I../include
+ASM_OPT=$(DEBUG_FLAGS)
+
+ifeq ($(COV),yes)
+	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS)
+	LFLAGS=--coverage
+else
+	CPPFLAGS=$(BASIC_CPPFLAGS) $(DEBUG_FLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS)
+endif
+
+%.s: %.cpp
+	$(CXX) $(STD) $(BASIC_CPPFLAGS) $(DEBUG_FLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS) $(ASM_OPT) -S -fno-verbose-asm $< -o $@
+
+OBJ=benchmark_utils.o test_main.o
+
+all: $(OBJ)
