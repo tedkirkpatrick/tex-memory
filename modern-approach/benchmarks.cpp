@@ -1,3 +1,13 @@
+/*
+  Benchmark the modern style of TeX memory management.
+
+  See ../README.md for details of the overall project.
+
+  COPYRIGHT
+  The code in this file is public domain.
+  See See https://creativecommons.org/publicdomain/zero/1.0/
+ */
+
 #include "benchmark_utils.hpp"
 #include "box_classes.hpp"
 // Enable benchmarking code in this translation unit
