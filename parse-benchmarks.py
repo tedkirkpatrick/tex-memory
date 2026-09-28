@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+# Parse XML-formatted output from a Catch2 benchmark and append to a CSV file,
+# extracting options from the benchmark names.
+# See README.md for details
+#
+# This code is in the public domain.
+# See https://creativecommons.org/publicdomain/zero/1.0/
+
+
 import argparse
 import csv
 import os

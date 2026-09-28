@@ -1,3 +1,10 @@
+/*
+  Common utilities for benchmarking.
+
+  This code is in the public domain.
+  See https://creativecommons.org/publicdomain/zero/1.0/
+ */
+
 #include "benchmark_utils.hpp"
 
 #include <format>

@@ -1,6 +1,9 @@
-
 /*
+  The main routine for testing and benchmarking. Add options to the standard Catch2 options.
+  See ../README.md for details.
+  
   Based on code in https://github.com/catchorg/Catch2/blob/v2.13.10/docs/own-main.md#adding-your-own-command-line-options
+  See that page for copyright information.
  */
 
 #include <format>

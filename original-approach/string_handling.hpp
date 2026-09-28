@@ -1,5 +1,33 @@
 #ifndef STRING_HANDLING_HPP
 #define STRING_HANDLING_HPP
+/*
+  A fresh implementation of string handling
+  Part 38 of Tex: The Program
+
+  This code handles strings differently from TeX. TeX does not use any Pascal string-handling
+  features but instead uses a custom string pool.
+
+  This code uses C++ std::strings and C-style null-delimited string constants. Any TeX
+  code with an explicit string constant is written as a C-style double-quote-delimited string
+  (or a single-quote-delimited character constant for single-character instances). Strings
+  defined at runtime---typically csnames---are allocated as dynamic instances of std::string.
+  TeX never deletes a string, so we use std::string* pointers freely, passing them by
+  value and never deleting them. There is no need to refer to them via std::unique_ptr
+  or std::shared_ptr.
+
+  For compatibility with TeX routines, we refer to dynamically-allocated strings via
+  a table of pointers.
+
+  See ../README.md for details of the overall project.
+
+  CODE STYLE
+  These routines are NOT transliterations of TeX code. They are purpose-written
+  for this demonstration. They are written in modern C++.
+
+  COPYRIGHT
+  The code in this file is public domain.
+  See See https://creativecommons.org/publicdomain/zero/1.0/
+ */
 
 #include <vector>
 #include <string>

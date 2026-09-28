@@ -1,4 +1,10 @@
 #-*- Makefile-*-
+# Build the original version of the TeX data structures and run benchmarks.
+# See ../README.md for instructions of use.
+#
+# This code is in the public domain:
+# See https://creativecommons.org/publicdomain/zero/1.0/
+#
 CXX=g++
 STD=-std=c++23
 BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror

@@ -1,5 +1,11 @@
 #ifndef BENCHMARK_UTILS_HPP
 #define BENCHMARK_UTILS_HPP
+/*
+  Common utilities for benchmarking.
+
+  This code is in the public domain.
+  See https://creativecommons.org/publicdomain/zero/1.0/
+ */
 
 #include <chrono>
 #include <string>

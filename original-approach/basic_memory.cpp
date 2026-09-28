@@ -2,6 +2,8 @@
   Basic memory routines in the style of TeX.
   Parts 8--9 of TeX: The Program
 
+  See ../README.md for details of the overall project.
+
   Initialization of static variables is done via routines from Section 164, rather
   than using C++-style static initializers.
 
@@ -26,7 +28,21 @@
   namespaces are only used for testing and debugging functions, variables are declared
   without initialization, and other good practices are not followed.
 
-  BLERG embedding subsections into the functions directly.
+  Function subsections that in WEB are separated out are here embedded in the containing function.
+
+  COPYRIGHT
+  The code in this file is a transliteration of the original Pascal TeX routines into a C-style C++.
+  The file tex.web containing the original code features the following notice:
+
+      This program is copyright (C) 1982 by D. E. Knuth; all rights are reserved.
+      Unlimited copying and redistribution of this file are permitted as long
+      as this file is not modified. Modifications are permitted, but only if
+      the resulting file is not named tex.web
+
+   This modification of the original file is public domain.
+   See See https://creativecommons.org/publicdomain/zero/1.0/
+
+   The copyright of the original versions remains.
 */
 
 #include "basic_memory.hpp"

@@ -1,4 +1,10 @@
 #-*- Makefile-*-
+# Build the code common to both the original and modern versions.
+# See ../README.md for instructions of use.
+#
+# This code is in the public domain:
+# See https://creativecommons.org/publicdomain/zero/1.0/
+#
 CXX=g++
 STD=-std=c++23
 BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror

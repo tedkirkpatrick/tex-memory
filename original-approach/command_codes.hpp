@@ -1,6 +1,27 @@
 #ifndef COMMAND_CODES_HPP
 #define COMMAND_CODES_HPP
 
+/*
+  Command codes in TeX.
+  Part 15 of TeX: The Program
+ 
+  See ../README.md for details of the overall project.
+
+  COPYRIGHT
+  The code in this file is a transliteration of the original Pascal TeX routines into a C-style C++.
+  The file tex.web containing the original code features the following notice:
+
+      This program is copyright (C) 1982 by D. E. Knuth; all rights are reserved.
+      Unlimited copying and redistribution of this file are permitted as long
+      as this file is not modified. Modifications are permitted, but only if
+      the resulting file is not named tex.web
+
+   This modification of the original file is public domain.
+   See See https://creativecommons.org/publicdomain/zero/1.0/
+
+   The copyright of the original versions remains.
+*/
+
 // Section 207
 
 constexpr int escape = 0;

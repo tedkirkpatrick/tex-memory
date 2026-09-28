@@ -1,3 +1,8 @@
+# Build the container image.
+# See README.md for instructions of use.
+#
+# This code is in the public domain.
+# See https://creativecommons.org/publicdomain/zero/1.0/
 FROM ubuntu:25.10
 
 RUN apt-get -y update -qq && export DEBIAN_FRONTEND=noninteractive && \

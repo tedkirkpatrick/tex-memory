@@ -1,4 +1,7 @@
 /*
+  A fresh implementation of string handling
+  Part 38 of Tex: The Program
+
   This code handles strings differently from TeX. TeX does not use any Pascal string-handling
   features but instead uses a custom string pool.
 
@@ -12,6 +15,16 @@
 
   For compatibility with TeX routines, we refer to dynamically-allocated strings via
   a table of pointers.
+
+  See ../README.md for details of the overall project.
+
+  CODE STYLE
+  These routines are NOT transliterations of TeX code. They are purpose-written
+  for this demonstration. They are written in modern C++.
+
+  COPYRIGHT
+  The code in this file is public domain.
+  See See https://creativecommons.org/publicdomain/zero/1.0/
  */
 
 #include "string_handling.hpp"

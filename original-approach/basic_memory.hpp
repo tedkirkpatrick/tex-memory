@@ -1,7 +1,8 @@
-// Basic definitions for Knuth-style memory
 /*
   Basic memory routines in the style of TeX.
   Parts 8--9 of TeX: The Program
+
+  See ../README.md for details of the overall project.
 
   See the corresponding .cpp file for details.
 
@@ -11,7 +12,21 @@
      these constexpr and incorporating the routines in this header they are declared inline.
   3. Set global scope for the constants and routines exported from the .cpp file.
 
-  STYLE: See basic-memory.cpp comments for rationale for code style.
+  CODE STYLE: See basic-memory.cpp comments for rationale for code style.
+
+  COPYRIGHT
+  The code in this file is a transliteration of the original Pascal TeX routines into a C-style C++.
+  The file tex.web containing the original code features the following notice:
+
+      This program is copyright (C) 1982 by D. E. Knuth; all rights are reserved.
+      Unlimited copying and redistribution of this file are permitted as long
+      as this file is not modified. Modifications are permitted, but only if
+      the resulting file is not named tex.web
+
+   This modification of the original file is public domain.
+   See See https://creativecommons.org/publicdomain/zero/1.0/
+
+   The copyright of the original versions remains.
 */
 
 #ifndef basic_memory_hpp
