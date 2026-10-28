@@ -1,6 +1,6 @@
 /*
-  Define the basic classes. All boxes are descended from Nodes. GlueSpecs
-  descend from Nodes independently.
+  Define the basic classes. All boxes are descended from Nodes.
+  GlueSpecs are defined independently.
 
   See ../README.md for details of the overall project.
 

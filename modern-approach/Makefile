@@ -7,7 +7,8 @@
 #
 CXX=g++
 STD=-std=c++23
-BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror
+# Turn off errors for unused functions and variables so we can have unused debugging functions
+BASIC_CPPFLAGS=$(STD) -Wall -Wpedantic -Werror -Wno-unused-function -Wno-unused-variable
 DEBUG_FLAGS=-g
 OPT_LEVEL=-O0
 DEFINED_SYMBOLS=-D OPT_LEVEL=\"$(OPT_LEVEL)\"

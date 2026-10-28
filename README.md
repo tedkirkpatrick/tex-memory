@@ -98,7 +98,20 @@ compile of a file, make the <code>.s</code> target of that file:
 make box_classes.s # Machine code for box_classes.cpp
 </pre>
 
-## Running a benchmark
+## Benchmarks
+
+### Initializing the benchmarks file
+
+Before running your first benchmark, you must create an empty benchmarks file.
+The <code>benchmark</code> of <code>Makefile</code> assumes this file is called
+<code>benchmarks.csv</code>, though you can choose another name if you
+are not going to use that target. To create the file, run
+
+<pre>
+./parse-benchmarks.py --create benchmarks.csv
+</pre>
+
+### Running a benchmark
 
 To run a benchmark of either approach, switch to the
 appropriate directory and make the <code>benchmark</code>
@@ -119,7 +132,7 @@ where
 The make will force a recompile of all files in the current
 directory (but not in <code>common</code>) using the specified
 optimization argument, rebuild the test and benchmark executables,
-run the test(s), andrun the benchmark with the specified
+run the test(s), and run the benchmark with the specified
 traversal count to generate an XML file, and finally
 run <code>parse-benchmarks.py</code> to parse the XML.
 The benchmark results, including the traversal and
