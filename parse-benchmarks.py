@@ -85,7 +85,7 @@ def process_sd(child, result):
 def process_outliers(child, result):
     for att, value in child.attrib.items():
         if att == 'variance':
-            result['outliers_variance_ns_2'] = float(value)
+            result['outliers_variance_ratio'] = float(value)
         elif att == 'lowMild':
             result['outliers_low_mild'] = int(value)
         elif att == 'lowSevere':
@@ -133,7 +133,7 @@ def main(args):
               'samples', 'resamples', 'iterations', 'clock_resolution_ns', 'estimated_duration_ns',
               'mean_value_ns', 'mean_lower_bound_ns', 'mean_upper_bound_ns', 'mean_ci',
               'sd_value_ns', 'sd_lower_bound_ns', 'sd_upper_bound_ns', 'sd_ci',
-              'outliers_variance_ns_2', 'outliers_low_severe', 'outliers_low_mild',
+              'outliers_variance_ratio', 'outliers_low_severe', 'outliers_low_mild',
               'outliers_high_mild', 'outliers_high_severe']
     if args.create:
         with open(args.output_filename, 'w') as outf:
