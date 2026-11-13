@@ -35,8 +35,9 @@ else
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(DEBUG_FLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS)
 endif
 
-EXE=run_benchmarks test_boxes
+EXE=run_benchmarks test_boxes run_variance_benchmark
 OBJ=box_classes.o box_types.o sample_lists.o
+VAR_OBJ=benchmark_variance.o
 
 %.s: %.cpp
 	$(CXX) $(STD) $(BASIC_CPPFLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS) $(ASM_OPT) -S -fno-verbose-asm $< -o $@
@@ -49,6 +50,9 @@ box_classes.o: box_classes.cpp box_classes.hpp
 
 run_benchmarks: $(OBJ) benchmarks.o
 	$(CXX) $(STD) $(LFLAGS) -o $@ $(OBJ) benchmarks.o $(BENCHMARK_UTILS) $(TEST_MAIN)
+
+run_variance_benchmark: $(VAR_OBJ)
+	$(CXX) $(STD) $(LFLAGS) -o $@ $(VAR_OBJ) $(BENCHMARK_UTILS) $(TEST_MAIN)
 
 test_boxes: $(OBJ) test_boxes.o 
 	$(CXX) $(STD) $(LFLAGS) -o $@ $(OBJ) test_boxes.o $(BENCHMARK_UTILS) $(TEST_MAIN)

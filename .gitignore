@@ -12,6 +12,7 @@
 test_boxes
 test_box_classes
 run_benchmarks
+run_variance_benchmark
 test_destroy
 test_memory
 *-extra
