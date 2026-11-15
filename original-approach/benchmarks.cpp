@@ -33,6 +33,7 @@ TEST_CASE("Run benchmarks") {
                                                    "original",
                                                    0,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
+                                                   benchmark_utils::externals,
                                                    std::chrono::utc_clock::now()))
   {
     pointer nbl = new_basic_list();
@@ -43,6 +44,7 @@ TEST_CASE("Run benchmarks") {
                                                    "original",
                                                    benchmark_utils::traversals,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
+                                                   benchmark_utils::externals,
                                                    std::chrono::utc_clock::now()))
   {
     pointer nbl = new_basic_list();

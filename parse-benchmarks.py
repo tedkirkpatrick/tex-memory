@@ -44,14 +44,15 @@ def parse_args():
 
 
 def process_name(value, result):
-    match = re.match(r"([^,]+), *code='([^,]+)', *traversals=(\d+), *optimization='([^']+)', *UTC='([^']+)' *",
+    match = re.match(r"([^|]+)\| *code='([^']+)'\| *traversals=(\d+)\| *optimization='([^']+)'\| *externals='([^']*)'\| *UTC='([^']+)' *",
                      value)
     assert match is not None, f"Could not parse name {value}"
     result['name'] = match.group(1)
     result['code'] = match.group(2)
     result['traversals'] = int(match.group(3))
     result['optimization'] = match.group(4)
-    result['UTC'] = match.group(5)
+    result['externals'] = match.group(5)
+    result['UTC'] = match.group(6)
 
 
 def process_mean(child, result):
@@ -129,7 +130,7 @@ def output_result(writer, fields, results):
 
 
 def main(args):
-    fields = ['name', 'code', 'traversals', 'optimization', 'UTC',
+    fields = ['name', 'code', 'traversals', 'optimization', 'externals', 'UTC',
               'samples', 'resamples', 'iterations', 'clock_resolution_ns', 'estimated_duration_ns',
               'mean_value_ns', 'mean_lower_bound_ns', 'mean_upper_bound_ns', 'mean_ci',
               'sd_value_ns', 'sd_lower_bound_ns', 'sd_upper_bound_ns', 'sd_ci',
@@ -146,6 +147,8 @@ def main(args):
     with open(args.output_filename, 'a') as outf:
         writer = csv.writer(outf)
         for group in root:
+            if group.tag in ['OverallResults', 'OverallResultsCases']:
+                continue
             if group.tag != 'Group':
                 print(f"Encountered top-level tag not 'Group' ({group.tag}). Ignoring.")
                 continue

@@ -20,6 +20,7 @@ TEST_CASE("Benchmarks") {
                                                    "modern",
                                                    0,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
+                                                   benchmark_utils::externals,
                                                    std::chrono::utc_clock::now()))
     {
       boxes::VListPtr v = boxes::new_basic_list();
@@ -28,6 +29,7 @@ TEST_CASE("Benchmarks") {
                                                    "modern",
                                                    benchmark_utils::traversals,
                                                    OPT_LEVEL, // Preprocessor symbol set on command line
+                                                   benchmark_utils::externals,
                                                    std::chrono::utc_clock::now()))
     {
       boxes::VListPtr v = boxes::new_basic_list();

@@ -19,7 +19,12 @@ using namespace std::chrono_literals;
 #include "catch2.hpp"
 
 TEST_CASE("Variance-test") {
-  BENCHMARK(benchmark_utils::create_benchmark_name("Highly consistent wait 100ms", "modern", 0, OPT_LEVEL, std::chrono::utc_clock::now()))
+  BENCHMARK(benchmark_utils::create_benchmark_name("Highly consistent wait 100ms",
+                                                   "modern",
+                                                   0,
+                                                   OPT_LEVEL,
+                                                   benchmark_utils::externals,
+                                                   std::chrono::utc_clock::now()))
     {
       static unsigned count {0};
       auto wait {100ms};

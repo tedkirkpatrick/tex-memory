@@ -25,7 +25,10 @@ int main( int argc, char* argv[] ) {
     = session.cli()
     | Opt( benchmark_utils::traversals, "traversals" )
         ["--traversals"]
-        (std::format("Number of traversals to perform (default {})", benchmark_utils::traversals));
+        (std::format("Number of traversals to perform (default {})", benchmark_utils::traversals))
+    | Opt( benchmark_utils::externals, "externals" )
+        ["--externals"]
+        (std::format("Comma-separated list of key-value pairs naming external factors (default '{}')", benchmark_utils::externals));
 
   // Now pass the new composite back to Catch2 so it uses that
   session.cli( cli );

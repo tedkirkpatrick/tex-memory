@@ -119,7 +119,7 @@ target:
 
 <pre>
 cd original-approach # or modern-approach
-make TRAVERSALS=<I>n</i> OPT_LEVEL=<i>opt</i> benchmark
+make TRAVERSALS=<I>n</i> OPT_LEVEL=<i>opt</i> [EXTERNALS=<i>string</i>] benchmark
 </pre>
 
 where
@@ -128,6 +128,14 @@ where
   build/traverse/destroy benchmark. See the benchmark results
   in the posts linked above for more details.
 * *opt* is a gcc optimization argument, such as <code>-O1</code>.
+* EXTERNALS is an optional argument noting external factors
+  such as system noise that might affect the result. *string*
+  can be any string that does not include the comma (',')
+  or pipe ('|') characters. It can include semicolons,
+  parentheses, braces, or other special characters. Note
+  that it should likely be enclosed in single quotes to
+  prevent any special characters or spaces from being
+  interpreted by the shell.
 
 The make will force a recompile of all files in the current
 directory (but not in <code>common</code>) using the specified
@@ -135,18 +143,19 @@ optimization argument, rebuild the test and benchmark executables,
 run the test(s), and run the benchmark with the specified
 traversal count to generate an XML file, and finally
 run <code>parse-benchmarks.py</code> to parse the XML.
-The benchmark results, including the traversal and
-optimization arguments, will be stored as lines appended to
+The benchmark results, including the traversal,
+optimization, and externals arguments, will be stored as lines appended to
 the file <code>../benchmarks.csv</code>.
 
 ### Running a benchmark without rebuilding the system
 
 If you want to run several benchmarks in a row, say with different
 traversal counts, it is tedious and unnecessary to rebuild the
-entire system every time. Look at the <code>Makefile</code> to
-see how to just run the benchmark alone. But if you make
-any changes to the source code, it is safest to rebuild
-everything, so that the optimization level is consistent.
+entire system every time. In this case, make the <code>fast_benchmark</code>
+target with the same arguments. But if you make
+any changes to the source code, it is safest to use
+the <code>benchmark</code> arget to rebuild
+everything so that the optimization level is consistent.
 
 ## Analyzing the results
 

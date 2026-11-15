@@ -24,6 +24,12 @@ TEST_MAIN=../common/test_main.o
 
 TRAVERSALS=1
 
+ifeq ('$(EXTERNALS)', '')
+  EXTERNAL_ARG=
+else
+  EXTERNAL_ARG=--externals '$(EXTERNALS)'
+endif
+
 ifeq ($(COV),yes)
 	CPPFLAGS=$(BASIC_CPPFLAGS) $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(OPT_LEVEL) $(LIB_INCLUDE_DIRS) $(DEFINED_SYMBOLS)
 	LFLAGS=--coverage
@@ -67,5 +73,19 @@ test: $(EXE)
 exist: $(BENCHMARK_RESULTS_FILE)
 
 benchmark: exist clean test
-	./run_benchmarks --traversals $(TRAVERSALS) -r xml > benchmark.xml
+	@# Run the benchmarks. If we got an error, rerun with console reporter for readable error
+	@echo "./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG) -r xml > benchmark.xml"
+	@./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG) -r xml > benchmark.xml; rc=$$? ; \
+	if [ $$rc -gt 0 ]; then \
+		./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG); \
+	fi
+	../parse-benchmarks.py --input_filename benchmark.xml $(BENCHMARK_RESULTS_FILE)
+
+fast_benchmark: exist run_benchmarks
+	@# Run the benchmarks. If we got an error, rerun with console reporter for readable error
+	@echo "./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG) -r xml > benchmark.xml"
+	@./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG) -r xml > benchmark.xml; rc=$$? ; \
+	if [ $$rc -gt 0 ]; then \
+		./run_benchmarks --traversals $(TRAVERSALS) $(EXTERNAL_ARG); \
+	fi
 	../parse-benchmarks.py --input_filename benchmark.xml $(BENCHMARK_RESULTS_FILE)
